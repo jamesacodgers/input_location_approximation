@@ -56,7 +56,6 @@ class MultiLayerVariationalRegression(nn.Module):
         self.posterior_type = posterior_type
         
         # Initialize variational parameters for each layer
-        # Use nn.ParameterList to store parameters properly
         self.mu_W_layers = nn.ParameterList()
         self.log_sigma_W_layers = nn.ParameterList()
         self.mu_b_layers = nn.ParameterList()
@@ -219,7 +218,7 @@ def generate_synthetic_data(n_samples=100, n_features=3, noise_std=0.1, seed=42)
     
     return X.numpy(), y.numpy(), w_true.numpy()
 
-def fit_multilayer_variational_regression(X, y, layer_dims, n_epochs=50000, lr=0.01, 
+def fit_multilayer_variational_regression(X, y, layer_dims, n_epochs=40000, lr=0.01, 
                                         alpha=1.0, beta=100.0, temperature=1.0, 
                                         posterior_type="standard", model_name="Multi-VI"):
     """Fit the multi-layer variational Bayesian linear regression"""
@@ -320,40 +319,6 @@ def compare_multilayer_posteriors(X, y, w_true, layer_dims, alpha=1.0, beta=100.
     print("="*80)
     
     return mu_true, Sigma_true, models, losses_dict
-    
-    print("="*80)
-    
-    # Compare first layer parameters with analytical solution (if same input dimension)
-    if layer_dims[0] == len(mu_true):
-        print(f"\nFIRST LAYER WEIGHT COMPARISON (vs Analytical Single-Layer):")
-        print(f"{'Parameter':<12} {'Analytical':<12} {'Standard':<12} {'Cold':<12} {'Tempered':<12}")
-        print("-" * 65)
-        
-        param_names = ['Bias', 'Weight 1', 'Weight 2']
-        sigma_true = np.sqrt(np.diag(Sigma_true.numpy()))
-        
-        for i in range(min(len(mu_true), layer_dims[1])):  # Compare up to first layer output size
-            row = f"{param_names[i] if i < len(param_names) else f'W[{i}]':<12} {mu_true[i].item():.3f}±{sigma_true[i]:.3f}   "
-            
-            for model_name in ['Standard', 'Cold', 'Tempered']:
-                model = models[model_name]
-                # Get first layer weights corresponding to this input
-                mu_W, sigma_W, mu_b, sigma_b = model.get_layer_params(0)
-                
-                if i == 0:  # Bias term
-                    mu_val = mu_b[0].item() if len(mu_b) > 0 else 0.0
-                    sigma_val = sigma_b[0].item() if len(sigma_b) > 0 else 0.0
-                elif i-1 < mu_W.shape[1]:  # Weight term
-                    mu_val = mu_W[0, i-1].item() if mu_W.shape[0] > 0 else 0.0
-                    sigma_val = sigma_W[0, i-1].item() if sigma_W.shape[0] > 0 else 0.0
-                else:
-                    mu_val, sigma_val = 0.0, 0.0
-                
-                row += f"{mu_val:.3f}±{sigma_val:.3f}   "
-            
-            print(row)
-    
-    return mu_true, Sigma_true, models, losses_dict
 
 def plot_multilayer_results(X, y, w_true, mu_true, Sigma_true, models, losses_dict, layer_dims):
     """Plot comparison results for multi-layer models"""
@@ -362,6 +327,9 @@ def plot_multilayer_results(X, y, w_true, mu_true, Sigma_true, models, losses_di
     output_dir = "figs/multilayer_cold_posterior_regression"
     os.makedirs(output_dir, exist_ok=True)
     print(f"Saving figures to: {output_dir}")
+    
+    # Create architecture string for file naming
+    arch_str = "_".join(map(str, layer_dims))
     
     # Extract features (skip bias column)
     X_features = X[:, 1:]
@@ -392,9 +360,9 @@ def plot_multilayer_results(X, y, w_true, mu_true, Sigma_true, models, losses_di
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
 
-    plt.savefig(f"{output_dir}/multilayer_training_loss.png", dpi=300, bbox_inches='tight')
-    plt.savefig(f"{output_dir}/multilayer_training_loss.pdf", bbox_inches='tight')
-    print(f"Saved: {output_dir}/multilayer_training_loss.png")
+    plt.savefig(f"{output_dir}/multilayer_training_loss_{arch_str}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"{output_dir}/multilayer_training_loss_{arch_str}.pdf", bbox_inches='tight')
+    print(f"Saved: {output_dir}/multilayer_training_loss_{arch_str}.png")
     plt.show()
     
     # 2. Test data KL analysis with PCA visualization
@@ -522,9 +490,9 @@ def plot_multilayer_results(X, y, w_true, mu_true, Sigma_true, models, losses_di
                  fontsize=14, fontweight='bold', y=1.02)
     plt.tight_layout()
     
-    plt.savefig(f"{output_dir}/multilayer_kl_vs_pca_components.png", dpi=300, bbox_inches='tight')
-    plt.savefig(f"{output_dir}/multilayer_kl_vs_pca_components.pdf", bbox_inches='tight')
-    print(f"Saved: {output_dir}/multilayer_kl_vs_pca_components.png")
+    plt.savefig(f"{output_dir}/multilayer_kl_vs_pca_components_{arch_str}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"{output_dir}/multilayer_kl_vs_pca_components_{arch_str}.pdf", bbox_inches='tight')
+    print(f"Saved: {output_dir}/multilayer_kl_vs_pca_components_{arch_str}.png")
     plt.show()
     
     # 3. Input data visualization with KL divergence backgrounds
@@ -624,70 +592,50 @@ def plot_multilayer_results(X, y, w_true, mu_true, Sigma_true, models, losses_di
     plt.suptitle(f'Multi-Layer KL Divergence Heatmaps vs Analytical Single-Layer\nArchitecture: {" → ".join(map(str, layer_dims))}', 
                  fontsize=14, fontweight='bold')
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/multilayer_kl_divergence_heatmaps.png", dpi=300, bbox_inches='tight')
-    plt.savefig(f"{output_dir}/multilayer_kl_divergence_heatmaps.pdf", bbox_inches='tight')
-    print(f"Saved: {output_dir}/multilayer_kl_divergence_heatmaps.png")
+    plt.savefig(f"{output_dir}/multilayer_kl_divergence_heatmaps_{arch_str}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"{output_dir}/multilayer_kl_divergence_heatmaps_{arch_str}.pdf", bbox_inches='tight')
+    print(f"Saved: {output_dir}/multilayer_kl_divergence_heatmaps_{arch_str}.png")
     plt.show()
     
     print(f"\nAll figures saved to: {output_dir}")
     print(f"Files saved:")
-    print(f"  - multilayer_training_loss.png/.pdf")
-    print(f"  - multilayer_kl_vs_pca_components.png/.pdf") 
-    print(f"  - multilayer_kl_divergence_heatmaps.png/.pdf")
-    
-    # Print summary
-    print(f"\n{'='*70}")
-    print("MULTI-LAYER MODEL SUMMARY")
-    print(f"{'='*70}")
-    print(f"Architecture: {' → '.join(map(str, layer_dims))}")
-    print(f"Total layers: {len(layer_dims) - 1}")
-    
-    for model_name, model in models.items():
-        print(f"\n{model_name} Model:")
-        print(f"  Parameters: {model.get_total_parameters()}")
-        print(f"  Temperature: {model.temperature}")
-        print(f"  Type: {model.posterior_type}")
-        print(f"  Final Loss: {losses_dict[model_name][-1]:.6f}")
-    
-    print(f"\nFiles saved to: {output_dir}")
-    print(f"  - multilayer_training_loss.png/.pdf")
-    print(f"  - multilayer_predictions_uncertainties.png/.pdf") 
-    print(f"  - first_layer_parameters.png/.pdf")
-    print(f"{'='*70}")
+    print(f"  - multilayer_training_loss_{arch_str}.png/.pdf")
+    print(f"  - multilayer_kl_vs_pca_components_{arch_str}.png/.pdf")
+    print(f"  - multilayer_kl_divergence_heatmaps_{arch_str}.png/.pdf")
 
 def main():
     """Main execution function"""
     print("Multi-Layer Bayesian Linear Regression: Standard vs Cold vs Tempered VI")
     print("="*75)
-    
+
     # Generate synthetic data
     X, y, w_true = generate_synthetic_data(n_samples=100, n_features=3, noise_std=0.1)
-    
+
     print(f"Data shape: X={X.shape}, y={y.shape}")
     print(f"True weights (single-layer): {w_true}")
-    
+
     # Define multi-layer architecture
     # Input: 3 features (including bias) → 8 → 8 → 8 → 8 → Output: 1
-    layer_dims = [3, 8, 8, 8, 8, 1]
-    
+    layer_dims = [3] +  [16]*2 + [1]
+
     # Hyperparameters
     alpha = 1.0   # Prior precision
     beta = 100.0  # Likelihood precision
-    
+
     # Compare multi-layer posteriors
     mu_true, Sigma_true, models, losses_dict = compare_multilayer_posteriors(
         X, y, w_true, layer_dims, alpha=alpha, beta=beta
     )
-    
+
     # Plot only the requested figures
     plot_multilayer_results(X, y, w_true, mu_true, Sigma_true, models, losses_dict, layer_dims)
-    
+
     print(f"\n{'='*60}")
     print("ANALYSIS COMPLETE")
     print(f"{'='*60}")
     print("Generated figures:")
     print("  1. Training loss comparison")
-    print("  2. KL divergence vs PCA components")  
+    print("  2. KL divergence vs PCA components")
     print("  3. KL divergence heatmaps over input space")
     print(f"All saved to: figs/cold_posterior_linear_regression/")
 

@@ -6,3 +6,5 @@ matplotlib
 seaborn
 tqdm
 plotly
+pyro-ppl
+scikit-learn
