@@ -180,7 +180,7 @@ def run_cold_posterior_experiment(temperatures, x2_offsets):
     
     # Generate data with training and testing on x2=0 line, plus 2D visualization
     train_x, train_y, test_x, test_y, vis_x, vis_grid, true_hyperparams = create_synthetic_data(
-        n_train=5, n_test=200, n_test_per_dim=25, noise_std=0.5  
+        n_train=5, n_test=200, n_test_per_dim=25, noise_std=0.01  
     )
     
     print(f"Training data shape: {train_x.shape}")
@@ -214,8 +214,8 @@ if __name__ == "__main__":
         # Compare different inducing positions and temperatures - wider range
     # temperatures = [0.01, 0.1, 1.0, 10.0]  # Very cold to very hot
     # x2_offsets = [0.0,  0.1, 0.2,0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]  # From training line to far away
-    temperatures = [0.01, 1.0]  # Very cold to very hot
-    x2_offsets = [0.0,  0.5, 1.0]  # From training line to far away
+    temperatures = [0.01, 0.1, 1.0]  # Very cold to very hot
+    x2_offsets = [0.0,  0.05, 0.1]  # From training line to far away
 
     # Run experiment
     results = run_cold_posterior_experiment(temperatures, x2_offsets)

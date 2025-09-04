@@ -504,8 +504,8 @@ def create_synthetic_data(n_train=200, n_test=100, n_test_per_dim=30, noise_std=
     np.random.seed(seed)
     
     # Training data - ALL on the x2=0 line (1D subspace)
-    # train_x1 = torch.rand(n_train)
-    train_x1 = torch.linspace(0,1,n_train)
+    train_x1 = torch.rand(n_train)
+    # train_x1 = torch.linspace(0,1,n_train)
     train_x2 = torch.zeros(n_train)  # All training data at x2=0
     train_x = torch.stack([train_x1, train_x2], dim=1)
     
