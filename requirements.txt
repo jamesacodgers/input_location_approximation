@@ -10,3 +10,6 @@ pyro-ppl
 scikit-learn
 lightning-uq-box
 jupyter
+wandb
+pandas
+tensorboard
