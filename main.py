@@ -1,112 +1,159 @@
-import os
-
-from functools import partial
-
-import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
-from lightning import Trainer
-from lightning.pytorch import seed_everything
-from lightning.pytorch.loggers import CSVLogger
-from time import strftime
+import torch.optim as optim
+import wandb
 
-from lightning_uq_box.datamodules import ToyHeteroscedasticDatamodule
-from lightning_uq_box.models import MLP
-from lightning_uq_box.uq_methods import NLL, BNN_VI_ELBO_Regression
-from lightning_uq_box.viz_utils import (
-    plot_calibration_uq_toolbox,
-    plot_predictions_regression,
-    plot_toy_regression_data,
-)
+# Simple config - you can replace this with Hydra later
+config = {
+    "learning_rate": 0.001,
+    "batch_size": 64,
+    "epochs": 10,
+    "model_type": "simple_bnn",
+    "dataset": "mnist",
+    "device": "cuda" if torch.cuda.is_available() else "cpu"
+}
 
-from src.plot_utils import plot_training_metrics
+def get_model():
+    """Simple model - replace with your BNN later."""
+    return nn.Sequential(
+        nn.Linear(784, 128),
+        nn.ReLU(),
+        nn.Linear(128, 10)
+    )
 
-plt.rcParams["figure.figsize"] = [14, 5]
+def get_data():
+    """Simple data loading - replace with your data loader later."""
+    from torchvision import datasets, transforms
+    from torch.utils.data import DataLoader
+    
+    transform = transforms.Compose([transforms.ToTensor()])
+    
+    train_dataset = datasets.MNIST('./data', train=True, download=True, transform=transform)
+    train_loader = DataLoader(train_dataset, batch_size=config["batch_size"], shuffle=True)
+    
+    test_dataset = datasets.MNIST('./data', train=False, transform=transform)
+    test_loader = DataLoader(test_dataset, batch_size=config["batch_size"], shuffle=False)
+    
+    return train_loader, test_loader
 
+def train_one_epoch(model, train_loader, optimizer, device):
+    """Train for one epoch."""
+    model.train()
+    total_loss = 0
+    total_samples = 0
+    
+    for batch_idx, (data, target) in enumerate(train_loader):
+        data = data.view(-1, 784).to(device)
+        target = target.to(device)
+        
+        optimizer.zero_grad()
+        output = model(data)
+        loss = nn.functional.cross_entropy(output, target)
+        loss.backward()
+        optimizer.step()
+        
+        # Log individual batch losses occasionally
+        if batch_idx % 100 == 0:
+            wandb.log({
+                "batch_loss": loss.item(),
+                "batch_idx": batch_idx
+            })
+        
+        # Accumulate for epoch average
+        total_loss += loss.item() * data.size(0)
+        total_samples += data.size(0)
+    
+    return total_loss / total_samples
 
-seed_everything(0)  # seed everything for reproducibility
+def validate(model, val_loader, device):
+    """Validate the model."""
+    model.eval()
+    total_loss = 0
+    correct = 0
+    total_samples = 0
+    
+    with torch.no_grad():
+        for data, target in val_loader:
+            data = data.view(-1, 784).to(device)
+            target = target.to(device)
+            
+            output = model(data)
+            loss = nn.functional.cross_entropy(output, target)
+            
+            total_loss += loss.item() * data.size(0)
+            pred = output.argmax(dim=1)
+            correct += pred.eq(target).sum().item()
+            total_samples += data.size(0)
+    
+    avg_loss = total_loss / total_samples
+    accuracy = correct / total_samples
+    
+    return avg_loss, accuracy
 
-dataset_name = "test"
+def save_checkpoint(model, optimizer, epoch, loss, filepath):
+    """Save model checkpoint."""
+    torch.save({
+        'epoch': epoch,
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'loss': loss,
+        'config': config,  # Save config too
+    }, filepath)
+    
+    # Save to wandb
+    wandb.save(filepath)
 
-experiment_dir = f"experiments/{dataset_name}/{strftime('%Y%m%d_%H%M%S')}"
+def main():
+    """Main training function."""
+    
+    # Initialize wandb
+    wandb.init(
+        project="bnn-research",
+        config=config,
+        mode="online"  # Change to "offline" if no internet
+    )
+    
+    # Setup
+    device = torch.device(config["device"])
+    print(f"Using device: {device}")
+    
+    # Create model, data, optimizer
+    model = get_model().to(device)
+    train_loader, test_loader = get_data()
+    optimizer = optim.Adam(model.parameters(), lr=config["learning_rate"])
+    
+    print(f"Starting training for {config['epochs']} epochs...")
+    
+    # Training loop
+    best_val_loss = float('inf')
+    
+    for epoch in range(config["epochs"]):
+        # Train
+        train_loss = train_one_epoch(model, train_loader, optimizer, device)
+        
+        # Validate
+        val_loss, val_accuracy = validate(model, test_loader, device)
+        
+        # Log to wandb
+        wandb.log({
+            "epoch": epoch,
+            "train_loss": train_loss,
+            "val_loss": val_loss,
+            "val_accuracy": val_accuracy,
+            "learning_rate": config["learning_rate"]
+        })
+        
+        print(f"Epoch {epoch}: Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}, Val Acc: {val_accuracy:.4f}")
+        
+        # Save checkpoint if best model
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            save_checkpoint(model, optimizer, epoch, val_loss, "best_model.pth")
+            print(f"New best model saved at epoch {epoch}")
+    
+    # Finish wandb run
+    wandb.finish()
+    print("Training completed!")
 
-batch_size = 32
-n_points = 512
-temperature = 1.0
-
-n_train_epochs = 5
-
-dm = ToyHeteroscedasticDatamodule(batch_size=batch_size, n_points=n_points)
-
-X_train, Y_train, train_loader, X_test, Y_test, test_loader, X_gtext, Y_gtext = (
-    dm.X_train,
-    dm.Y_train,
-    dm.train_dataloader(),
-    dm.X_test,
-    dm.Y_test,
-    dm.test_dataloader(),
-    dm.X_gtext,
-    dm.Y_gtext,
-)
-
-n_train_points = X_train.shape[0]
-
-fig = plot_toy_regression_data(X_train, Y_train, X_test, Y_test)
-
-network = MLP(n_inputs=1, n_hidden=[50, 50], n_outputs=2, activation_fn=nn.ReLU())
-network
-
-bbp_model = BNN_VI_ELBO_Regression(
-    network,
-    optimizer=partial(torch.optim.Adam, lr=3e-3),
-    criterion=NLL(),
-    stochastic_module_names=[-1],
-    num_mc_samples_train=10,
-    num_mc_samples_test=25,
-    burnin_epochs=20,
-    beta=batch_size/(n_train_points * temperature)
-)
-
-logger = CSVLogger(experiment_dir,version="")
-trainer = Trainer(
-    max_epochs=n_train_epochs,  # number of epochs we want to train
-    logger=logger,  # log training metrics for later evaluation
-    log_every_n_steps=1,
-    enable_checkpointing=True,
-    enable_progress_bar=True,
-    default_root_dir=experiment_dir,
-    enable_model_summary=True
-)
-
-trainer.fit(bbp_model, dm)
-
-os.mkdir(experiment_dir + "/figs")
-fig = plot_training_metrics(experiment_dir, metrics=["train_loss", "val_loss"])
-plt.savefig(experiment_dir + "/figs/bbp_training.png")
-
-preds = bbp_model.predict_step(X_gtext)
-
-fig = plot_predictions_regression(
-    X_train,
-    Y_train,
-    X_gtext,
-    Y_gtext,
-    preds["pred"].squeeze(-1),
-    preds["pred_uct"],
-    epistemic=preds["epistemic_uct"],
-    aleatoric=preds["aleatoric_uct"],
-    title="Bayes By Backprop MFVI",
-    show_bands=False,
-)
-
-plt.savefig(experiment_dir + "/figs/bbp_predictions.png")
-
-preds = bbp_model.predict_step(X_test)
-fig = plot_calibration_uq_toolbox(
-    preds["pred"].cpu().numpy(),
-    preds["pred_uct"].cpu().numpy(),
-    Y_test.cpu().numpy(),
-    X_test.cpu().numpy(),
-)
-
-plt.savefig(experiment_dir + "/figs/bbp_calibration.png")
+if __name__ == "__main__":
+    main()

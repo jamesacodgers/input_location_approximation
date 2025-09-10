@@ -6,10 +6,7 @@ matplotlib
 seaborn
 tqdm
 plotly
-pyro-ppl
 scikit-learn
-lightning-uq-box
 jupyter
 wandb
 pandas
-tensorboard
