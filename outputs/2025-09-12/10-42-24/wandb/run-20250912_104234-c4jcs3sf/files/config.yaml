@@ -1,0 +1,53 @@
+_wandb:
+    value:
+        cli_version: 0.21.3
+        e:
+            nucfid2augmasj7r23j178jzikmaciuv:
+                codePath: main.py
+                executable: /Users/james/Projects/input_location_approximation/.venv/bin/python
+                git:
+                    commit: de73e96e46d99776fbe60194d3869f1859b6f06c
+                    remote: https://github.com/jamesacodgers/input_location_approximation
+                host: MBCFW6LPW4MJ
+                os: macOS-15.6.1-arm64-arm-64bit-Mach-O
+                program: /Users/james/Projects/input_location_approximation/main.py
+                python: CPython 3.13.2
+                root: /Users/james/Projects/input_location_approximation/outputs/2025-09-12/10-42-24
+                startedAt: "2025-09-12T09:42:34.978951Z"
+                writerId: nucfid2augmasj7r23j178jzikmaciuv
+        m: []
+        python_version: 3.13.2
+        t:
+            "1":
+                - 1
+                - 50
+            "2":
+                - 1
+                - 50
+            "3":
+                - 16
+            "4": 3.13.2
+            "5": 0.21.3
+            "12": 0.21.3
+            "13": darwin-arm64
+dataset:
+    value:
+        label: synthetic_regression
+        n_empty_features: 10
+        n_features: 1
+        n_test: 200
+        n_train: 1000
+        noise_std: 0.1
+        type: regression
+model:
+    value:
+        hidden_layers:
+            - 128
+            - 64
+        prior_variance: 1
+        type: mlp
+optimization:
+    value:
+        batch_size: 64
+        epochs: 1000
+        learning_rate: 0.001

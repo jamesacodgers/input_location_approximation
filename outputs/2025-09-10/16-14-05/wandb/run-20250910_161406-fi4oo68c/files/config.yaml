@@ -1,0 +1,41 @@
+_wandb:
+    value:
+        cli_version: 0.21.3
+        e:
+            1nakvxcrcvsrili0agjeelb3uu0n7xpd:
+                codePath: main.py
+                email: james.a.c.odgers@gmail.com
+                executable: /Users/james/Projects/input_location_approximation/.venv/bin/python
+                git:
+                    commit: de73e96e46d99776fbe60194d3869f1859b6f06c
+                    remote: https://github.com/jamesacodgers/input_location_approximation
+                host: MBCFW6LPW4MJ
+                os: macOS-15.6.1-arm64-arm-64bit-Mach-O
+                program: /Users/james/Projects/input_location_approximation/main.py
+                python: CPython 3.13.2
+                root: /Users/james/Projects/input_location_approximation/outputs/2025-09-10/16-14-05
+                startedAt: "2025-09-10T14:14:06.035286Z"
+                writerId: 1nakvxcrcvsrili0agjeelb3uu0n7xpd
+        m: []
+        python_version: 3.13.2
+        t:
+            "1":
+                - 1
+                - 50
+            "2":
+                - 1
+                - 50
+            "3":
+                - 16
+            "4": 3.13.2
+            "5": 0.21.3
+            "12": 0.21.3
+            "13": darwin-arm64
+batch_size:
+    value: 64
+dataset:
+    value: synthetic_regression
+epochs:
+    value: 10
+learning_rate:
+    value: 0.001

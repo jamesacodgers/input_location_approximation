@@ -1,40 +1,103 @@
+from matplotlib import pyplot as plt
+import numpy as np
+import random
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import wandb
+import hydra
+from omegaconf import DictConfig, OmegaConf
+
+from src.approx_bnn import MAPPosterior
+from src.layer_priors import LinearLayer
+import tqdm
 
 # Simple config - you can replace this with Hydra later
-config = {
-    "learning_rate": 0.001,
-    "batch_size": 64,
-    "epochs": 10,
-    "model_type": "simple_bnn",
-    "dataset": "mnist",
-    "device": "cuda" if torch.cuda.is_available() else "cpu"
-}
 
-def get_model():
+def set_seeds(seed):
+    """Set seeds for reproducibility across all random number generators.
+    
+    Args:
+        seed (int): The seed value to use for all random number generators
+    """
+    # Python's built-in random module
+    random.seed(seed)
+    
+    # NumPy
+    np.random.seed(seed)
+    
+    # PyTorch
+    torch.manual_seed(seed)
+    
+    # PyTorch CUDA (if available)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)  # For multi-GPU setups
+    
+    # Uncomment for additional for full reproducibility, but slower code
+    # torch.backends.cudnn.deterministic = True
+    # torch.backends.cudnn.benchmark = False
+
+def get_log_likelihood(cfg):
+    if cfg.dataset.type == "regression":
+        ll = lambda f, y: torch.distributions.Normal(f, cfg.dataset.noise_std).log_prob(y)
+    else: 
+        raise NotImplementedError("Only regression is implemented in this example.")
+    return ll
+
+def get_bnn_prior(cfg, input_dim, output_dim):
     """Simple model - replace with your BNN later."""
-    return nn.Sequential(
-        nn.Linear(784, 128),
-        nn.ReLU(),
-        nn.Linear(128, 10)
-    )
+    prior = []
+    if cfg.model.type == "mlp":
+        layer_sizes = [input_dim] + cfg.model.hidden_layers + [output_dim]
+        for i in range(len(layer_sizes) - 1):
+            in_features = layer_sizes[i]
+            out_features = layer_sizes[i + 1]
+            weight_prior = torch.distributions.Normal(torch.zeros(out_features, in_features), cfg.model.prior_variance*torch.ones(out_features, in_features))
+            bias_prior = torch.distributions.Normal(0, cfg.model.prior_variance).expand([out_features])
+            if i < len(layer_sizes) - 2:
+                activation = torch.nn.ReLU()
+            else:
+                activation = nn.Identity()
+            layer = LinearLayer(in_features, out_features, weight_prior, bias_prior, activation)
+            prior.append(layer)
+    else:
+        raise NotImplementedError("Only MLP model is implemented in this example.")
+    return prior
 
-def get_data():
-    """Simple data loading - replace with your data loader later."""
-    from torchvision import datasets, transforms
+def get_approx_posterior_model(cfg, layer_priors, log_likelihood):
+    """Get the approximate posterior model."""
+    if cfg.model.type == "mlp":
+        return MAPPosterior(layer_priors=layer_priors, log_likelihood=log_likelihood, total_data_points=cfg.dataset.n_train, batch_size=cfg.optimization.batch_size,device="cuda" if torch.cuda.is_available() else "cpu")
+    else:
+        raise NotImplementedError("Only MLP model is implemented in this example.")
+    
+def get_optimizer(cfg, model, train_dataset, test_dataset):
+    """Get optimizer and data loaders."""
     from torch.utils.data import DataLoader
-    
-    transform = transforms.Compose([transforms.ToTensor()])
-    
-    train_dataset = datasets.MNIST('./data', train=True, download=True, transform=transform)
-    train_loader = DataLoader(train_dataset, batch_size=config["batch_size"], shuffle=True)
-    
-    test_dataset = datasets.MNIST('./data', train=False, transform=transform)
-    test_loader = DataLoader(test_dataset, batch_size=config["batch_size"], shuffle=False)
-    
-    return train_loader, test_loader
+
+    train_loader = DataLoader(train_dataset, batch_size=cfg.optimization.batch_size, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=cfg.optimization.batch_size, shuffle=False)
+
+    optimizer = optim.Adam(model.parameters(), lr=cfg.optimization.learning_rate)
+
+    lr_scheduler = None
+
+    return optimizer, lr_scheduler, train_loader, test_loader
+
+def get_data(cfg):
+    """Simple data loading - replace with your data loader later."""
+    from torch.utils.data import DataLoader
+    from src.synthetic_data import generate_synthetic_data
+
+    x_train, y_train = generate_synthetic_data(n_samples=cfg.dataset.n_train, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features)
+    x_test, y_test = generate_synthetic_data(n_samples=cfg.dataset.n_test, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features)
+
+    train_dataset = torch.utils.data.TensorDataset(x_train, y_train)
+    test_dataset = torch.utils.data.TensorDataset(x_test, y_test)
+
+    return train_dataset, test_dataset, x_train.shape[1], y_train.shape[1] 
 
 def train_one_epoch(model, train_loader, optimizer, device):
     """Train for one epoch."""
@@ -48,7 +111,7 @@ def train_one_epoch(model, train_loader, optimizer, device):
         
         optimizer.zero_grad()
         output = model(data)
-        loss = nn.functional.cross_entropy(output, target)
+        loss = model.loss(output, target)
         loss.backward()
         optimizer.step()
         
@@ -63,7 +126,8 @@ def train_one_epoch(model, train_loader, optimizer, device):
         total_loss += loss.item() * data.size(0)
         total_samples += data.size(0)
     
-    return total_loss / total_samples
+    avg_loss = total_loss / total_samples
+    return avg_loss
 
 def validate(model, val_loader, device):
     """Validate the model."""
@@ -95,65 +159,72 @@ def save_checkpoint(model, optimizer, epoch, loss, filepath):
     torch.save({
         'epoch': epoch,
         'model_state_dict': model.state_dict(),
-        'optimizer_state_dict': optimizer.state_dict(),
         'loss': loss,
-        'config': config,  # Save config too
     }, filepath)
     
     # Save to wandb
     wandb.save(filepath)
 
-def main():
-    """Main training function."""
-    
-    # Initialize wandb
-    wandb.init(
-        project="bnn-research",
-        config=config,
-        mode="online"  # Change to "offline" if no internet
-    )
-    
-    # Setup
-    device = torch.device(config["device"])
-    print(f"Using device: {device}")
-    
-    # Create model, data, optimizer
-    model = get_model().to(device)
-    train_loader, test_loader = get_data()
-    optimizer = optim.Adam(model.parameters(), lr=config["learning_rate"])
-    
-    print(f"Starting training for {config['epochs']} epochs...")
-    
-    # Training loop
-    best_val_loss = float('inf')
-    
-    for epoch in range(config["epochs"]):
-        # Train
-        train_loss = train_one_epoch(model, train_loader, optimizer, device)
-        
-        # Validate
-        val_loss, val_accuracy = validate(model, test_loader, device)
-        
-        # Log to wandb
+def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimizer, train_dataloader: torch.utils.data.DataLoader, val_dataloader: torch.utils.data.DataLoader, lr_scheduler: torch.optim.lr_scheduler.LRScheduler):
+    model.train()
+    for epoch in range(cfg.optimization.epochs):
+        print(epoch)
+        for x,y in train_dataloader:
+            train_loss = model.train_step(x,y, optimizer)
+        val_ll = torch.zeros(1)
+        for x,y in val_dataloader:
+            preds = model(x)
+            val_ll += (model.get_mean_likelihood_contribution(preds,y)*x.shape[0]).item()
+            # val_ll += model.loss(x,y)
         wandb.log({
             "epoch": epoch,
             "train_loss": train_loss,
-            "val_loss": val_loss,
-            "val_accuracy": val_accuracy,
-            "learning_rate": config["learning_rate"]
+            "val_ll": val_ll
         })
-        
-        print(f"Epoch {epoch}: Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}, Val Acc: {val_accuracy:.4f}")
-        
-        # Save checkpoint if best model
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
-            save_checkpoint(model, optimizer, epoch, val_loss, "best_model.pth")
-            print(f"New best model saved at epoch {epoch}")
+    return model
+
+def test_model(model, train_dataloader, val_dataloader):
+    with torch.no_grad():
+        plt.figure()
+        for x,y in train_dataloader: 
+            plt.scatter(x[:,0],y, c="orange")
+            plt.scatter(x, model(x), c="black", marker="x")
+        for x,y in val_dataloader: 
+            plt.scatter(x[:,0],y, c="blue")
+            plt.scatter(x[:,0],y, c="red", marker="x")
+        plt.show()
+
+@hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
+def main(cfg: OmegaConf):
+    set_seeds(0)
+
+    print("Config:")
+    print(OmegaConf.to_yaml(cfg))
+
+    wandb.init(
+        project="bnn-research",
+        config=OmegaConf.to_container(cfg),
+        mode="online"  # Change to "offline" if no internet
+    )
     
-    # Finish wandb run
-    wandb.finish()
-    print("Training completed!")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device}")
+    
+    # Create model, data, optimizer
+    train_dataset, val_dataset, input_dim, output_dim = get_data(cfg)
+
+
+    prior = get_bnn_prior(cfg, input_dim, output_dim)
+    likelihood = get_log_likelihood(cfg)
+
+    model = get_approx_posterior_model(cfg, prior, likelihood).to(device)
+
+
+    optimizer, lr_scheduler, train_dataloader, val_dataloader = get_optimizer(cfg, model, train_dataset, val_dataset)
+
+    fit_approx_posterior(cfg, model, optimizer, train_dataloader, val_dataloader, lr_scheduler)
+
+    test_model(model, train_dataloader, val_dataloader)
 
 if __name__ == "__main__":
     main()

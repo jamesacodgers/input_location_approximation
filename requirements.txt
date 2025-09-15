@@ -10,3 +10,5 @@ scikit-learn
 jupyter
 wandb
 pandas
+OmegaConf
+hydra-core

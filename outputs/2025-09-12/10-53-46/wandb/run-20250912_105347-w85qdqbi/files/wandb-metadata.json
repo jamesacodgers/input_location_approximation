@@ -1,0 +1,36 @@
+{
+  "os":  "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+  "python":  "CPython 3.13.2",
+  "startedAt":  "2025-09-12T09:53:47.341380Z",
+  "program":  "/Users/james/Projects/input_location_approximation/main.py",
+  "codePath":  "main.py",
+  "git":  {
+    "remote":  "https://github.com/jamesacodgers/input_location_approximation",
+    "commit":  "de73e96e46d99776fbe60194d3869f1859b6f06c"
+  },
+  "email":  "james.a.c.odgers@gmail.com",
+  "root":  "/Users/james/Projects/input_location_approximation/outputs/2025-09-12/10-53-46",
+  "host":  "MBCFW6LPW4MJ",
+  "executable":  "/Users/james/Projects/input_location_approximation/.venv/bin/python",
+  "cpu_count":  8,
+  "cpu_count_logical":  8,
+  "disk":  {
+    "/":  {
+      "total":  "494384795648",
+      "used":  "167968124928"
+    }
+  },
+  "memory":  {
+    "total":  "25769803776"
+  },
+  "apple":  {
+    "name":  "Apple M3",
+    "ecpuCores":  4,
+    "pcpuCores":  4,
+    "gpuCores":  10,
+    "memoryGb":  24,
+    "swapTotalBytes":  "2147483648",
+    "ramTotalBytes":  "25769803776"
+  },
+  "writerId":  "45pg31tr29qgg2a0ungxr2p8cz9evziv"
+}
