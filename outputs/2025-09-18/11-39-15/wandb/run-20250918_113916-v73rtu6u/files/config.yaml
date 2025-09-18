@@ -1,0 +1,76 @@
+_wandb:
+    value:
+        cli_version: 0.21.3
+        e:
+            4mh8hv3b5txbz9e1xq1o6jsspew8zkgj:
+                apple:
+                    ecpuCores: 4
+                    gpuCores: 10
+                    memoryGb: 24
+                    name: Apple M3
+                    pcpuCores: 4
+                    ramTotalBytes: "25769803776"
+                    swapTotalBytes: "4294967296"
+                codePath: main.py
+                cpu_count: 8
+                cpu_count_logical: 8
+                disk:
+                    /:
+                        total: "494384795648"
+                        used: "173464485888"
+                email: james.a.c.odgers@gmail.com
+                executable: /Users/james/Projects/input_location_approximation/.venv/bin/python
+                git:
+                    commit: 85d283946352d66f69751944e2f4aed6f7504970
+                    remote: https://github.com/jamesacodgers/input_location_approximation
+                host: MBCFW6LPW4MJ
+                memory:
+                    total: "25769803776"
+                os: macOS-15.6.1-arm64-arm-64bit-Mach-O
+                program: /Users/james/Projects/input_location_approximation/main.py
+                python: CPython 3.13.2
+                root: /Users/james/Projects/input_location_approximation/outputs/2025-09-18/11-39-15
+                startedAt: "2025-09-18T10:39:16.189811Z"
+                writerId: 4mh8hv3b5txbz9e1xq1o6jsspew8zkgj
+        m: []
+        python_version: 3.13.2
+        t:
+            "1":
+                - 1
+                - 50
+            "2":
+                - 1
+                - 50
+            "3":
+                - 16
+            "4": 3.13.2
+            "5": 0.21.3
+            "12": 0.21.3
+            "13": darwin-arm64
+dataset:
+    value:
+        label: synthetic_regression
+        n_empty_features: 0
+        n_features: 1
+        n_test: 200
+        n_train: 1000
+        noise_std: 0.1
+        type: regression
+model:
+    value:
+        hidden_layers:
+            - 32
+            - 32
+        prior_variance: 0.1
+        type: mlp
+optimization:
+    value:
+        batch_size: 2056
+        epochs: 100
+        learning_rate: 0.001
+posterior:
+    value:
+        bias_variance_init: 1
+        num_samples: 64
+        type: mfvi
+        weight_variance_init: 1

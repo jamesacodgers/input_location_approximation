@@ -1,7 +1,7 @@
 import torch 
 import matplotlib.pyplot as plt
 
-def get_linear_input_data(n_samples: int, n_features: int, n_empty_features: int):
+def get_random_linear_input_data(n_samples: int, n_features: int, n_empty_features: int):
     """
     Generate inputs which lie on a lower dimensional linear subspace within a higher-dimensional space.
 
@@ -13,7 +13,23 @@ def get_linear_input_data(n_samples: int, n_features: int, n_empty_features: int
         Tensor of shape (n_samples, n_features + n_empty_features)
     """
     x_full = torch.randn(n_samples, n_features)
-    x_empty = torch.randn(n_samples, n_empty_features)
+    x_empty = torch.zeros(n_samples, n_empty_features)
+
+    return torch.cat([x_full, x_empty], dim=1)
+
+def get_linspace_linear_input_data(n_samples: int, n_features: int, n_empty_features: int):
+    """
+    Generate inputs which lie on a lower dimensional linear subspace within a higher-dimensional space.
+
+    Args:
+        n_samples: Number of samples to generate.
+        n_features: Number of informative features.
+        n_empty_features: Number of non-informative (zero) features.
+    Returns:
+        Tensor of shape (n_samples, n_features + n_empty_features)
+    """
+    x_full = torch.linspace(-3.5, 3.5, n_samples).unsqueeze(1).expand(-1, n_features)
+    x_empty = torch.zeros(n_samples, n_empty_features)
 
     return torch.cat([x_full, x_empty], dim=1)
 
@@ -46,8 +62,14 @@ def apply_gaussian_noise(f, noise_std: float = 0.1) -> torch.Tensor:
     return f + noise
 
 def generate_synthetic_data(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9, noise_std: float = 0.1):
-    x = get_linear_input_data(n_samples, n_features, n_empty_features)
+    x = get_random_linear_input_data(n_samples, n_features, n_empty_features)
     f = synthetic_function(x)
     y = apply_gaussian_noise(f, noise_std)
-    
     return x, y
+
+def generate_clean_synthetic_function(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9):
+    x = get_linspace_linear_input_data(n_samples, n_features, n_empty_features)
+    f = synthetic_function(x)
+    return x, f
+
+

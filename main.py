@@ -12,6 +12,10 @@ from omegaconf import DictConfig, OmegaConf
 from src.approx_bnn import MAPPosterior, MFVIPosterior
 from src.layer_priors import LinearLayer
 import tqdm
+from src.utils import save_results_to_csv, plot_predictions
+
+from torch.utils.data import DataLoader
+from src.synthetic_data import generate_synthetic_data, generate_clean_synthetic_function
 
 # Simple config - you can replace this with Hydra later
 
@@ -69,9 +73,9 @@ def get_bnn_layer_priors(cfg, input_dim, output_dim):
 def get_approx_posterior_model(cfg, layer_priors, likelihood):
     """Get the approximate posterior model."""
     if cfg.posterior.type == "map":
-        return MAPPosterior(layer_priors=layer_priors, likelihood=likelihood, total_data_points=cfg.dataset.n_train, batch_size=cfg.optimization.batch_size,device="cuda" if torch.cuda.is_available() else "cpu")
+        return MAPPosterior(layer_priors=layer_priors, likelihood=likelihood, total_data_points=cfg.dataset.n_train, batch_size=cfg.optimization.batch_size,device="cuda" if torch.cuda.is_available() else "cpu", temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation)
     elif cfg.posterior.type == "mfvi":
-        return MFVIPosterior(layer_priors=layer_priors, likelihood=likelihood, total_data_points=cfg.dataset.n_train, batch_size=cfg.optimization.batch_size,device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples)
+        return MFVIPosterior(layer_priors=layer_priors, likelihood=likelihood, total_data_points=cfg.dataset.n_train, batch_size=cfg.optimization.batch_size,device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation)
     else:
         raise NotImplementedError("Only MLP model is implemented in this example.")
     
@@ -90,8 +94,6 @@ def get_optimizer(cfg, model, train_dataset, test_dataset):
 
 def get_data(cfg):
     """Simple data loading - replace with your data loader later."""
-    from torch.utils.data import DataLoader
-    from src.synthetic_data import generate_synthetic_data
 
     x_train, y_train = generate_synthetic_data(n_samples=cfg.dataset.n_train, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std)
     x_test, y_test = generate_synthetic_data(n_samples=cfg.dataset.n_test, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std)
@@ -190,24 +192,17 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
         })
     return model
 
-def test_model(model, train_dataloader, val_dataloader):
+def test_model(cfg,model, train_dataloader, val_dataloader):
     val_ll = torch.zeros(1)
     for x,y in val_dataloader:
         preds = model(x)
         val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
-            # val_ll += model.loss(x,y)
     print(f"Validation log likelihood: {val_ll.item()/len(val_dataloader.dataset)}")
-    with torch.no_grad():
-        plt.figure()
-        for x,y in train_dataloader: 
-            plt.scatter(x[:,0],y, c="orange")
-            plt.scatter(x[:,0], model(x).mean(dim=0), c="black", marker="x")
-        for x,y in val_dataloader: 
-            plt.scatter(x[:,0],y, c="blue")
-            plt.scatter(x[:,0],model(x).mean(dim=0), c="red", marker="x")
-
-        
-        plt.show()
+    wandb.log({
+        "final_val_ll": val_ll.item()})
+    save_results_to_csv(cfg, val_ll.item())
+    
+    plot_predictions(cfg, model, train_dataloader, val_dataloader)
 
 @hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
 def main(cfg: OmegaConf):
@@ -239,7 +234,7 @@ def main(cfg: OmegaConf):
 
     fit_approx_posterior(cfg, model, optimizer, train_dataloader, val_dataloader, lr_scheduler)
 
-    test_model(model, train_dataloader, val_dataloader)
+    test_model(cfg, model, train_dataloader, val_dataloader)
 
 if __name__ == "__main__":
     main()

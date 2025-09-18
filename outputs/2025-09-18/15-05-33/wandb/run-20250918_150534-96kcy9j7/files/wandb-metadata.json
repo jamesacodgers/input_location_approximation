@@ -1,0 +1,16 @@
+{
+  "os":  "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+  "python":  "CPython 3.13.2",
+  "startedAt":  "2025-09-18T14:05:34.118283Z",
+  "program":  "/Users/james/Projects/input_location_approximation/main.py",
+  "codePath":  "main.py",
+  "git":  {
+    "remote":  "https://github.com/jamesacodgers/input_location_approximation",
+    "commit":  "85d283946352d66f69751944e2f4aed6f7504970"
+  },
+  "email":  "james.a.c.odgers@gmail.com",
+  "root":  "/Users/james/Projects/input_location_approximation/outputs/2025-09-18/15-05-33",
+  "host":  "MBCFW6LPW4MJ",
+  "executable":  "/Users/james/Projects/input_location_approximation/.venv/bin/python",
+  "writerId":  "08u2zu9pdvg61gee336j48bvcge28o66"
+}
