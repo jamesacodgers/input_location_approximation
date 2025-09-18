@@ -13,7 +13,7 @@ def get_linear_input_data(n_samples: int, n_features: int, n_empty_features: int
         Tensor of shape (n_samples, n_features + n_empty_features)
     """
     x_full = torch.randn(n_samples, n_features)
-    x_empty = torch.zeros(n_samples, n_empty_features)
+    x_empty = torch.randn(n_samples, n_empty_features)
 
     return torch.cat([x_full, x_empty], dim=1)
 
@@ -30,7 +30,7 @@ def synthetic_function(x: torch.Tensor) -> torch.Tensor:
     """
     x_norm = torch.sum(x, dim=1, keepdim=True)
 
-    return torch.cos(2 * torch.pi * x_norm)
+    return torch.cos(torch.pi * x_norm)
 
 def apply_gaussian_noise(f, noise_std: float = 0.1) -> torch.Tensor:
     """

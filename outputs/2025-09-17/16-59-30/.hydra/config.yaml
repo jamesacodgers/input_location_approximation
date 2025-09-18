@@ -1,0 +1,23 @@
+dataset:
+  type: regression
+  label: synthetic_regression
+  n_train: 1000
+  n_test: 200
+  n_features: 1
+  n_empty_features: 0
+  noise_std: 0.001
+optimization:
+  learning_rate: 0.001
+  batch_size: 16
+  epochs: 1000
+model:
+  type: mlp
+  hidden_layers:
+  - 16
+  - 16
+  prior_variance: 0.1
+posterior:
+  type: mfvi
+  weight_variance_init: 1
+  bias_variance_init: 1
+  num_samples: 1

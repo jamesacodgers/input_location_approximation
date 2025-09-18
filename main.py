@@ -9,7 +9,7 @@ import wandb
 import hydra
 from omegaconf import DictConfig, OmegaConf
 
-from src.approx_bnn import MAPPosterior
+from src.approx_bnn import MAPPosterior, MFVIPosterior
 from src.layer_priors import LinearLayer
 import tqdm
 
@@ -39,14 +39,14 @@ def set_seeds(seed):
     # torch.backends.cudnn.deterministic = True
     # torch.backends.cudnn.benchmark = False
 
-def get_log_likelihood(cfg):
+def get_likelihood(cfg):
     if cfg.dataset.type == "regression":
-        ll = lambda f, y: torch.distributions.Normal(f, cfg.dataset.noise_std).log_prob(y)
+        l =torch.distributions.Normal(0, cfg.dataset.noise_std)
     else: 
         raise NotImplementedError("Only regression is implemented in this example.")
-    return ll
+    return l
 
-def get_bnn_prior(cfg, input_dim, output_dim):
+def get_bnn_layer_priors(cfg, input_dim, output_dim):
     """Simple model - replace with your BNN later."""
     prior = []
     if cfg.model.type == "mlp":
@@ -66,10 +66,12 @@ def get_bnn_prior(cfg, input_dim, output_dim):
         raise NotImplementedError("Only MLP model is implemented in this example.")
     return prior
 
-def get_approx_posterior_model(cfg, layer_priors, log_likelihood):
+def get_approx_posterior_model(cfg, layer_priors, likelihood):
     """Get the approximate posterior model."""
-    if cfg.model.type == "mlp":
-        return MAPPosterior(layer_priors=layer_priors, log_likelihood=log_likelihood, total_data_points=cfg.dataset.n_train, batch_size=cfg.optimization.batch_size,device="cuda" if torch.cuda.is_available() else "cpu")
+    if cfg.posterior.type == "map":
+        return MAPPosterior(layer_priors=layer_priors, likelihood=likelihood, total_data_points=cfg.dataset.n_train, batch_size=cfg.optimization.batch_size,device="cuda" if torch.cuda.is_available() else "cpu")
+    elif cfg.posterior.type == "mfvi":
+        return MFVIPosterior(layer_priors=layer_priors, likelihood=likelihood, total_data_points=cfg.dataset.n_train, batch_size=cfg.optimization.batch_size,device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples)
     else:
         raise NotImplementedError("Only MLP model is implemented in this example.")
     
@@ -91,8 +93,8 @@ def get_data(cfg):
     from torch.utils.data import DataLoader
     from src.synthetic_data import generate_synthetic_data
 
-    x_train, y_train = generate_synthetic_data(n_samples=cfg.dataset.n_train, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features)
-    x_test, y_test = generate_synthetic_data(n_samples=cfg.dataset.n_test, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features)
+    x_train, y_train = generate_synthetic_data(n_samples=cfg.dataset.n_train, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std)
+    x_test, y_test = generate_synthetic_data(n_samples=cfg.dataset.n_test, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std)
 
     train_dataset = torch.utils.data.TensorDataset(x_train, y_train)
     test_dataset = torch.utils.data.TensorDataset(x_test, y_test)
@@ -160,6 +162,7 @@ def save_checkpoint(model, optimizer, epoch, loss, filepath):
         'epoch': epoch,
         'model_state_dict': model.state_dict(),
         'loss': loss,
+        'optimizer_state_dict': optimizer.state_dict()
     }, filepath)
     
     # Save to wandb
@@ -174,24 +177,36 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
         val_ll = torch.zeros(1)
         for x,y in val_dataloader:
             preds = model(x)
-            val_ll += (model.get_mean_likelihood_contribution(preds,y)*x.shape[0]).item()
+            val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
             # val_ll += model.loss(x,y)
         wandb.log({
             "epoch": epoch,
             "train_loss": train_loss,
-            "val_ll": val_ll
+            "val_ll": val_ll,
+            "mu_w_0": model.layers[0].mu_w.mean().item(),
+            "sigma_w_0": model.layers[0]._raw_sigma_w.mean().item(),
+            "mu_b_0": model.layers[0].mu_b.mean().item(),
+            "sigma_b_0": model.layers[0]._raw_sigma_b.mean().item(),
         })
     return model
 
 def test_model(model, train_dataloader, val_dataloader):
+    val_ll = torch.zeros(1)
+    for x,y in val_dataloader:
+        preds = model(x)
+        val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+            # val_ll += model.loss(x,y)
+    print(f"Validation log likelihood: {val_ll.item()/len(val_dataloader.dataset)}")
     with torch.no_grad():
         plt.figure()
         for x,y in train_dataloader: 
             plt.scatter(x[:,0],y, c="orange")
-            plt.scatter(x, model(x), c="black", marker="x")
+            plt.scatter(x[:,0], model(x).mean(dim=0), c="black", marker="x")
         for x,y in val_dataloader: 
             plt.scatter(x[:,0],y, c="blue")
-            plt.scatter(x[:,0],y, c="red", marker="x")
+            plt.scatter(x[:,0],model(x).mean(dim=0), c="red", marker="x")
+
+        
         plt.show()
 
 @hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
@@ -214,10 +229,10 @@ def main(cfg: OmegaConf):
     train_dataset, val_dataset, input_dim, output_dim = get_data(cfg)
 
 
-    prior = get_bnn_prior(cfg, input_dim, output_dim)
-    likelihood = get_log_likelihood(cfg)
+    layer_priors = get_bnn_layer_priors(cfg, input_dim, output_dim)
+    likelihood = get_likelihood(cfg)
 
-    model = get_approx_posterior_model(cfg, prior, likelihood).to(device)
+    model = get_approx_posterior_model(cfg, layer_priors, likelihood).to(device)
 
 
     optimizer, lr_scheduler, train_dataloader, val_dataloader = get_optimizer(cfg, model, train_dataset, val_dataset)

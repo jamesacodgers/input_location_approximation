@@ -12,6 +12,10 @@ class BaseLayer(abc.ABC):
     def forward(self, x, weights, bias):
         pass
 
+    @abc.abstractmethod
+    def get_prior_dist(self):
+        ...
+
 class LinearLayer(BaseLayer):
     def __init__(self, in_features: int, 
                  out_features: int, 
@@ -29,10 +33,15 @@ class LinearLayer(BaseLayer):
 
 
     def forward(self, x, weights, bias):
-        assert weights.shape == self.weight_shape
-        assert bias.shape == self.bias_shape
-        return torch.nn.functional.linear(x, weights, bias)
-        
+        assert weights.shape[0] == bias.shape[0]
+        assert weights.shape[-2:] == self.weight_shape
+        assert bias.shape[-1:] == self.bias_shape
+        x = x@weights.transpose(-2,-1) + bias.unsqueeze(-2)
+        return x
+
+    def get_prior_dist(self):
+        return self.weight_prior, self.bias_prior
+
     def activation(self, x):
         return self.activation(x)
     
