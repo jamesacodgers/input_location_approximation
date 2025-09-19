@@ -231,8 +231,8 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloader):
         "final_ood_ll": ood_ll.item()})
     save_results_to_csv(cfg, val_ll.item(), ood_ll.item())
     
-    plot_predictions(cfg, model, train_dataloader, val_dataloader, "iid_predictions_temp_{cfg.posterior.temperature}.png")
-    plot_predictions(cfg, model, train_dataloader, ood_dataloader, "ood_predictions_temp_{cfg.posterior.temperature}.png")
+    plot_predictions(cfg, model, train_dataloader, val_dataloader, f"iid_predictions_temp_{cfg.posterior.temperature}.png")
+    plot_predictions(cfg, model, train_dataloader, ood_dataloader, f"ood_predictions_temp_{cfg.posterior.temperature}.png")
 
 @hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
 def main(cfg: OmegaConf):
