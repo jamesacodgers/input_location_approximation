@@ -1,7 +1,4 @@
-# configs/config.yaml
-seed: 0
-
-dataset: 
+dataset:
   type: regression
   label: synthetic_regression
   n_train: 1000
@@ -9,22 +6,20 @@ dataset:
   n_features: 1
   n_empty_features: 0
   noise_std: 0.1
-
 optimization:
-  learning_rate: 1e-2
+  learning_rate: 0.01
   batch_size: 2056
   epochs: 40000
-
 model:
   type: mlp
-  hidden_layers: [128,128]
+  hidden_layers:
+  - 128
+  - 128
   prior_variance: 0.1
-
 posterior:
   type: mfvi
   weight_variance_init: 1
   bias_variance_init: 1
   num_samples: 2
-  temperature: 1
+  temperature: 0.03
   posterior_exponentiation: tempered
-  
