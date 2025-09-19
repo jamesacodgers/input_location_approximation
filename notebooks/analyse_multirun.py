@@ -30,8 +30,10 @@ def collect_all_results(multirun_dir="multirun"):
 
 # %%
 
-df = collect_all_results("multirun/2025-09-19/11-03-16")
+df = collect_all_results("multirun/2025-09-19/15-12-12")
 
 # %%
 
 plt.scatter(np.log(df['temperature']), df['final_val_ll'])
+#%%
+plt.scatter(np.log(df['temperature']), df['final_ood_ll'])
