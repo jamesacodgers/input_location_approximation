@@ -191,13 +191,13 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
             for x,y in val_dataloader:
                 x = x.to(model.device)
                 y = y.to(model.device)
-                preds = model(x)
+                preds = model.predict(x)
                 val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
                 # val_ll += model.loss(x,y)
             for x,y in ood_dataloader: 
                 x = x.to(model.device)
                 y = y.to(model.device)
-                preds = model(x)
+                preds = model.predict(x)
                 ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
             wandb.log({
                 "epoch": epoch,
@@ -217,12 +217,12 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloader):
     for x,y in val_dataloader:
         x = x.to(model.device)
         y = y.to(model.device)
-        preds = model(x)
+        preds = model.predict(x)
         val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
     for x,y in ood_dataloader:
         x = x.to(model.device)
         y = y.to(model.device)
-        preds = model(x)
+        preds = model.predict(x)
         ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
     print(f"Validation log likelihood: {val_ll.item()/len(val_dataloader.dataset)}")
     print(f"OOD log likelihood: {ood_ll.item()/len(val_dataloader.dataset)}")
@@ -244,7 +244,7 @@ def main(cfg: OmegaConf):
     wandb.init(
         project="bnn-research",
         config=OmegaConf.to_container(cfg),
-        mode="offline"  # Change to "offline" if no internet
+        mode="online"  # Change to "offline" if no internet
     )
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

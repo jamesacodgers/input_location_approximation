@@ -1,0 +1,2 @@
+- posterior.temperature=0.3
+- dataset.n_empty_features=10

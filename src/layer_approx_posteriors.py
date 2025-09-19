@@ -54,10 +54,12 @@ class MFVILayer(BaseInferenceLayer):
         self._raw_sigma_b = torch.nn.Parameter(-10*torch.ones(layer.bias_shape))
         self.num_samples = num_samples
 
-    def get_parameter_samples(self):
+    def get_parameter_samples(self, n_samples=None):
+        if n_samples is None:
+            n_samples = self.num_samples
         weight_dist, bias_dist = self.get_approx_posteriors()
-        weight_sample = weight_dist.rsample((self.num_samples,))
-        bias_sample = bias_dist.rsample((self.num_samples,))
+        weight_sample = weight_dist.rsample((n_samples,))
+        bias_sample = bias_dist.rsample((n_samples,))
         return weight_sample, bias_sample
 
     def get_prior_contribution(self):
@@ -75,8 +77,11 @@ class MFVILayer(BaseInferenceLayer):
         bias_approx_posterior = torch.distributions.Normal(self.mu_b, torch.nn.functional.softplus(self._raw_sigma_b))
         return weight_approx_posterior, bias_approx_posterior
 
-    def forward(self, x):
-        weights, bias = self.get_parameter_samples()
+    def forward(self, x, n_samples=None):
+        if n_samples is not None:
+            weights, bias = self.get_parameter_samples(n_samples=n_samples)
+        else:
+            weights, bias = self.get_parameter_samples()
         out = self.layer.forward(x, weights, bias)
         out = self.layer.activation(out)
         return out

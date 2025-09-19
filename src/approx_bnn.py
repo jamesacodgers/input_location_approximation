@@ -93,10 +93,10 @@ class MFVIPosterior(BasePosterior):
         self.layers = torch.nn.ModuleList([MFVILayer(layer, num_samples=num_samples) for layer in layer_priors])
         self.device = device
 
-    def forward(self, x):
+    def forward(self, x, n_samples=None):
         x = x.unsqueeze(0)  # add sample dimension
         for layer in self.layers:
-            x = layer(x)
+            x = layer(x, n_samples=n_samples)
         return x
 
     def get_prior_contribution(self):
@@ -119,17 +119,19 @@ class MFVIPosterior(BasePosterior):
         optimizer.step()
         return loss.item()
     
-    def predict(self, x):
+    def predict(self, x, n_samples=1024):
         with torch.no_grad():
-            preds = self.forward(x)
-            return preds.mean(dim=0)
+            preds = self.forward(x, n_samples=n_samples)
+        return preds.mean(dim=0)
 
-    def get_CI(self, x, ci=0.95):
+
+    def get_CI(self, x, ci=0.95, n_samples=1024):
+
         with torch.no_grad():
-            preds = self.forward(x)
+            preds = self.forward(x, n_samples=n_samples)
             preds, idx = preds.sort(dim=0)
             lower_idx = int(((1-ci)/2)*preds.shape[0])
             upper_idx = int((1-(1-ci)/2)*preds.shape[0])
             lower_bound = preds[lower_idx]
             upper_bound = preds[upper_idx]
-            return lower_bound, upper_bound
+        return lower_bound, upper_bound
