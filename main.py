@@ -15,7 +15,7 @@ import tqdm
 from src.utils import save_results_to_csv, plot_predictions
 
 from torch.utils.data import DataLoader
-from src.synthetic_data import generate_synthetic_data, generate_clean_synthetic_function
+from src.synthetic_data import generate_ood_synthetic_data, generate_synthetic_data, generate_clean_synthetic_function
 
 # Simple config - you can replace this with Hydra later
 
@@ -103,6 +103,13 @@ def get_data(cfg):
 
     return train_dataset, test_dataset, x_train.shape[1], y_train.shape[1] 
 
+def get_ood_data(cfg):
+    ood_x, ood_y = generate_ood_synthetic_data(n_samples=1000, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std)
+
+    ood_dataset = torch.utils.data.TensorDataset(ood_x, ood_y)
+    return ood_dataset
+
+
 def train_one_epoch(model, train_loader, optimizer, device):
     """Train for one epoch."""
     model.train()
@@ -170,7 +177,7 @@ def save_checkpoint(model, optimizer, epoch, loss, filepath):
     # Save to wandb
     wandb.save(filepath)
 
-def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimizer, train_dataloader: torch.utils.data.DataLoader, val_dataloader: torch.utils.data.DataLoader, lr_scheduler: torch.optim.lr_scheduler.LRScheduler):
+def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimizer, train_dataloader: torch.utils.data.DataLoader, val_dataloader: torch.utils.data.DataLoader, ood_dataloader: torch.utils.data.DataLoader, lr_scheduler: torch.optim.lr_scheduler.LRScheduler):
     model.train()
     for epoch in range(cfg.optimization.epochs):
         print(epoch)
@@ -178,37 +185,54 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
             x = x.to(model.device)
             y = y.to(model.device)
             train_loss = model.train_step(x,y, optimizer)
-        val_ll = torch.zeros(1)
-        for x,y in val_dataloader:
-            x = x.to(model.device)
-            y = y.to(model.device)
-            preds = model(x)
-            val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
-            # val_ll += model.loss(x,y)
-        wandb.log({
-            "epoch": epoch,
-            "train_loss": train_loss,
-            "val_ll": val_ll,
-            "mu_w_0": model.layers[0].mu_w.mean().item(),
-            "sigma_w_0": model.layers[0]._raw_sigma_w.mean().item(),
-            "mu_b_0": model.layers[0].mu_b.mean().item(),
-            "sigma_b_0": model.layers[0]._raw_sigma_b.mean().item(),
-        })
+        if epoch % 100: 
+            val_ll = torch.zeros(1)
+            ood_ll = torch.zeros(1)
+            for x,y in val_dataloader:
+                x = x.to(model.device)
+                y = y.to(model.device)
+                preds = model(x)
+                val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+                # val_ll += model.loss(x,y)
+            for x,y in ood_dataloader: 
+                x = x.to(model.device)
+                y = y.to(model.device)
+                preds = model(x)
+                ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+            wandb.log({
+                "epoch": epoch,
+                "train_loss": train_loss,
+                "val_ll": val_ll,
+                "ood_ll": ood_ll,
+                "mu_w_0": model.layers[0].mu_w.mean().item(),
+                "sigma_w_0": model.layers[0]._raw_sigma_w.mean().item(),
+                "mu_b_0": model.layers[0].mu_b.mean().item(),
+                "sigma_b_0": model.layers[0]._raw_sigma_b.mean().item(),
+            })
     return model
 
-def test_model(cfg,model, train_dataloader, val_dataloader):
+def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloader):
     val_ll = torch.zeros(1)
+    ood_ll = torch.zeros(1)
     for x,y in val_dataloader:
         x = x.to(model.device)
         y = y.to(model.device)
         preds = model(x)
         val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+    for x,y in ood_dataloader:
+        x = x.to(model.device)
+        y = y.to(model.device)
+        preds = model(x)
+        ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
     print(f"Validation log likelihood: {val_ll.item()/len(val_dataloader.dataset)}")
+    print(f"OOD log likelihood: {ood_ll.item()/len(val_dataloader.dataset)}")
     wandb.log({
-        "final_val_ll": val_ll.item()})
-    save_results_to_csv(cfg, val_ll.item())
+        "final_val_ll": val_ll.item(),
+        "final_ood_ll": ood_ll.item()})
+    save_results_to_csv(cfg, val_ll.item(), ood_ll.item())
     
-    plot_predictions(cfg, model, train_dataloader, val_dataloader)
+    plot_predictions(cfg, model, train_dataloader, val_dataloader, "iid_predictions_temp_{cfg.posterior.temperature}.png")
+    plot_predictions(cfg, model, train_dataloader, ood_dataloader, "ood_predictions_temp_{cfg.posterior.temperature}.png")
 
 @hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
 def main(cfg: OmegaConf):
@@ -220,27 +244,28 @@ def main(cfg: OmegaConf):
     wandb.init(
         project="bnn-research",
         config=OmegaConf.to_container(cfg),
-        mode="online"  # Change to "offline" if no internet
+        mode="offline"  # Change to "offline" if no internet
     )
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
     
     # Create model, data, optimizer
-    train_dataset, val_dataset, input_dim, output_dim = get_data(cfg)
-
-
+    train_dataset, iid_val_dataset, input_dim, output_dim = get_data(cfg)
+    ood_dataset = get_ood_data(cfg)
+    ood_dataloader = torch.utils.data.DataLoader(ood_dataset, batch_size=cfg.optimization.batch_size)
+    
     layer_priors = get_bnn_layer_priors(cfg, input_dim, output_dim, device)
     likelihood = get_likelihood(cfg)
 
     model = get_approx_posterior_model(cfg, layer_priors, likelihood).to(device)
 
 
-    optimizer, lr_scheduler, train_dataloader, val_dataloader = get_optimizer(cfg, model, train_dataset, val_dataset)
+    optimizer, lr_scheduler, train_dataloader, val_dataloader = get_optimizer(cfg, model, train_dataset, iid_val_dataset)
 
-    fit_approx_posterior(cfg, model, optimizer, train_dataloader, val_dataloader, lr_scheduler)
+    fit_approx_posterior(cfg, model, optimizer, train_dataloader, val_dataloader, ood_dataloader, lr_scheduler)
 
-    test_model(cfg, model, train_dataloader, val_dataloader)
+    test_model(cfg, model, train_dataloader, val_dataloader, ood_dataloader)
 
 if __name__ == "__main__":
     main()

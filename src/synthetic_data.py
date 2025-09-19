@@ -17,7 +17,7 @@ def get_random_linear_input_data(n_samples: int, n_features: int, n_empty_featur
 
     return torch.cat([x_full, x_empty], dim=1)
 
-def get_linspace_linear_input_data(n_samples: int, n_features: int, n_empty_features: int):
+def get_linspace_linear_input_data(n_samples: int, n_features: int, n_empty_features: int, min_x: float = -3.5, max_x: float=3.5):
     """
     Generate inputs which lie on a lower dimensional linear subspace within a higher-dimensional space.
 
@@ -28,7 +28,7 @@ def get_linspace_linear_input_data(n_samples: int, n_features: int, n_empty_feat
     Returns:
         Tensor of shape (n_samples, n_features + n_empty_features)
     """
-    x_full = torch.linspace(-3.5, 3.5, n_samples).unsqueeze(1).expand(-1, n_features)
+    x_full = torch.linspace(min_x, max_x, n_samples).unsqueeze(1).expand(-1, n_features)
     x_empty = torch.zeros(n_samples, n_empty_features)
 
     return torch.cat([x_full, x_empty], dim=1)
@@ -67,9 +67,14 @@ def generate_synthetic_data(n_samples: int = 100, n_features: int = 1, n_empty_f
     y = apply_gaussian_noise(f, noise_std)
     return x, y
 
-def generate_clean_synthetic_function(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9):
-    x = get_linspace_linear_input_data(n_samples, n_features, n_empty_features)
+def generate_clean_synthetic_function(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9, min_x = -3, max_x = 3):
+    x = get_linspace_linear_input_data(n_samples, n_features, n_empty_features, min_x, max_x)
     f = synthetic_function(x)
     return x, f
+
+def generate_ood_synthetic_data(n_samples: int, n_features: int, n_empty_features: int, noise_std: float):
+    x,f = generate_clean_synthetic_function(n_samples, n_features, n_empty_features, min_x = -50, max_x = 50)
+    y = f + torch.randn_like(f)*noise_std
+    return x, y
 
 
