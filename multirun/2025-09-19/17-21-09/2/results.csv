@@ -1,0 +1,2 @@
+temperature,posterior_type,final_val_ll,final_ood_ll
+0.1,mfvi,104.02493286132812,-256448736.0
