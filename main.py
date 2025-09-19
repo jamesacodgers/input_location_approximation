@@ -236,7 +236,7 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloader):
 
 @hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
 def main(cfg: OmegaConf):
-    set_seeds(0)
+    set_seeds(cfg.seed)
 
     print("Config:")
     print(OmegaConf.to_yaml(cfg))
