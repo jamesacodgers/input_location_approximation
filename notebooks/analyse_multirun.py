@@ -2,6 +2,8 @@
 import os
 import glob
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 # %%
 
 def collect_all_results(multirun_dir="multirun"):
@@ -28,4 +30,8 @@ def collect_all_results(multirun_dir="multirun"):
 
 # %%
 
-df = collect_all_results("multirun/2025-09-18/16-17-29")
+df = collect_all_results("multirun/2025-09-19/11-03-16")
+
+# %%
+
+plt.scatter(np.log(df['temperature']), df['final_val_ll'])
