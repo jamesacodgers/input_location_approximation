@@ -38,9 +38,9 @@ class BasePosterior(torch.nn.Module,abc.ABC):
         prior_contribution = self.get_prior_contribution()
         mean_log_likelihood_contribution = self.get_mean_log_likelihood_contribution(predictions, targets)
         if self.posterior_exponentiation == "tempered":
-            return - (prior_contribution + self.temperature*self.total_data_points*mean_log_likelihood_contribution)
+            return - (prior_contribution + 1/self.temperature*self.total_data_points*mean_log_likelihood_contribution)
         elif self.posterior_exponentiation == "cold":
-            return - self.temperature*(prior_contribution + self.total_data_points*mean_log_likelihood_contribution)
+            return - 1/self.temperature*(prior_contribution + self.total_data_points*mean_log_likelihood_contribution)
 
 class MAPPosterior(BasePosterior):
     def __init__(self, layer_priors, likelihood, total_data_points, batch_size, device):

@@ -21,7 +21,8 @@ class LinearLayer(BaseLayer):
                  out_features: int, 
                  weight_prior: torch.distributions.Distribution,
                  bias_prior: torch.distributions.Distribution,
-                 activation: torch.nn.Module):
+                 activation: torch.nn.Module,
+                 ):
         """
         
         """

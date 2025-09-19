@@ -50,7 +50,7 @@ def get_likelihood(cfg):
         raise NotImplementedError("Only regression is implemented in this example.")
     return l
 
-def get_bnn_layer_priors(cfg, input_dim, output_dim):
+def get_bnn_layer_priors(cfg, input_dim, output_dim, device):
     """Simple model - replace with your BNN later."""
     prior = []
     if cfg.model.type == "mlp":
@@ -58,8 +58,8 @@ def get_bnn_layer_priors(cfg, input_dim, output_dim):
         for i in range(len(layer_sizes) - 1):
             in_features = layer_sizes[i]
             out_features = layer_sizes[i + 1]
-            weight_prior = torch.distributions.Normal(torch.zeros(out_features, in_features), cfg.model.prior_variance*torch.ones(out_features, in_features))
-            bias_prior = torch.distributions.Normal(0, cfg.model.prior_variance).expand([out_features])
+            weight_prior = torch.distributions.Normal(torch.zeros(out_features, in_features).to(device), cfg.model.prior_variance*torch.ones(out_features, in_features).to(device))
+            bias_prior = torch.distributions.Normal(torch.zeros(out_features).to(device), cfg.model.prior_variance*torch.ones(out_features).to(device))
             if i < len(layer_sizes) - 2:
                 activation = torch.nn.ReLU()
             else:
@@ -175,9 +175,13 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
     for epoch in range(cfg.optimization.epochs):
         print(epoch)
         for x,y in train_dataloader:
+            x = x.to(model.device)
+            y = y.to(model.device)
             train_loss = model.train_step(x,y, optimizer)
         val_ll = torch.zeros(1)
         for x,y in val_dataloader:
+            x = x.to(model.device)
+            y = y.to(model.device)
             preds = model(x)
             val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
             # val_ll += model.loss(x,y)
@@ -195,6 +199,8 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
 def test_model(cfg,model, train_dataloader, val_dataloader):
     val_ll = torch.zeros(1)
     for x,y in val_dataloader:
+        x = x.to(model.device)
+        y = y.to(model.device)
         preds = model(x)
         val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
     print(f"Validation log likelihood: {val_ll.item()/len(val_dataloader.dataset)}")
@@ -224,7 +230,7 @@ def main(cfg: OmegaConf):
     train_dataset, val_dataset, input_dim, output_dim = get_data(cfg)
 
 
-    layer_priors = get_bnn_layer_priors(cfg, input_dim, output_dim)
+    layer_priors = get_bnn_layer_priors(cfg, input_dim, output_dim, device)
     likelihood = get_likelihood(cfg)
 
     model = get_approx_posterior_model(cfg, layer_priors, likelihood).to(device)
