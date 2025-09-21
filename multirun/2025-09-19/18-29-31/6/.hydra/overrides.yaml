@@ -1,0 +1,3 @@
+- optimization.epochs=20000
+- posterior.temperature=10
+- seed=1
