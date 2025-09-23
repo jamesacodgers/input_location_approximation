@@ -1,1 +1,1 @@
-srun --partition=gpu_p --qos=gpu_priority --time=3:00:00 --cpus-per-task=4 --nodes=1 --mem=8gb  --gres=gpu:1 --nice=1000 .venv/bin/python main.py -m optimization.epochs=20000 posterior.temperature=0.01,0.03,0.1,0.3,1,3,10 seed=3
+srun --partition=gpu_p --qos=gpu_priority --time=3:00:00 --cpus-per-task=4 --nodes=1 --mem=8gb  --gres=gpu:1 --nice=1000 .venv/bin/python main.py -m optimization.epochs=20000 posterior.temperature=0.01,0.03,0.1,0.3,1,3,10 seed=1,2,3,4,5
