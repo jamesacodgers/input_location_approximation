@@ -12,7 +12,7 @@ dataset:
   ood_input_variance: [0.01, 0.1, 1.0, 10.0, 100.0]
 
 optimization:
-  learning_rate: 1e-2
+  learning_rate: 1e-3
   batch_size: 2056
   epochs: 100
 
