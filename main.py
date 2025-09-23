@@ -190,6 +190,7 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
             train_loss = model.train_step(x,y, optimizer)
             
         if epoch % 100 == 0 : 
+            model.eval()
             val_ll = torch.zeros(1)
             ood_ll = torch.zeros(1)
             for x,y in val_dataloader:
@@ -203,15 +204,12 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
                 y = y.to(model.device)
                 preds = model.predict(x)
                 ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+            model.train()
             wandb.log({
                 "epoch": epoch,
                 "train_loss": train_loss,
                 "val_ll": val_ll,
-                "ood_ll": ood_ll,
-                "mu_w_0": model.layers[0].mu_w.mean().item(),
-                "sigma_w_0": model.layers[0]._raw_sigma_w.mean().item(),
-                "mu_b_0": model.layers[0].mu_b.mean().item(),
-                "sigma_b_0": model.layers[0]._raw_sigma_b.mean().item(),
+                "ood_ll": ood_ll
             })
     return model
 
