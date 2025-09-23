@@ -184,8 +184,8 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders):
     wandb.log(results_dict)
     save_results_to_csv(cfg, results_dict)
     
-    plot_predictions(cfg, model, train_dataloader, val_dataloader, f"iid_predictions_temp_{cfg.posterior.temperature}.png")
-    plot_predictions(cfg, model, train_dataloader, ood_dataloader, f"ood_predictions_temp_{cfg.posterior.temperature}.png")
+    plot_predictions(cfg, model, train_dataloader, val_dataloader, f"iid_predictions_temp_{cfg.posterior.temperature}")
+    plot_predictions(cfg, model, train_dataloader, ood_dataloader, f"ood_predictions_temp_{cfg.posterior.temperature}")
 
 @hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
 def main(cfg: OmegaConf):
