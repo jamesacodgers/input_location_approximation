@@ -105,67 +105,17 @@ def get_data(cfg):
 
     return train_dataset, test_dataset, x_train.shape[1], y_train.shape[1] 
 
-def get_ood_data(cfg):
-    ood_x, ood_y = generate_ood_synthetic_data(n_samples=1000, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std)
+def get_ood_data_loaders(cfg):
+    dataloaders = []
+    for input_std in cfg.dataset.ood_input_variance:
+        ood_x, ood_y = generate_ood_synthetic_data(n_samples=1000, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, input_std=input_std)
 
-    ood_dataset = torch.utils.data.TensorDataset(ood_x, ood_y)
-    return ood_dataset
+        ood_dataset = torch.utils.data.TensorDataset(ood_x, ood_y)
+        ood_loader = torch.utils.data.DataLoader(ood_dataset, batch_size=cfg.optimization.batch_size, shuffle=False)
+        dataloaders.append(ood_loader)
+    return dataloaders
 
 
-def train_one_epoch(model, train_loader, optimizer, device):
-    """Train for one epoch."""
-    model.train()
-    total_loss = 0
-    total_samples = 0
-    
-    for batch_idx, (data, target) in enumerate(train_loader):
-        data = data.view(-1, 784).to(device)
-        target = target.to(device)
-        
-        optimizer.zero_grad()
-        output = model(data)
-        loss = model.loss(output, target)
-        loss.backward()
-        optimizer.step()
-        
-        # Log individual batch losses occasionally
-        if batch_idx % 100 == 0:
-            wandb.log({
-                "batch_loss": loss.item(),
-                "batch_idx": batch_idx
-            })
-        
-        # Accumulate for epoch average
-        total_loss += loss.item() * data.size(0)
-        total_samples += data.size(0)
-    
-    avg_loss = total_loss / total_samples
-    return avg_loss
-
-def validate(model, val_loader, device):
-    """Validate the model."""
-    model.eval()
-    total_loss = 0
-    correct = 0
-    total_samples = 0
-    
-    with torch.no_grad():
-        for data, target in val_loader:
-            data = data.view(-1, 784).to(device)
-            target = target.to(device)
-            
-            output = model(data)
-            loss = nn.functional.cross_entropy(output, target)
-            
-            total_loss += loss.item() * data.size(0)
-            pred = output.argmax(dim=1)
-            correct += pred.eq(target).sum().item()
-            total_samples += data.size(0)
-    
-    avg_loss = total_loss / total_samples
-    accuracy = correct / total_samples
-    
-    return avg_loss, accuracy
 
 def save_checkpoint(model, optimizer, epoch, loss, filepath):
     """Save model checkpoint."""
@@ -179,7 +129,7 @@ def save_checkpoint(model, optimizer, epoch, loss, filepath):
     # Save to wandb
     wandb.save(filepath)
 
-def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimizer, train_dataloader: torch.utils.data.DataLoader, val_dataloader: torch.utils.data.DataLoader, ood_dataloader: torch.utils.data.DataLoader, lr_scheduler: torch.optim.lr_scheduler.LRScheduler):
+def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimizer, train_dataloader: torch.utils.data.DataLoader, val_dataloader: torch.utils.data.DataLoader, ood_dataloaders: torch.utils.data.DataLoader, lr_scheduler: torch.optim.lr_scheduler.LRScheduler):
     model.train()
 
     for epoch in range(cfg.optimization.epochs):
@@ -192,45 +142,46 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
         if epoch % 100 == 0 : 
             model.eval()
             val_ll = torch.zeros(1)
-            ood_ll = torch.zeros(1)
+            results_dict = {}
             for x,y in val_dataloader:
                 x = x.to(model.device)
                 y = y.to(model.device)
                 preds = model.predict(x)
                 val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
-                # val_ll += model.loss(x,y)
-            for x,y in ood_dataloader: 
-                x = x.to(model.device)
-                y = y.to(model.device)
-                preds = model.predict(x)
-                ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+            results_dict["val_ll"] = val_ll.item()/len(val_dataloader.dataset)
+            for ood_variance,ood_dataloader in zip(cfg.dataset.ood_input_variance, ood_dataloaders):
+                ood_ll = torch.zeros(1)
+                for x,y in ood_dataloader: 
+                    x = x.to(model.device)
+                    y = y.to(model.device)
+                    preds = model.predict(x)
+                    ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+                results_dict[f"ood_ll_var_{ood_variance}"] = ood_ll.item()/len(ood_dataloader.dataset)
+            wandb.log(results_dict)
             model.train()
-            wandb.log({
-                "epoch": epoch,
-                "train_loss": train_loss,
-                "val_ll": val_ll,
-                "ood_ll": ood_ll
-            })
     return model
 
-def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloader):
+def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders):
     val_ll = torch.zeros(1)
     ood_ll = torch.zeros(1)
+    results_dict = {}
     for x,y in val_dataloader:
         x = x.to(model.device)
         y = y.to(model.device)
         preds = model.predict(x)
         val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
-    for x,y in ood_dataloader:
-        x = x.to(model.device)
-        y = y.to(model.device)
-        preds = model.predict(x)
-        ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+    results_dict["val_ll"] = val_ll.item()/len(val_dataloader.dataset)
     print(f"Validation log likelihood: {val_ll.item()/len(val_dataloader.dataset)}")
-    print(f"OOD log likelihood: {ood_ll.item()/len(val_dataloader.dataset)}")
-    wandb.log({
-        "final_val_ll": val_ll.item(),
-        "final_ood_ll": ood_ll.item()})
+    for ood_variance,ood_dataloader in zip(cfg.dataset.ood_input_variance, ood_dataloaders):
+        ood_ll = torch.zeros(1)
+        for x,y in ood_dataloader:
+            x = x.to(model.device)
+            y = y.to(model.device)
+            preds = model.predict(x)
+            ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+        results_dict[f"ood_ll_var_{ood_variance}"] = ood_ll.item()/len(ood_dataloader.dataset)
+        print(f"OOD log likelihood with variance {ood_variance}: {ood_ll.item()/len(ood_dataloader.dataset)}")
+    wandb.log(results_dict)
     save_results_to_csv(cfg, val_ll.item(), ood_ll.item())
     
     plot_predictions(cfg, model, train_dataloader, val_dataloader, f"iid_predictions_temp_{cfg.posterior.temperature}.png")
@@ -254,8 +205,7 @@ def main(cfg: OmegaConf):
     
     # Create model, data, optimizer
     train_dataset, iid_val_dataset, input_dim, output_dim = get_data(cfg)
-    ood_dataset = get_ood_data(cfg)
-    ood_dataloader = torch.utils.data.DataLoader(ood_dataset, batch_size=cfg.optimization.batch_size)
+    ood_dataloaders = get_ood_data_loaders(cfg)
     
     layer_priors = get_bnn_layer_priors(cfg, input_dim, output_dim, device)
     likelihood = get_likelihood(cfg)
@@ -265,9 +215,9 @@ def main(cfg: OmegaConf):
 
     optimizer, lr_scheduler, train_dataloader, val_dataloader = get_optimizer(cfg, model, train_dataset, iid_val_dataset)
 
-    fit_approx_posterior(cfg, model, optimizer, train_dataloader, val_dataloader, ood_dataloader, lr_scheduler)
+    fit_approx_posterior(cfg, model, optimizer, train_dataloader, val_dataloader, ood_dataloaders, lr_scheduler)
 
-    test_model(cfg, model, train_dataloader, val_dataloader, ood_dataloader)
+    test_model(cfg, model, train_dataloader, val_dataloader, ood_dataloaders)
 
 if __name__ == "__main__":
     main()

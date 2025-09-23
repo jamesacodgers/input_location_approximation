@@ -1,7 +1,7 @@
 import torch 
 import matplotlib.pyplot as plt
 
-def get_random_linear_input_data(n_samples: int, n_features: int, n_empty_features: int):
+def get_random_linear_input_data(n_samples: int, n_features: int, n_empty_features: int, std: float):
     """
     Generate inputs which lie on a lower dimensional linear subspace within a higher-dimensional space.
 
@@ -12,7 +12,7 @@ def get_random_linear_input_data(n_samples: int, n_features: int, n_empty_featur
     Returns:
         Tensor of shape (n_samples, n_features + n_empty_features)
     """
-    x_full = torch.randn(n_samples, n_features)
+    x_full = torch.randn(n_samples, n_features) * std
     x_empty = torch.zeros(n_samples, n_empty_features)
 
     return torch.cat([x_full, x_empty], dim=1)
@@ -61,8 +61,8 @@ def apply_gaussian_noise(f, noise_std: float = 0.1) -> torch.Tensor:
     noise = torch.randn_like(f) * noise_std
     return f + noise
 
-def generate_synthetic_data(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9, noise_std: float = 0.1):
-    x = get_random_linear_input_data(n_samples, n_features, n_empty_features)
+def generate_synthetic_data(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9, noise_std: float = 0.1, input_std: float = 1.0):
+    x = get_random_linear_input_data(n_samples, n_features, n_empty_features, input_std)
     f = synthetic_function(x)
     y = apply_gaussian_noise(f, noise_std)
     return x, y
@@ -72,9 +72,8 @@ def generate_clean_synthetic_function(n_samples: int = 100, n_features: int = 1,
     f = synthetic_function(x)
     return x, f
 
-def generate_ood_synthetic_data(n_samples: int, n_features: int, n_empty_features: int, noise_std: float):
-    x,f = generate_clean_synthetic_function(n_samples, n_features, n_empty_features, min_x = -50, max_x = 50)
-    y = f + torch.randn_like(f)*noise_std
+def generate_ood_synthetic_data(n_samples: int, n_features: int, n_empty_features: int, noise_std: float, input_std: float):
+    x,y = generate_synthetic_data(n_samples, n_features, n_empty_features, noise_std, input_std)
     return x, y
 
 
