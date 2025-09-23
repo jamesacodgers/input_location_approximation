@@ -5,20 +5,17 @@ import torch
 import wandb
 
 from src.synthetic_data import generate_clean_synthetic_function
-def save_results_to_csv(cfg, final_val_ll, final_ood_ll):
+def save_results_to_csv(cfg, results_dict):
     """Save results in current Hydra output directory."""
-    result = {
-        'temperature': cfg.posterior.temperature,
-        'posterior_type': cfg.posterior.type,
-        'final_val_ll': final_val_ll,
-        'final_ood_ll': final_ood_ll,
-    }
+
+    results_dict["temperature"] = cfg.posterior.temperature
+    results_dict["posterior_type"] = cfg.posterior.type
     
     # Save to current working directory (Hydra's output dir)
     with open('results.csv', 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=result.keys())
+        writer = csv.DictWriter(csvfile, fieldnames=results_dict.keys())
         writer.writeheader()
-        writer.writerow(result)
+        writer.writerow(results_dict)
 
 def plot_predictions(cfg, model, train_dataloader, val_dataloader, name: str):
     min_x = val_dataloader.dataset.tensors[0].min()

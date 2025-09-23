@@ -182,7 +182,7 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders):
         results_dict[f"ood_ll_var_{ood_variance}"] = ood_ll.item()/len(ood_dataloader.dataset)
         print(f"OOD log likelihood with variance {ood_variance}: {ood_ll.item()/len(ood_dataloader.dataset)}")
     wandb.log(results_dict)
-    save_results_to_csv(cfg, val_ll.item(), ood_ll.item())
+    save_results_to_csv(cfg, results_dict)
     
     plot_predictions(cfg, model, train_dataloader, val_dataloader, f"iid_predictions_temp_{cfg.posterior.temperature}.png")
     plot_predictions(cfg, model, train_dataloader, ood_dataloader, f"ood_predictions_temp_{cfg.posterior.temperature}.png")

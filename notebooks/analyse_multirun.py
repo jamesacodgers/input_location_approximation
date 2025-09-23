@@ -31,7 +31,7 @@ def collect_all_results(*args):
 
 # %%
 
-df = collect_all_results("multirun/2025-09-19/20-14-56", "multirun/2025-09-19/18-31-17", "multirun/2025-09-19/18-31-16", "multirun/2025-09-19/18-29-31", "multirun/2025-09-19/17-43-27")
+df = collect_all_results("multirun/2025-09-23/16-06-10")
 
 # %%
 fig, ax = plt.subplots()
