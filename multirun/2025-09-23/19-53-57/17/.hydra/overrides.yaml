@@ -1,0 +1,4 @@
+- optimization.epochs=20000
+- posterior.temperature=0.3
+- seed=2
+- optimization.learning_rate=0.0005
