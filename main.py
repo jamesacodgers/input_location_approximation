@@ -165,13 +165,13 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders):
     val_ll = torch.zeros(1)
     ood_ll = torch.zeros(1)
     results_dict = {}
-    for x,y in val_dataloader:
-        x = x.to(model.device)
-        y = y.to(model.device)
-        preds = model.predict(x)
-        val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
-    results_dict["val_ll"] = val_ll.item()/len(val_dataloader.dataset)
-    print(f"Validation log likelihood: {val_ll.item()/len(val_dataloader.dataset)}")
+    # for x,y in val_dataloader:
+    #     x = x.to(model.device)
+    #     y = y.to(model.device)
+    #     preds = model.predict(x)
+    #     val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+    # results_dict["val_ll"] = val_ll.item()/len(val_dataloader.dataset)
+    # print(f"Validation log likelihood: {val_ll.item()/len(val_dataloader.dataset)}")
     for ood_variance,ood_dataloader in zip(cfg.dataset.ood_input_variance, ood_dataloaders):
         ood_ll = torch.zeros(1)
         for x,y in ood_dataloader:

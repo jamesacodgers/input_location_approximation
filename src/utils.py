@@ -9,7 +9,11 @@ def save_results_to_csv(cfg, results_dict):
     """Save results in current Hydra output directory."""
 
     results_dict["temperature"] = cfg.posterior.temperature
+
     results_dict["posterior_type"] = cfg.posterior.type
+    results_dict["seed"] = cfg.seed
+    results_dict["n_train"] = cfg.dataset.n_train
+    results_dict["frequency"] = cfg.dataset.frequency
     
     # Save to current working directory (Hydra's output dir)
     with open('results.csv', 'w', newline='') as csvfile:
@@ -20,7 +24,7 @@ def save_results_to_csv(cfg, results_dict):
 def plot_predictions(cfg, model, train_dataloader, val_dataloader, name: str):
     min_x = val_dataloader.dataset.tensors[0].min()
     max_x = val_dataloader.dataset.tensors[0].max()
-    x_lin,f = generate_clean_synthetic_function(n_samples=200, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, min_x=min_x, max_x=max_x)
+    x_lin,f = generate_clean_synthetic_function(n_samples=200, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, min_x=min_x, max_x=max_x, frequency=cfg.dataset.frequency)
     x_lin = x_lin.to(model.device)
 
     preds = model.predict(x_lin)
