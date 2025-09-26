@@ -97,8 +97,8 @@ def get_optimizer(cfg, model, train_dataset, test_dataset):
 def get_data(cfg):
     """Simple data loading - replace with your data loader later."""
 
-    x_train, y_train = generate_synthetic_data(n_samples=cfg.dataset.n_train, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std)
-    x_test, y_test = generate_synthetic_data(n_samples=cfg.dataset.n_test, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std)
+    x_train, y_train = generate_synthetic_data(n_samples=cfg.dataset.n_train, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, frequency=cfg.dataset.frequency)
+    x_test, y_test = generate_synthetic_data(n_samples=cfg.dataset.n_test, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, frequency=cfg.dataset.frequency)
 
     train_dataset = torch.utils.data.TensorDataset(x_train, y_train)
     test_dataset = torch.utils.data.TensorDataset(x_test, y_test)
@@ -108,7 +108,7 @@ def get_data(cfg):
 def get_ood_data_loaders(cfg):
     dataloaders = []
     for input_std in cfg.dataset.ood_input_variance:
-        ood_x, ood_y = generate_ood_synthetic_data(n_samples=1000, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, input_std=input_std)
+        ood_x, ood_y = generate_ood_synthetic_data(n_samples=1000, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, input_std=input_std, frequency=cfg.dataset.frequency)
 
         ood_dataset = torch.utils.data.TensorDataset(ood_x, ood_y)
         ood_loader = torch.utils.data.DataLoader(ood_dataset, batch_size=cfg.optimization.batch_size, shuffle=False)
