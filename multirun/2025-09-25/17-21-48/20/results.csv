@@ -1,0 +1,2 @@
+val_ll,ood_ll_var_0.01,ood_ll_var_0.1,ood_ll_var_1.0,ood_ll_var_10.0,ood_ll_var_100.0,temperature,posterior_type
+0.608126564025879,0.8799583740234375,0.7996632690429688,0.643738525390625,-52154.992,-11796073.472,0.001,mfvi
