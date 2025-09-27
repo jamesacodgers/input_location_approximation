@@ -1,0 +1,3 @@
+- optimization.epochs=20000
+- posterior.temperature=1e-05
+- dataset.frequency=0.05
