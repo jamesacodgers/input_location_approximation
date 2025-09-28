@@ -1,0 +1,2 @@
+ood_ll_var_0.01,ood_ll_var_0.1,ood_ll_var_1.0,ood_ll_var_10.0,ood_ll_var_100.0,temperature,posterior_type,seed,n_train,frequency
+0.37806396484375,0.3183103332519531,-0.6393042602539063,-84114.392,-20794109.952,0.0001,mfvi,0,100,0.25
