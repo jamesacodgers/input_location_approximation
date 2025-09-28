@@ -12,7 +12,7 @@ from omegaconf import DictConfig, OmegaConf
 from src.approx_bnn import MAPPosterior, MFVIPosterior
 from src.layer_priors import LinearLayer
 import tqdm
-from src.utils import save_results_to_csv, plot_predictions
+from src.utils import plot_model_ft, save_results_to_csv, plot_predictions
 
 from torch.utils.data import DataLoader
 from src.synthetic_data import generate_ood_synthetic_data, generate_synthetic_data, generate_clean_synthetic_function
@@ -143,6 +143,7 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
             model.eval()
             val_ll = torch.zeros(1)
             results_dict = {}
+            results_dict["train_loss"] = train_loss
             for x,y in val_dataloader:
                 x = x.to(model.device)
                 y = y.to(model.device)
@@ -186,6 +187,8 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders):
     
     plot_predictions(cfg, model, train_dataloader, val_dataloader, f"iid_predictions_temp_{cfg.posterior.temperature}")
     plot_predictions(cfg, model, train_dataloader, ood_dataloader, f"ood_predictions_temp_{cfg.posterior.temperature}")
+
+    plot_model_ft(cfg, model, x_min=train_dataloader.dataset.tensors[0].min(), x_max=train_dataloader.dataset.tensors[0].max(), max_frequency=2**13, name=f"model_fourier_transform_temp_{cfg.posterior.temperature}")
 
 @hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
 def main(cfg: OmegaConf):

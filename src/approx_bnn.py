@@ -31,6 +31,10 @@ class BasePosterior(torch.nn.Module,abc.ABC):
         pass
 
     @abc.abstractmethod
+    def sample_functions(self, x, n_samples):
+        pass
+
+    @abc.abstractmethod
     def get_CI(self, x, ci=0.95):
         pass
 
@@ -123,6 +127,13 @@ class MFVIPosterior(BasePosterior):
         with torch.no_grad():
             preds = self.forward(x, n_samples=n_samples)
         return preds.mean(dim=0)
+    
+    def sample_functions(self, x, n_samples=5):
+        with torch.no_grad():
+            preds = self.forward(x, n_samples=n_samples)
+        return preds
+    
+
 
 
     def get_CI(self, x, ci=0.95, n_samples=1024):
