@@ -1,0 +1,4 @@
+- optimization.epochs=50000
+- dataset.frequency=0.75
+- posterior.temperature=0.001
+- dataset.n_train=200
