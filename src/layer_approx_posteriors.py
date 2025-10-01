@@ -44,6 +44,26 @@ class MAPLayer(BaseInferenceLayer):
         out = self.layer.activation(out)
         return out
     
+class EnsembleLayer(BaseInferenceLayer):
+    def __init__(self, layer: BaseLayer, n_samples):
+        super(EnsembleLayer,self).__init__(layer)
+        self.weight_samples = torch.nn.Parameter(torch.randn(n_samples, layer.weight_shape))
+        self.bias_samples = torch.nn.Parameter(torch.randn(n_samples, layer.bias_shape))
+
+    def get_parameter_samples(self):
+        return self.weight_samples, self.bias_samples
+
+    def get_prior_contribution(self):
+        weight_log_prob = self.layer.weight_prior.log_prob(self.weight_samples).mean()
+        bias_log_prob = self.layer.bias_prior.log_prob(self.bias_samples).mean()
+        return weight_log_prob + bias_log_prob
+
+    def forward(self, x):
+        weights, bias = self.get_parameter_samples()
+        out = self.layer.forward(x, weights, bias)
+        out = self.layer.activation(out)
+        return out
+    
 
 class MFVILayer(BaseInferenceLayer):
     def __init__(self, layer: BaseLayer, num_samples=1):

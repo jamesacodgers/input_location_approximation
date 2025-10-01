@@ -8,7 +8,12 @@ import numpy as np
 # df = collect_all_results("multirun/2025-09-26/13-24-16")
 # df = collect_all_results("multirun/2025-09-28/12-44-26") # 100 points
 # df = collect_all_results("multirun/2025-09-28/12-44-49") # 200 points
-df = collect_all_results("multirun/2025-09-28/12-48-14") # diff points
+df = collect_all_results(
+                        # "multirun/2025-09-28/12-48-14", 
+                        "multirun/2025-09-29/00-15-13",
+                        # "multirun/2025-09-29/00-20-39",
+                        # "multirun/2025-09-29/00-22-32"
+                        ) # diff points
 
 
 # for key in df.keys()[:5]:
@@ -38,6 +43,7 @@ for key in df.keys()[:5]:
     
     # Create a color dictionary for consistent coloring
     color_dict = dict(zip(frequencies, colors))
+    ls_dict = {100: 'solid', 1000: 'dashed', 300: 'dotted', 400: 'dashdot'}
     
     for freq, freq_group in df.groupby("frequency"):
         for n_train, n_group in freq_group.groupby("n_train"):
@@ -47,8 +53,10 @@ for key in df.keys()[:5]:
 
             # Plot with color based on frequency
             plt.plot(x_vals, y_vals, marker='o', 
-                    label=f'{freq}, {n_train}', alpha=0.8)
-    
+                    label=f'{freq}, {n_train}', alpha=0.8
+                    , color=color_dict[freq], ls = ls_dict[n_train]
+                    )
+    plt.vlines(x=0, ymin=plt.ylim()[0], ymax=plt.ylim()[1], color='black', linestyle=':', alpha=0.5)
     plt.legend(title="Frequency")
     plt.xlabel('Log Temperature')
     plt.ylabel('Log OOD NLL Var (normalised)')

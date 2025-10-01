@@ -4,9 +4,9 @@ from src.collect_results import collect_all_results
 import matplotlib.pyplot as plt
 import numpy as np
 
-# df = collect_all_results("multirun/2025-09-26/13-19-07")
-# df = collect_all_results("multirun/2025-09-26/13-24-16")
-df = collect_all_results("multirun/2025-09-27/12-29-56","multirun/2025-09-27/12-30-48")
+df = collect_all_results("multirun/2025-09-26/13-19-07")
+df = collect_all_results("multirun/2025-09-26/13-24-16")
+# df = collect_all_results("multirun/2025-09-27/12-29-56","multirun/2025-09-27/12-30-48")
 
 
 # for key in df.keys()[:5]:

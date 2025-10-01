@@ -65,11 +65,11 @@ def plot_predictions(cfg, model, train_dataloader, val_dataloader, name: str):
 #         plt.savefig(name+".png")
 #         wandb.log({name: wandb.Image(fig)})
 
-def plot_model_ft(cfg, model, x_min, x_max, max_frequency = 1024, name="model_fourier_transform"):
+def plot_model_ft(cfg, model, x_min, x_max, max_frequency = 1024, name="model_fourier_transform", n_samples=10):
     x = torch.linspace(x_min, x_max, steps=max_frequency).unsqueeze(1).to(model.device)
     with torch.no_grad():
         preds = model.predict(x)
-        sampled_preds = model.sample_functions(x, n_samples=10)
+        sampled_preds = model.sample_functions(x, n_samples=n_samples)
         ft = torch.fft.fftshift(torch.fft.fft(preds.squeeze()))
         ft_magnitude = torch.abs(ft)
         ft_freq = torch.fft.fftshift(torch.fft.fftfreq(len(x), d=(x[1]-x[0]).item()))
@@ -101,7 +101,7 @@ def plot_model_ft(cfg, model, x_min, x_max, max_frequency = 1024, name="model_fo
         combined_magnitude = torch.cat([dc_component.unsqueeze(0), combined_magnitude])
         
         fig, ax = plt.subplots(1,1,figsize=(8,10))
-        ax.plot(torch.log(combined_freq).cpu(), torch.log(combined_magnitude.cpu()), c="blue", label="Combined Fourier Transform Magnitude")
+        ax.plot(torch.log(combined_freq).cpu(), (combined_magnitude.cpu()), c="blue", label="Combined Fourier Transform Magnitude")
         for sample in sampled_preds:
             sample_ft = torch.fft.fftshift(torch.fft.fft(sample.squeeze()))
             sample_ft_magnitude = torch.abs(sample_ft)
@@ -118,7 +118,8 @@ def plot_model_ft(cfg, model, x_min, x_max, max_frequency = 1024, name="model_fo
             combined_sample_magnitude = pos_sample_magnitude_trimmed + torch.flip(neg_sample_magnitude_trimmed, [0])
             combined_sample_magnitude = torch.cat([sample_ft_magnitude[center_idx].unsqueeze(0), combined_sample_magnitude])
             
-            ax.plot(torch.log(combined_freq).cpu(), torch.log(combined_sample_magnitude.cpu()), c="blue", alpha=0.3)
+            ax.plot(torch.log(combined_freq).cpu(),(combined_sample_magnitude.cpu()), c="blue", alpha=0.3)
+            # ax.plot(torch.log(combined_freq).cpu(), torch.log(combined_sample_magnitude.cpu()), c="blue", alpha=0.3)
         ax.vlines(np.log(cfg.dataset.frequency), 0, torch.log(combined_magnitude.max().cpu()), colors='red', linestyles='dashed', label="True Frequency")
         plt.xlabel("Log Frequency")
         plt.ylabel("Log Magnitude")

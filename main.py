@@ -138,12 +138,12 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
             x = x.to(model.device)
             y = y.to(model.device)
             train_loss = model.train_step(x,y, optimizer)
-            
-        if epoch % 100 == 0 : 
-            model.eval()
-            val_ll = torch.zeros(1)
             results_dict = {}
             results_dict["train_loss"] = train_loss
+            
+        if epoch % 5000 == 0 : 
+            model.eval()
+            val_ll = torch.zeros(1)
             for x,y in val_dataloader:
                 x = x.to(model.device)
                 y = y.to(model.device)
@@ -188,7 +188,7 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders):
     plot_predictions(cfg, model, train_dataloader, val_dataloader, f"iid_predictions_temp_{cfg.posterior.temperature}")
     plot_predictions(cfg, model, train_dataloader, ood_dataloader, f"ood_predictions_temp_{cfg.posterior.temperature}")
 
-    plot_model_ft(cfg, model, x_min=train_dataloader.dataset.tensors[0].min(), x_max=train_dataloader.dataset.tensors[0].max(), max_frequency=2**13, name=f"model_fourier_transform_temp_{cfg.posterior.temperature}")
+    plot_model_ft(cfg, model, x_min=train_dataloader.dataset.tensors[0].min(), x_max=train_dataloader.dataset.tensors[0].max(), max_frequency=2**13, name=f"model_fourier_transform_temp_{cfg.posterior.temperature}", n_samples=100)
 
 @hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
 def main(cfg: OmegaConf):
