@@ -1,0 +1,5 @@
+- dataset.frequency=4
+- optimization.epochs=6000
+- posterior.temperature=0.01
+- dataset.n_train=10000
+- optimization.batch_size=1024
