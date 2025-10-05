@@ -3,6 +3,7 @@ import csv
 import matplotlib.pyplot as plt
 import torch 
 import wandb
+import os
 
 import numpy as np
 
@@ -11,16 +12,20 @@ def save_results_to_csv(cfg, results_dict):
     """Save results in current Hydra output directory."""
 
     results_dict["temperature"] = cfg.posterior.temperature
-
     results_dict["posterior_type"] = cfg.posterior.type
     results_dict["seed"] = cfg.seed
     results_dict["n_train"] = cfg.dataset.n_train
     results_dict["frequency"] = cfg.dataset.frequency
     
+    # Check if file exists
+    file_exists = os.path.exists('results.csv')
+    
     # Save to current working directory (Hydra's output dir)
-    with open('results.csv', 'w', newline='') as csvfile:
+    mode = 'a' if file_exists else 'w'
+    with open('results.csv', mode, newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=results_dict.keys())
-        writer.writeheader()
+        if not file_exists:
+            writer.writeheader()
         writer.writerow(results_dict)
 
 def plot_predictions(cfg, model, train_dataloader, val_dataloader, name: str):

@@ -152,31 +152,17 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
             results_dict = {}
             results_dict["train_loss"] = train_loss
             
-        if epoch % 5000 == 0 : 
+        if epoch % 50 == 0 : 
             model.eval()
-            val_ll = torch.zeros(1)
-            for x,y in val_dataloader:
-                x = x.to(model.device)
-                y = y.to(model.device)
-                preds = model.predict(x)
-                val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
-            results_dict["val_ll"] = val_ll.item()/len(val_dataloader.dataset)
-            for ood_variance,ood_dataloader in zip(cfg.dataset.ood_input_variance, ood_dataloaders):
-                ood_ll = torch.zeros(1)
-                for x,y in ood_dataloader: 
-                    x = x.to(model.device)
-                    y = y.to(model.device)
-                    preds = model.predict(x)
-                    ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
-                results_dict[f"ood_ll_var_{ood_variance}"] = ood_ll.item()/len(ood_dataloader.dataset)
+            test_model(cfg, model, train_dataloader, val_dataloader, ood_dataloaders, epoch, label=epoch)
             model.train()
         wandb.log(results_dict)
     return model
 
-def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders):
+def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders, epoch, label="final"):
     val_ll = torch.zeros(1)
     ood_ll = torch.zeros(1)
-    results_dict = {}
+    results_dict = {"epoch":epoch}
     # for x,y in val_dataloader:
     #     x = x.to(model.device)
     #     y = y.to(model.device)
@@ -196,10 +182,10 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders):
     wandb.log(results_dict)
     save_results_to_csv(cfg, results_dict)
     
-    plot_predictions(cfg, model, train_dataloader, val_dataloader, f"iid_predictions_temp_{cfg.posterior.temperature}")
-    plot_predictions(cfg, model, train_dataloader, ood_dataloader, f"ood_predictions_temp_{cfg.posterior.temperature}")
+    plot_predictions(cfg, model, train_dataloader, val_dataloader, f"{label}_iid_predictions_temp_{cfg.posterior.temperature}")
+    plot_predictions(cfg, model, train_dataloader, ood_dataloader, f"{label}_ood_predictions_temp_{cfg.posterior.temperature}")
 
-    plot_model_ft(cfg, model, x_min=-10, x_max=10, max_frequency=2**13, name=f"model_fourier_transform_temp_{cfg.posterior.temperature}", n_samples=100)
+    plot_model_ft(cfg, model, x_min=-10, x_max=10, max_frequency=2**13, name=f"{label}_model_fourier_transform_temp_{cfg.posterior.temperature}", n_samples=100)
 
 @hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
 def main(cfg: OmegaConf):
@@ -232,7 +218,7 @@ def main(cfg: OmegaConf):
 
     fit_approx_posterior(cfg, model, optimizer, train_dataloader, val_dataloader, ood_dataloaders, lr_scheduler)
 
-    test_model(cfg, model, train_dataloader, val_dataloader, ood_dataloaders)
+    test_model(cfg, model, train_dataloader, val_dataloader, ood_dataloaders, cfg.optimization.epochs)
 
 if __name__ == "__main__":
     main()
