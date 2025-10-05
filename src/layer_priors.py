@@ -38,12 +38,33 @@ class LinearLayer(BaseLayer):
         assert weights.shape[-2:] == self.weight_shape
         assert bias.shape[-1:] == self.bias_shape
         x = x@weights.transpose(-2,-1) + bias.unsqueeze(-2)
-        return x
+        return self.activation(x)
 
     def get_prior_dist(self):
         return self.weight_prior, self.bias_prior
 
-    def activation(self, x):
-        return self.activation(x)
+
     
-    
+class FourierLayer(BaseLayer):
+    def __init__(self, 
+                 in_features: int,
+                 out_features: int, 
+                 weight_prior: torch.distributions.Distribution,
+                 bias_prior: torch.distributions.Distribution,
+                 ):
+        """
+        """
+        self.weight_prior = weight_prior
+        self.bias_prior = bias_prior
+        self.weight_shape = torch.Size([out_features, in_features])
+        self.bias_shape = torch.Size([out_features])
+
+    def get_prior_dist(self):
+        return self.weight_prior, self.bias_prior
+
+    def forward(self, x, weights, bias):
+        cos_x = bias.unsqueeze(-2)*torch.cos(2*torch.pi*x@weights.transpose(-2,-1))
+        sin_x = bias.unsqueeze(-2)*torch.sin(2*torch.pi*x@weights.transpose(-2,-1))
+        x = torch.cat([cos_x, sin_x], dim=-1)
+        return x    
+   

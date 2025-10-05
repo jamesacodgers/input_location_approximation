@@ -21,6 +21,7 @@ model:
   type: mlp
   hidden_layers: [128,128]
   prior_variance: 0.1
+  ff: 16
 
 posterior:
   type: mfvi

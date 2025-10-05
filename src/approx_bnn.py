@@ -139,6 +139,7 @@ class MFVIPosterior(BasePosterior):
     def __init__(self, layer_priors: list[MFVILayer], likelihood: torch.distributions.Distribution, total_data_points: int, batch_size: int, device: str, num_samples: int, temperature: float, posterior_exponentiation: str):
         super(MFVIPosterior,self).__init__(total_data_points=total_data_points, batch_size=batch_size, likelihood=likelihood, posterior_exponentiation=posterior_exponentiation, temperature=temperature)
         self.layers = torch.nn.ModuleList([MFVILayer(layer, num_samples=num_samples) for layer in layer_priors])
+        
         self.device = device
 
     def forward(self, x, n_samples=None):

@@ -120,7 +120,7 @@ def plot_model_ft(cfg, model, x_min, x_max, max_frequency = 1024, name="model_fo
             
             ax.plot(torch.log(combined_freq).cpu(),(combined_sample_magnitude.cpu()), c="blue", alpha=0.3)
             # ax.plot(torch.log(combined_freq).cpu(), torch.log(combined_sample_magnitude.cpu()), c="blue", alpha=0.3)
-        ax.vlines(np.log(cfg.dataset.frequency), 0, torch.log(combined_magnitude.max().cpu()), colors='red', linestyles='dashed', label="True Frequency")
+        ax.vlines(np.log(cfg.dataset.frequency), 0, combined_magnitude.max().cpu(), colors='red', linestyles='dashed', label="True Frequency")
         plt.xlabel("Log Frequency")
         plt.ylabel("Magnitude")
         plt.legend()

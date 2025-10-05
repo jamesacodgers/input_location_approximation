@@ -17,7 +17,6 @@ class BaseInferenceLayer(torch.nn.Module, abc.ABC):
     def forward(self, x):
         weights, bias = self.get_parameter_samples(self.layer, x)
         out = self.layer.linear(x, weights, bias)
-        out = self.layer.activation(out)
         return out
     
     @abc.abstractmethod
@@ -41,7 +40,6 @@ class MAPLayer(BaseInferenceLayer):
     def forward(self, x):
         weights, bias = self.get_parameter_samples()
         out = self.layer.forward(x, weights, bias)
-        out = self.layer.activation(out)
         return out
     
 class EnsembleLayer(BaseInferenceLayer):
@@ -61,7 +59,6 @@ class EnsembleLayer(BaseInferenceLayer):
     def forward(self, x):
         weights, bias = self.get_parameter_samples()
         out = self.layer.forward(x, weights, bias)
-        out = self.layer.activation(out)
         return out
     
 
@@ -103,5 +100,5 @@ class MFVILayer(BaseInferenceLayer):
         else:
             weights, bias = self.get_parameter_samples()
         out = self.layer.forward(x, weights, bias)
-        out = self.layer.activation(out)
         return out
+    

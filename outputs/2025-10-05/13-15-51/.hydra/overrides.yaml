@@ -1,0 +1,2 @@
+- optimization.epochs=20000
+- model.ff=None

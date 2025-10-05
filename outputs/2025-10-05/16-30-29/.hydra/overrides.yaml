@@ -1,0 +1,2 @@
+- optimization.epochs=100000
+- optimization.learning_rate=3e-2

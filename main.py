@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 import random
 
+import omegaconf
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -10,7 +11,7 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 
 from src.approx_bnn import MAPPosterior, MFVIPosterior
-from src.layer_priors import LinearLayer
+from src.layer_priors import FourierLayer, LinearLayer
 import tqdm
 from src.utils import plot_model_ft, save_results_to_csv, plot_predictions
 
@@ -52,9 +53,18 @@ def get_likelihood(cfg):
         raise NotImplementedError("Only regression is implemented in this example.")
     return l
 
+
+
 def get_bnn_layer_priors(cfg, input_dim, output_dim, device):
     """Simple model - replace with your BNN later."""
     prior = []
+    if cfg.model.ff != "none":
+        weight_prior = torch.distributions.Normal(torch.zeros(input_dim, cfg.model.ff).to(device), cfg.model.prior_variance*torch.ones(input_dim, cfg.model.ff).to(device))
+        bias_prior = torch.distributions.Normal(torch.zeros(cfg.model.ff).to(device), cfg.model.prior_variance*torch.ones(cfg.model.ff).to(device))
+        fourier_layer = FourierLayer(weight_prior=weight_prior, bias_prior=bias_prior, in_features=input_dim, out_features=cfg.model.ff)
+        prior.append(fourier_layer)
+        input_dim = cfg.model.ff*2
+
     if cfg.model.type == "mlp":
         layer_sizes = [input_dim] + cfg.model.hidden_layers + [output_dim]
         for i in range(len(layer_sizes) - 1):
@@ -133,7 +143,8 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
     model.train()
 
     for epoch in range(cfg.optimization.epochs):
-        print(epoch)
+        if epoch % 100 == 0:
+            print(epoch)
         for x,y in train_dataloader:
             x = x.to(model.device)
             y = y.to(model.device)
@@ -158,8 +169,8 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
                     preds = model.predict(x)
                     ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
                 results_dict[f"ood_ll_var_{ood_variance}"] = ood_ll.item()/len(ood_dataloader.dataset)
-            wandb.log(results_dict)
             model.train()
+        wandb.log(results_dict)
     return model
 
 def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders):
@@ -188,7 +199,7 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders):
     plot_predictions(cfg, model, train_dataloader, val_dataloader, f"iid_predictions_temp_{cfg.posterior.temperature}")
     plot_predictions(cfg, model, train_dataloader, ood_dataloader, f"ood_predictions_temp_{cfg.posterior.temperature}")
 
-    plot_model_ft(cfg, model, x_min=train_dataloader.dataset.tensors[0].min(), x_max=train_dataloader.dataset.tensors[0].max(), max_frequency=2**13, name=f"model_fourier_transform_temp_{cfg.posterior.temperature}", n_samples=100)
+    plot_model_ft(cfg, model, x_min=-10, x_max=10, max_frequency=2**13, name=f"model_fourier_transform_temp_{cfg.posterior.temperature}", n_samples=100)
 
 @hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
 def main(cfg: OmegaConf):
@@ -210,6 +221,7 @@ def main(cfg: OmegaConf):
     train_dataset, iid_val_dataset, input_dim, output_dim = get_data(cfg)
     ood_dataloaders = get_ood_data_loaders(cfg)
     
+
     layer_priors = get_bnn_layer_priors(cfg, input_dim, output_dim, device)
     likelihood = get_likelihood(cfg)
 
