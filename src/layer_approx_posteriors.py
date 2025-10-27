@@ -67,8 +67,12 @@ class MFVILayer(BaseInferenceLayer):
         super(MFVILayer,self).__init__(layer)
         self.mu_w = torch.nn.Parameter(torch.randn(layer.weight_shape))
         self._raw_sigma_w = torch.nn.Parameter(-10*torch.ones(layer.weight_shape))
-        self.mu_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
-        self._raw_sigma_b = torch.nn.Parameter(-10*torch.ones(layer.bias_shape))
+        if layer.bias_prior is None:
+            self.mu_b = None
+            self._raw_sigma_b = None
+        else: 
+            self.mu_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
+            self._raw_sigma_b = torch.nn.Parameter(-10*torch.ones(layer.bias_shape))
         self.num_samples = num_samples
 
     def get_parameter_samples(self, n_samples=None):
@@ -76,7 +80,10 @@ class MFVILayer(BaseInferenceLayer):
             n_samples = self.num_samples
         weight_dist, bias_dist = self.get_approx_posteriors()
         weight_sample = weight_dist.rsample((n_samples,))
-        bias_sample = bias_dist.rsample((n_samples,))
+        if self.mu_b is None:
+            bias_sample = torch.ones(1)
+        else:
+            bias_sample = bias_dist.rsample((n_samples,))
         return weight_sample, bias_sample
 
     def get_prior_contribution(self):
@@ -86,12 +93,18 @@ class MFVILayer(BaseInferenceLayer):
         weight_prior_dist, bias_prior_dist = self.layer.get_prior_dist()
         weight_approx_posterior, bias_approx_posterior = self.get_approx_posteriors()
         kl_weight = torch.distributions.kl_divergence(weight_approx_posterior, weight_prior_dist).sum()
-        kl_bias = torch.distributions.kl_divergence(bias_approx_posterior, bias_prior_dist).sum()
+        if self.mu_b is None:
+            kl_bias = torch.zeros(1)
+        else:
+            kl_bias = torch.distributions.kl_divergence(bias_approx_posterior, bias_prior_dist).sum()
         return - (kl_weight + kl_bias)
 
     def get_approx_posteriors(self):
         weight_approx_posterior = torch.distributions.Normal(self.mu_w, torch.nn.functional.softplus(self._raw_sigma_w))
-        bias_approx_posterior = torch.distributions.Normal(self.mu_b, torch.nn.functional.softplus(self._raw_sigma_b))
+        if self.mu_b is None:
+            bias_approx_posterior = None
+        else: 
+            bias_approx_posterior = torch.distributions.Normal(self.mu_b, torch.nn.functional.softplus(self._raw_sigma_b))
         return weight_approx_posterior, bias_approx_posterior
 
     def forward(self, x, n_samples=None):
