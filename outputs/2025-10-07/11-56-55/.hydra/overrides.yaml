@@ -1,0 +1,4 @@
+- dataset.n_train=8
+- optimization.epochs=200000
+- model.ff=16
+- posterior.temperature=0.01

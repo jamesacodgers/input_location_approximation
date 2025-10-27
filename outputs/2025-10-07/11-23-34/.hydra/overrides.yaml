@@ -1,0 +1,3 @@
+- dataset.n_train=8
+- optimization.epochs=200000
+- model.ff=128

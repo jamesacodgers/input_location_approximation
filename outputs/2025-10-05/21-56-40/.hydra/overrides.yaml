@@ -1,0 +1,4 @@
+- optimization.epochs=80000
+- optimization.learning_rate=3e-3
+- posterior.temperature=1e0
+- dataset.frequency=8

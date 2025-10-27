@@ -6,7 +6,7 @@ from src.gp_utils import plot_1d_comparison, plot_losses, create_synthetic_data,
 
 
 
-def run_variational_family_experiment(train_x, train_y, test_x, test_y, true_hyperparams,
+def run_variational_family_experiment(train_x, train_y, test_x, test_y, true_hyperparams, 
                                      temperatures=[0.1, 1.0], 
                                      variational_families=['mean_field', 'cholesky'],
                                      inducing_configs=None,
@@ -61,7 +61,7 @@ def run_variational_family_experiment(train_x, train_y, test_x, test_y, true_hyp
         elif inducing_config['type'] == 'grid':
             inducing_points = create_inducing_points_2D(
                 num_x1=inducing_config.get('num_x1', 8),
-                num_x2=inducing_config.get('num_x2', 9),  # Default to odd number for symmetry
+                num_x2=inducing_config.get('num_x2', 21),  # Default to odd number for symmetry
                 x1_range=inducing_config.get('x1_range', (0, 1)),
                 x2_extent=inducing_config.get('x2_extent', 0.6)  # Symmetric extent around x2=0
             )
@@ -141,7 +141,7 @@ def plot_variational_comparison(train_x, train_y, test_x, test_y, vis_x, vis_gri
     exact_mean_2d = exact_vis_mean.reshape(X1.shape)
     
     # Create figure comparing configurations - REDUCED SIZE
-    fig, axes = plt.subplots(3, 4, figsize=(16, 12))
+    fig, axes = plt.subplots(3, 4, figsize=(10, 8))
     
     # Row 1: Exact GP reference
     ax = axes[0, 0]
@@ -356,21 +356,21 @@ def plot_metrics_comparison(results):
 
 
 def run_variational_experiment():
-    """Run the complete variational family experiment."""
+    """Run the complete variational family exper iment."""
     
     print("Cold Posterior Variational Family Experiment")
     print("=" * 60)
-    
+    noise_std=1
     # Generate synthetic data with fewer training points for higher uncertainty
     train_x, train_y, test_x, test_y, vis_x, vis_grid, true_hyperparams = create_synthetic_data(
-        n_train=4, n_test=200, n_test_per_dim=25, noise_std=0.3, seed=42  # Increased noise too
+        n_train=16, n_test=1024, n_test_per_dim=25, noise_std=noise_std, seed=42  # Increased noise too
     )
     
     print(f"Training data shape: {train_x.shape}")
     print(f"Test data shape: {test_x.shape}")
     
     # Define experimental configurations
-    temperatures = [0.01, 0.1, 1.0]
+    temperatures = [0.1, 0.3, 0.6, 1.0]
     variational_families = ['mean_field', 'cholesky']
     
     # Define inducing point configurations
@@ -378,17 +378,17 @@ def run_variational_experiment():
         {
             'type': 'sparse',
             'name': 'sparse_x2=0',
-            'num_inducing': 25,
+            'num_inducing': 512,
             'x2_offset': 0.0,
-            'x1_range': (0, 1)
+            'x1_range': (-1, 2)
         },
         {
             'type': 'grid', 
             'name': 'grid_2d',
-            'num_x1': 9,
-            'num_x2': 9,  # Odd number ensures symmetry around x2=0
+            'num_x1': 6,
+            'num_x2': 6,  # Odd number ensures symmetry around x2=0
             'x1_range': (0, 1),
-            'x2_extent': 0.6  # Grid spans from x2=-0.6 to x2=+0.6, symmetric around x2=0
+            'x2_extent': 1  
         }
     ]
     
@@ -412,7 +412,7 @@ def run_variational_experiment():
     # Create visualizations
     fig1 = plot_variational_comparison(train_x, train_y, test_x, test_y, vis_x, vis_grid, results)
     fig2 = plot_metrics_comparison(results)
-    fig3 = plot_1d_comparison(train_x, train_y, test_x, test_y, results)
+    # fig3 = plot_1d_comparison(train_x, train_y, test_x, test_y, results)
     fig4 = plot_losses(results)  # NEW: Add loss curves
     
     plt.show()

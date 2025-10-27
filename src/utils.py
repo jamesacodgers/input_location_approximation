@@ -52,7 +52,7 @@ def plot_predictions(cfg, model, train_dataloader, val_dataloader, name: str):
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_title("Predictions vs Data")
-        plt.savefig(name+".png")
+        plt.savefig(name+".pdf")
         wandb.log({name: wandb.Image(fig)})
         # plt.show()
 
@@ -67,7 +67,7 @@ def plot_predictions(cfg, model, train_dataloader, val_dataloader, name: str):
 #         fig, ax = plt.subplots(1,1,figsize=(8,10))
 #         ax.plot(ft_freq.cpu(), ft_magnitude.cpu(), c="blue", label="Fourier Transform Magnitude")
 #         ax.vlines(cfg.dataset.frequency, 0, ft_magnitude.max().cpu(), colors='red', linestyles='dashed', label="True Frequency")
-#         plt.savefig(name+".png")
+#         plt.savefig(name+".pdf")
 #         wandb.log({name: wandb.Image(fig)})
 
 def plot_model_ft(cfg, model, x_min, x_max, max_frequency = 1024, name="model_fourier_transform", n_samples=10):
@@ -129,5 +129,5 @@ def plot_model_ft(cfg, model, x_min, x_max, max_frequency = 1024, name="model_fo
         plt.xlabel("Log Frequency")
         plt.ylabel("Magnitude")
         plt.legend()
-        plt.savefig(name+".png")
+        plt.savefig(name+".pdf")
         wandb.log({name: wandb.Image(fig)})

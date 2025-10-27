@@ -7,7 +7,7 @@ import gpytorch
 from gpytorch.models import ApproximateGP, ExactGP
 from gpytorch.variational import CholeskyVariationalDistribution, VariationalStrategy, MeanFieldVariationalDistribution
 from gpytorch.distributions import MultivariateNormal
-from gpytorch.means import ConstantMean
+from gpytorch.means import ZeroMean
 from gpytorch.kernels import ScaleKernel, RBFKernel
 from gpytorch.likelihoods import GaussianLikelihood
 from gpytorch.mlls import VariationalELBO, ExactMarginalLogLikelihood
@@ -101,9 +101,10 @@ def plot_1d_comparison(train_x, train_y, test_x, test_y, results):
                        color='gray', alpha=0.2)
         # Plot sparse GPs for each x2_offset
         for j, title in enumerate(titles):
-            key = f"x2={title}_T={temp}"
-            if key not in sparse_results:
-                continue
+            # key = f"x2={title}_T={temp}"
+            key = f"length_scale_factor={title}_T={temp}"
+            # if key not in sparse_results:
+            #     continue
                 
             result = sparse_results[key]
             
@@ -253,10 +254,10 @@ def create_inducing_points_1D(num_inducing=20, x2_offset=0.0, x1_range=(0, 1)):
     inducing_points = torch.stack([x1_coords, x2_coords], dim=1)
     return inducing_points
 
-def train_cold_posterior_gp_with_inducing(train_x, train_y, inducing_points, true_hyperparams, 
+def train_cold_posterior_gp_with_inducing(train_x, train_y, inducing_points, test_hyper_parameters, 
                                          temperature=1.0, lr=0.01, epochs=500, verbose=True, variational_family='cholesky'):
     """Train sparse GP with pre-specified inducing points and fixed hyperparameters."""
-    lengthscale, outputscale, noise_var = true_hyperparams
+    lengthscale, outputscale, noise_var = test_hyper_parameters
     
     # Initialize model and likelihood
     model = ColdPosteriorSparseGP(inducing_points, temperature=temperature, variational_family=variational_family)
@@ -271,9 +272,9 @@ def train_cold_posterior_gp_with_inducing(train_x, train_y, inducing_points, tru
     likelihood.train()
     
     # Optimizer - only optimize variational parameters (hyperparameters and temperature are fixed)
-    trainable_params = [p for p in list(model.parameters())]
-    # Remove temperature from trainable parameters
-    trainable_params = [p for p in trainable_params]
+    trainable_params = [p for p in model.parameters() if p.requires_grad]
+    # # Remove temperature from trainable parameters
+    # trainable_params = [p for p in trainable_params]
     optimizer = torch.optim.Adam(trainable_params, lr=lr)
     
     # Loss function (temperature-scaled ELBO)
@@ -354,7 +355,7 @@ class ColdPosteriorSparseGP(ApproximateGP):
         super().__init__(variational_strategy)
         
         # GP components
-        self.mean_module = ConstantMean()
+        self.mean_module = ZeroMean()
         self.covar_module = ScaleKernel(RBFKernel())
         
         self.temperature = torch.tensor(temperature)
@@ -376,7 +377,7 @@ class ColdPosteriorExactGP(ExactGP):
         super().__init__(train_x, train_y, likelihood)
         
         # GP components
-        self.mean_module = ConstantMean()
+        self.mean_module = ZeroMean()
         self.covar_module = ScaleKernel(RBFKernel())
         
         # Temperature parameter
@@ -452,38 +453,37 @@ def train_exact_gp(train_x, train_y, true_hyperparams, temperature=1.0, lr=0.01,
     likelihood.train()
     
     # Optimizer - only optimize mean (hyperparameters and temperature are fixed)
-    trainable_params = [p for p in list(model.parameters()) + list(likelihood.parameters()) 
+    trainable_params = [p for p in list(model.parameters())
                        if p.requires_grad]
     # Remove temperature from trainable parameters
-    trainable_params = [p for p in trainable_params]
-    optimizer = torch.optim.Adam(trainable_params, lr=lr)
+    # optimizer = torch.optim.Adam(trainable_params, lr=lr)
     
     # Loss function - use standard ExactMarginalLogLikelihood
     mll = ExactMarginalLogLikelihood(likelihood, model)
     
-    # Training loop
-    losses = []
-    for epoch in range(epochs):
-        optimizer.zero_grad()
+    # # Training loop
+    # losses = []
+    # for epoch in range(epochs):
+    #     optimizer.zero_grad()
         
-        # Forward pass
-        output = model(train_x)
-        loss = -mll(output, train_y)
+    #     # Forward pass
+    #     output = model(train_x)
+    #     loss = -mll(output, train_y)
         
-        # Apply temperature scaling manually
-        loss = loss / model.temperature
+    #     # Apply temperature scaling manually
+    #     loss = loss / model.temperature
         
-        # Backward pass
-        loss.backward()
-        optimizer.step()
+    #     # Backward pass
+    #     loss.backward()
+    #     optimizer.step()
         
-        losses.append(loss.item())
+    #     losses.append(loss.item())
         
-        if verbose and (epoch + 1) % 100 == 0:
-            print(f'Epoch {epoch+1}/{epochs}, Loss: {loss.item():.4f}, '
-                  f'Temperature: {model.temperature.item():.4f}')
-    
-    return model, likelihood, losses
+    #     if verbose and (epoch + 1) % 100 == 0:
+    #         print(f'Epoch {epoch+1}/{epochs}, Loss: {loss.item():.4f}, '
+    #               f'Temperature: {model.temperature.item():.4f}')
+    # print(likelihood)
+    return model, likelihood
 
 def compute_kl_divergence(mean1, std1, mean2, std2):
     """
@@ -524,8 +524,8 @@ def create_synthetic_data(n_train=200, n_test=100, n_test_per_dim=30, noise_std=
     all_x = torch.cat([train_x, test_x, vis_x], dim=0)
     
     # True GP hyperparameters (these will be fixed in all models)
-    TRUE_LENGTHSCALE = 0.3
-    TRUE_OUTPUTSCALE = 1.0
+    TRUE_LENGTHSCALE = 0.1
+    TRUE_OUTPUTSCALE = 10.0
     TRUE_NOISE = noise_std**2
     
     # Create GP kernel with true hyperparameters

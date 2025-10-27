@@ -1,0 +1,3 @@
+- optimization.epochs=800000
+- optimization.learning_rate=3e-4
+- posterior.temperature=1e0

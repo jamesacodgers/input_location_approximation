@@ -62,5 +62,6 @@ for key in df.keys()[:5]:
     plt.ylabel('Log OOD NLL Var (normalised)')
     plt.title(f'Frequency vs Temperature and OOD NLL Var {key}')
     plt.grid(True, alpha=0.3)
+    plt.savefig(f"notebooks/figs/f_vs_t_var_{key}.pdf")
     plt.show()
 
