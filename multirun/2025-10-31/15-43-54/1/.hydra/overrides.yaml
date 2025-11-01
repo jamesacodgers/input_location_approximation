@@ -1,0 +1,3 @@
+- dataset.n_train=10
+- dataset.frequency=0.5
+- optimization.epochs=200000

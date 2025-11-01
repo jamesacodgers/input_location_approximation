@@ -81,7 +81,7 @@ class MFVILayer(BaseInferenceLayer):
         weight_dist, bias_dist = self.get_approx_posteriors()
         weight_sample = weight_dist.rsample((n_samples,))
         if self.mu_b is None:
-            bias_sample = torch.ones(1)
+            bias_sample = torch.ones(1)/(self.layer.bias_shape[0]/2)
         else:
             bias_sample = bias_dist.rsample((n_samples,))
         return weight_sample, bias_sample

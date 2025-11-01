@@ -22,7 +22,7 @@ model:
   hidden_layers: [128,128]
   prior_variance: 0.1
   ff: 64
-  ff_amplitudes: False
+  ff_amplitudes: True
 
 posterior:
   type: mfvi
