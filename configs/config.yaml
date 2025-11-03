@@ -26,5 +26,6 @@ model:
 
 defaults:
   - posterior: map
+  - _self_
 
   
