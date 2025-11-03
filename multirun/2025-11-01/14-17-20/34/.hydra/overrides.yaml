@@ -1,0 +1,6 @@
+- optimization.epochs=100000
+- posterior.temperature=0.001
+- seed=1
+- dataset.n_train=1000
+- dataset.frequency=3
+- model.ff_amplitudes=False

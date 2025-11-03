@@ -1,0 +1,35 @@
+seed: 1
+dataset:
+  type: regression
+  label: synthetic_regression
+  n_train: 100
+  n_test: 200
+  n_features: 1
+  n_empty_features: 0
+  noise_std: 0.1
+  ood_input_variance:
+  - 0.01
+  - 0.1
+  - 1.0
+  - 10.0
+  - 100.0
+  frequency: 0.5
+optimization:
+  learning_rate: 0.0001
+  batch_size: 2056
+  epochs: 80000
+model:
+  type: mlp
+  hidden_layers:
+  - 128
+  - 128
+  prior_variance: 0.1
+  ff: 64
+  ff_amplitudes: true
+posterior:
+  type: mfvi
+  weight_variance_init: 1
+  bias_variance_init: 1
+  num_samples: 2
+  temperature: 0.1
+  posterior_exponentiation: tempered

@@ -1,0 +1,7 @@
+- optimization.epochs=80000
+- posterior.temperature=0.0001
+- seed=1
+- dataset.n_train=1000
+- dataset.frequency=8
+- model.ff_amplitudes=True
+- optimization.learning_rate=0.0001

@@ -81,7 +81,7 @@ class MFVILayer(BaseInferenceLayer):
         weight_dist, bias_dist = self.get_approx_posteriors()
         weight_sample = weight_dist.rsample((n_samples,))
         if self.mu_b is None:
-            bias_sample = torch.ones(1)/(self.layer.bias_shape[0]/2)
+            bias_sample = (torch.ones(1)/(self.layer.bias_shape[0]/2)).to(weight_sample.device)  # dummy bias sample
         else:
             bias_sample = bias_dist.rsample((n_samples,))
         return weight_sample, bias_sample
@@ -94,7 +94,7 @@ class MFVILayer(BaseInferenceLayer):
         weight_approx_posterior, bias_approx_posterior = self.get_approx_posteriors()
         kl_weight = torch.distributions.kl_divergence(weight_approx_posterior, weight_prior_dist).sum()
         if self.mu_b is None:
-            kl_bias = torch.zeros(1)
+            kl_bias = torch.zeros(1).to(kl_weight.device)
         else:
             kl_bias = torch.distributions.kl_divergence(bias_approx_posterior, bias_prior_dist).sum()
         return - (kl_weight + kl_bias)
