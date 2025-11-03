@@ -1,0 +1,6 @@
+type: mfvi
+weight_variance_init: 1
+bias_variance_init: 1
+num_samples: 2
+temperature: 1
+posterior_exponentiation: tempered

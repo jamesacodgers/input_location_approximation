@@ -4,15 +4,75 @@ import matplotlib.pyplot as plt
 import torch 
 import wandb
 import os
+import random
 
 import numpy as np
 
 from src.synthetic_data import generate_clean_synthetic_function
+
+def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders, epoch, label="final"):
+    val_ll = torch.zeros(1)
+    ood_ll = torch.zeros(1)
+    results_dict = {"epoch":epoch}
+    # for x,y in val_dataloader:
+    #     x = x.to(model.device)
+    #     y = y.to(model.device)
+    #     preds = model.predict(x)
+    #     val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+    # results_dict["val_ll"] = val_ll.item()/len(val_dataloader.dataset)
+    # print(f"Validation log likelihood: {val_ll.item()/len(val_dataloader.dataset)}")
+    for ood_variance,ood_dataloader in zip(cfg.dataset.ood_input_variance, ood_dataloaders):
+        ood_ll = torch.zeros(1)
+        for x,y in ood_dataloader:
+            x = x.to(model.device)
+            y = y.to(model.device)
+            preds = model.predict(x)
+            ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+        results_dict[f"ood_ll_var_{ood_variance}"] = ood_ll.item()/len(ood_dataloader.dataset)
+        print(f"OOD log likelihood with variance {ood_variance}: {ood_ll.item()/len(ood_dataloader.dataset)}")
+    wandb.log(results_dict)
+    save_results_to_csv(cfg, results_dict)
+    
+    if cfg.posterior.get("temperature") is not None:
+        title = f"{label}_predictions_temp_{cfg.posterior.temperature}"
+    else: 
+        title = f"{label}_{cfg.posterior.type}"
+
+    plot_predictions(cfg, model, train_dataloader, val_dataloader, title+"_iid")
+    plot_predictions(cfg, model, train_dataloader, ood_dataloader, title+"_ood")
+
+    plot_model_ft(cfg, model, x_min=-10, x_max=10, max_frequency=2**13, name=title+"_ft", n_samples=100)
+
+def set_seeds(seed):
+    """Set seeds for reproducibility across all random number generators.
+    
+    Args:
+        seed (int): The seed value to use for all random number generators
+    """
+    # Python's built-in random module
+    random.seed(seed)
+    
+    # NumPy
+    np.random.seed(seed)
+    
+    # PyTorch
+    torch.manual_seed(seed)
+    
+    # PyTorch CUDA (if available)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)  # For multi-GPU setups
+    
+    # Uncomment for additional for full reproducibility, but slower code
+    # torch.backends.cudnn.deterministic = True
+    # torch.backends.cudnn.benchmark = False
+
+
 def save_results_to_csv(cfg, results_dict):
     """Save results in current Hydra output directory."""
-
-    results_dict["temperature"] = cfg.posterior.temperature
-    results_dict["posterior_type"] = cfg.posterior.type
+    if cfg.posterior.get("temperature") is not None:
+        results_dict["temperature"] = cfg.posterior.temperature
+        results_dict["posterior_type"] = cfg.posterior.type  
     results_dict["seed"] = cfg.seed
     results_dict["n_train"] = cfg.dataset.n_train
     results_dict["frequency"] = cfg.dataset.frequency

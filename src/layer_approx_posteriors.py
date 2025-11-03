@@ -45,8 +45,8 @@ class MAPLayer(BaseInferenceLayer):
 class EnsembleLayer(BaseInferenceLayer):
     def __init__(self, layer: BaseLayer, n_samples):
         super(EnsembleLayer,self).__init__(layer)
-        self.weight_samples = torch.nn.Parameter(torch.randn(n_samples, layer.weight_shape))
-        self.bias_samples = torch.nn.Parameter(torch.randn(n_samples, layer.bias_shape))
+        self.weight_samples = torch.nn.Parameter(torch.randn(n_samples, *layer.weight_shape))
+        self.bias_samples = torch.nn.Parameter(torch.randn(n_samples, *layer.bias_shape))
 
     def get_parameter_samples(self):
         return self.weight_samples, self.bias_samples

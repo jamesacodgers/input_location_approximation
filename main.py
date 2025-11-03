@@ -10,10 +10,10 @@ import wandb
 import hydra
 from omegaconf import DictConfig, OmegaConf
 
-from src.approx_bnn import MAPPosterior, MFVIPosterior
+from src.approx_posterior_bnn import EnsemblePosterior, MAPPosterior, MFVIPosterior
 from src.layer_priors import FourierLayer, LinearLayer
 import tqdm
-from src.utils import plot_model_ft, save_results_to_csv, plot_predictions
+from src.utils import set_seeds, test_model
 
 from torch.utils.data import DataLoader
 from src.synthetic_data import generate_ood_synthetic_data, generate_synthetic_data, generate_clean_synthetic_function
@@ -22,29 +22,7 @@ from src.synthetic_data import generate_ood_synthetic_data, generate_synthetic_d
 
 # Simple config - you can replace this with Hydra later
 
-def set_seeds(seed):
-    """Set seeds for reproducibility across all random number generators.
-    
-    Args:
-        seed (int): The seed value to use for all random number generators
-    """
-    # Python's built-in random module
-    random.seed(seed)
-    
-    # NumPy
-    np.random.seed(seed)
-    
-    # PyTorch
-    torch.manual_seed(seed)
-    
-    # PyTorch CUDA (if available)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed(seed)
-        torch.cuda.manual_seed_all(seed)  # For multi-GPU setups
-    
-    # Uncomment for additional for full reproducibility, but slower code
-    # torch.backends.cudnn.deterministic = True
-    # torch.backends.cudnn.benchmark = False
+
 
 def get_likelihood(cfg):
     if cfg.dataset.type == "regression":
@@ -58,7 +36,7 @@ def get_likelihood(cfg):
 def get_bnn_layer_priors(cfg, input_dim, output_dim, device):
     """Simple model - replace with your BNN later."""
     prior = []
-    if cfg.model.ff != "none":
+    if cfg.model.ff != "None":
         weight_prior = torch.distributions.Normal(torch.zeros(input_dim, cfg.model.ff).to(device), cfg.model.prior_variance*torch.ones(input_dim, cfg.model.ff).to(device))
         if cfg.model.ff_amplitudes: # biases are the amplitudes for the ff layer, if we don't learn them set this bias to none
             bias_prior = torch.distributions.Normal(torch.zeros(cfg.model.ff).to(device), cfg.model.prior_variance*torch.ones(cfg.model.ff).to(device))
@@ -88,11 +66,13 @@ def get_bnn_layer_priors(cfg, input_dim, output_dim, device):
 def get_approx_posterior_model(cfg, layer_priors, likelihood):
     """Get the approximate posterior model."""
     if cfg.posterior.type == "map":
-        return MAPPosterior(layer_priors=layer_priors, likelihood=likelihood, total_data_points=cfg.dataset.n_train, batch_size=cfg.optimization.batch_size,device="cuda" if torch.cuda.is_available() else "cpu", temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation)
+        return MAPPosterior(layer_priors=layer_priors, likelihood=likelihood,device="cuda" if torch.cuda.is_available() else "cpu")
     elif cfg.posterior.type == "mfvi":
-        return MFVIPosterior(layer_priors=layer_priors, likelihood=likelihood, total_data_points=cfg.dataset.n_train, batch_size=cfg.optimization.batch_size,device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation)
+        return MFVIPosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation)
+    elif cfg.posterior.type == "ensemble":
+        return EnsemblePosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples)
     else:
-        raise NotImplementedError("Only MLP model is implemented in this example.")
+        raise NotImplementedError()
     
 def get_optimizer(cfg, model, train_dataset, test_dataset):
     """Get optimizer and data loaders."""
@@ -130,17 +110,7 @@ def get_ood_data_loaders(cfg):
 
 
 
-def save_checkpoint(model, optimizer, epoch, loss, filepath):
-    """Save model checkpoint."""
-    torch.save({
-        'epoch': epoch,
-        'model_state_dict': model.state_dict(),
-        'loss': loss,
-        'optimizer_state_dict': optimizer.state_dict()
-    }, filepath)
-    
-    # Save to wandb
-    wandb.save(filepath)
+
 
 def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimizer, train_dataloader: torch.utils.data.DataLoader, val_dataloader: torch.utils.data.DataLoader, ood_dataloaders: torch.utils.data.DataLoader, lr_scheduler: torch.optim.lr_scheduler.LRScheduler):
     model.train()
@@ -162,35 +132,9 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
         wandb.log(results_dict)
     return model
 
-def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders, epoch, label="final"):
-    val_ll = torch.zeros(1)
-    ood_ll = torch.zeros(1)
-    results_dict = {"epoch":epoch}
-    # for x,y in val_dataloader:
-    #     x = x.to(model.device)
-    #     y = y.to(model.device)
-    #     preds = model.predict(x)
-    #     val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
-    # results_dict["val_ll"] = val_ll.item()/len(val_dataloader.dataset)
-    # print(f"Validation log likelihood: {val_ll.item()/len(val_dataloader.dataset)}")
-    for ood_variance,ood_dataloader in zip(cfg.dataset.ood_input_variance, ood_dataloaders):
-        ood_ll = torch.zeros(1)
-        for x,y in ood_dataloader:
-            x = x.to(model.device)
-            y = y.to(model.device)
-            preds = model.predict(x)
-            ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
-        results_dict[f"ood_ll_var_{ood_variance}"] = ood_ll.item()/len(ood_dataloader.dataset)
-        print(f"OOD log likelihood with variance {ood_variance}: {ood_ll.item()/len(ood_dataloader.dataset)}")
-    wandb.log(results_dict)
-    save_results_to_csv(cfg, results_dict)
-    
-    plot_predictions(cfg, model, train_dataloader, val_dataloader, f"{label}_iid_predictions_temp_{cfg.posterior.temperature}")
-    plot_predictions(cfg, model, train_dataloader, ood_dataloader, f"{label}_ood_predictions_temp_{cfg.posterior.temperature}")
 
-    plot_model_ft(cfg, model, x_min=-10, x_max=10, max_frequency=2**13, name=f"{label}_model_fourier_transform_temp_{cfg.posterior.temperature}", n_samples=100)
 
-@hydra.main(version_base="1.1", config_path="configs", config_name="synthetic_regression")
+@hydra.main(version_base="1.1", config_path="configs", config_name="config")
 def main(cfg: OmegaConf):
     set_seeds(cfg.seed)
 
