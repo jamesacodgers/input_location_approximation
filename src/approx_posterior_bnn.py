@@ -21,7 +21,7 @@ class BasePosterior(torch.nn.Module,abc.ABC):
         pass
 
     @abc.abstractmethod
-    def get_mean_log_likelihood_contribution(self, predictions, targets):
+    def get_mean_log_likelihood(self, predictions, targets):
         pass
 
     @abc.abstractmethod
@@ -40,10 +40,9 @@ class BasePosterior(torch.nn.Module,abc.ABC):
     def loss(self):
         pass
 
-    def train_step(self, x, y, optimizer):
+    def train_step(self, inputs, targets, optimizer):
         optimizer.zero_grad()
-        output = self.forward(x)
-        loss = self.loss(output, y)
+        loss = self.loss(inputs, targets)
         loss.backward()
         optimizer.step()
         return loss.item()
@@ -81,24 +80,17 @@ class EnsemblePosterior(BasePosterior):
             total_prior += layer.get_prior_contribution()
         return total_prior
 
-    def get_mean_log_likelihood_contribution(self, predictions, targets):
+    def get_mean_log_likelihood(self, predictions, targets):
         return self.likelihood.log_prob(predictions - targets).mean()
-    
-    def train_step(self, x, y, optimizer):
-        optimizer.zero_grad()
-        output = self.forward(x)
-        loss = self.loss(output, y)
-        loss.backward()
-        optimizer.step()
-        return loss.item()
 
     def predict(self, x):
         with torch.no_grad():
             return self.forward(x).mean(dim=0)
         
-    def loss(self, predictions, targets):
+    def loss(self, inputs, targets):
+        predictions = self.forward(inputs)
         prior_contribution = self.get_prior_contribution()
-        mean_log_likelihood_contribution = self.get_mean_log_likelihood_contribution(predictions, targets)
+        mean_log_likelihood_contribution = self.get_mean_log_likelihood(predictions, targets)
         return - (prior_contribution/targets.shape[0] + mean_log_likelihood_contribution)
     
     def sample_functions(self, x, n_samples):
@@ -132,16 +124,17 @@ class MAPPosterior(BasePosterior):
             total_prior += layer.get_prior_contribution()
         return total_prior
 
-    def get_mean_log_likelihood_contribution(self, predictions, targets):
+    def get_mean_log_likelihood(self, predictions, targets):
         return self.likelihood.log_prob(predictions - targets).mean()
     
     def predict(self, x):
         with torch.no_grad():
             return self.forward(x)
         
-    def loss(self, predictions, targets):
+    def loss(self, inputs, targets):
+        predictions = self.forward(inputs)
         prior_contribution = self.get_prior_contribution()
-        mean_log_likelihood_contribution = self.get_mean_log_likelihood_contribution(predictions, targets)
+        mean_log_likelihood_contribution = self.get_mean_log_likelihood(predictions, targets)
         return - (prior_contribution/targets.shape[0] + mean_log_likelihood_contribution)
     
     def sample_functions(self, x, n_samples):
@@ -172,7 +165,7 @@ class MFVIPosterior(BasePosterior):
             total_prior += layer.get_prior_contribution()
         return total_prior
 
-    def get_mean_log_likelihood_contribution(self, predictions, targets):
+    def get_mean_log_likelihood(self, predictions, targets):
         return self.likelihood.log_prob(predictions - targets).mean()
     
     def predict(self, x, n_samples=1024):
@@ -196,10 +189,37 @@ class MFVIPosterior(BasePosterior):
             upper_bound = preds[upper_idx]
         return lower_bound, upper_bound
     
-    def loss(self, predictions, targets):
+    def loss(self, inputs, targets):
+        predictions = self.forward(inputs)
         prior_contribution = self.get_prior_contribution()
-        mean_log_likelihood_contribution = self.get_mean_log_likelihood_contribution(predictions, targets)
+        mean_log_likelihood_contribution = self.get_mean_log_likelihood(predictions, targets)
         if self.posterior_exponentiation == "tempered":
             return - (prior_contribution/targets.shape[0] + 1/self.temperature*mean_log_likelihood_contribution)
         elif self.posterior_exponentiation == "cold":
             return - 1/self.temperature*(prior_contribution/targets.shape[0] + mean_log_likelihood_contribution)
+        
+class WeightedMFVIPosterior(MFVIPosterior):
+    def __init__(self, layer_priors: list[MFVILayer], likelihood: torch.distributions.Distribution,  device: str, num_samples: int, temperature: float, posterior_exponentiation: str, weighting_function: callable):
+        super(WeightedMFVIPosterior,self).__init__( 
+                                                   layer_priors=layer_priors, 
+                                                   likelihood=likelihood,  
+                                                   device=device, 
+                                                   num_samples=num_samples, 
+                                                   temperature=temperature, 
+                                                   posterior_exponentiation=posterior_exponentiation
+                                                   )
+        self.weighting_function = weighting_function
+
+    def get_likelihoods(self, predictions, targets):
+        return self.likelihood.log_prob(predictions - targets)
+
+    def loss(self, inputs, targets):
+        predictions = self.forward(inputs)
+        prior_contribution = self.get_prior_contribution()
+        likelihoods = self.get_likelihoods(predictions, targets)
+        weights = self.weighting_function(inputs)
+        weighted_mean_likelihoods = (weights[None,...]*likelihoods).mean()
+        if self.posterior_exponentiation == "tempered":
+            return - (prior_contribution/targets.shape[0] + 1/self.temperature*weighted_mean_likelihoods)
+        elif self.posterior_exponentiation == "cold":
+            return - 1/self.temperature*(prior_contribution/targets.shape[0] + weighted_mean_likelihoods)

@@ -21,8 +21,8 @@ model:
   type: mlp
   hidden_layers: [128,128]
   prior_variance: 0.1
-  ff: None
-  ff_amplitudes: False
+  ff: 64
+  ff_amplitudes: True
 
 defaults:
   - posterior: map

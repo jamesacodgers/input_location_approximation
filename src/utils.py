@@ -27,7 +27,7 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders, epo
             x = x.to(model.device)
             y = y.to(model.device)
             preds = model.predict(x)
-            ood_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
+            ood_ll += (model.get_mean_log_likelihood(preds,y)*x.shape[0]).item()
         results_dict[f"ood_ll_var_{ood_variance}"] = ood_ll.item()/len(ood_dataloader.dataset)
         print(f"OOD log likelihood with variance {ood_variance}: {ood_ll.item()/len(ood_dataloader.dataset)}")
     wandb.log(results_dict)

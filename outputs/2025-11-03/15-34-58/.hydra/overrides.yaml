@@ -1,0 +1,2 @@
+- posterior=ensemble
+- optimization.epochs=80_000

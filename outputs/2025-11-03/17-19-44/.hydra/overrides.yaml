@@ -1,0 +1,3 @@
+- posterior=wmfvi
+- optimization.epochs=80_000
+- posterior.temperature=1e-5

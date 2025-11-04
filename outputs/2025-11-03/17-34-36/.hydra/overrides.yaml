@@ -1,0 +1,3 @@
+- posterior=mfvi
+- optimization.epochs=80_000
+- posterior.temperature=1e-7
