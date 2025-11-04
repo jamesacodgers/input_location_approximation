@@ -1,0 +1,9 @@
+- posterior=mfvi
+- optimization.epochs=80000
+- posterior.temperature=10
+- seed=1
+- dataset.n_train=100
+- dataset.frequency=0.5
+- model.ff_amplitudes=False
+- model.ff=64
+- optimization.learning_rate=0.0001
