@@ -116,39 +116,44 @@ class MFVILayer(BaseInferenceLayer):
         return out
     
 class SBVILayer(BaseInferenceLayer):
-    def __init__(self, layer: BaseLayer, num_samples=1):
+    def __init__(self, layer: BaseLayer, n_squash_vectors, num_samples=1):
         super(SBVILayer,self).__init__(layer)
         self.mu_w = torch.nn.Parameter(torch.randn(layer.weight_shape))
-        self.w_squash = torch.nn.Parameter(1e-3*torch.ones(layer.weight_shape))
+        self.w_squash = torch.nn.Parameter(1e-3*torch.randn(n_squash_vectors,*layer.weight_shape))
 
         self.mu_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
-        self.b_squash = torch.nn.Parameter(1e-3*torch.ones(layer.bias_shape))
+        self.b_squash = torch.nn.Parameter(1e-3*torch.randn(n_squash_vectors, *layer.bias_shape))
         self.num_samples = num_samples
 
-    def get_parameter_samples(self, std_scaling, squash_scaling, n_samples=None):
+    def get_parameter_samples(self, std_scaling, n_samples=None):
         if n_samples is None:
             n_samples = self.num_samples
-        scaled_w_squash = self.w_squash/squash_scaling
 
         w_e = torch.randn([n_samples, *self.layer.weight_shape]).to(self.w_squash.device)
-        w_e = w_e - torch.sum(w_e*scaled_w_squash[None,...], dim=[-1,-2], keepdim=True)*scaled_w_squash[None,...]
+
+        temp_w = torch.sum(w_e[:, None,:,:]*self.w_squash[None,:,:,:], dim=[-1,-2]) # [s,r]
+        temp_w = torch.sum(temp_w[:,:,None,None]*self.w_squash[None,:,:,:], dim=1) # [s, p,q] 
+
+        w_e = w_e - temp_w
         weight_sample = self.mu_w + std_scaling*w_e
 
-        scaled_b_squash = self.b_squash/squash_scaling
-        b_e = torch.randn([n_samples, *self.layer.bias_shape]).to(self.b_squash.device)
-        b_e = b_e - torch.sum(b_e*scaled_b_squash[None,...], dim=-1, keepdim=True)*scaled_b_squash[None,...]
+
+        b_e = torch.randn([n_samples, *self.layer.bias_shape]).to(self.b_squash.device) # [s, p]
+        temp_b = torch.sum(b_e[:, None,:]*self.b_squash[None,:,:], dim=-1) # finding projection # [s, r]
+        temp_b = torch.sum(temp_b[:,:,None]*self.b_squash[None,:,:], dim=1) # [s, p] 
+        b_e = b_e - temp_b
         bias_sample = self.mu_b + std_scaling*b_e
         
         return weight_sample, bias_sample
     
     def get_squashed_scale(self):
-        return torch.sum(self.b_squash**2) + torch.sum(self.w_squash**2)
+        return torch.sum(self.b_squash[None,:,:]* self.b_squash[:,None,:], dim=-1) + torch.sum(self.w_squash[None,:,:,:]* self.w_squash[:,None,:,:],dim=[-1,-2])
 
     def get_prior_contribution(self):
         raise AssertionError("The prior contribution needs to be handled by the approx posterior parent class for SBVI")
 
-    def forward(self, x, std_scaling, squash_scaling, n_samples=None):
-        weights, bias = self.get_parameter_samples(std_scaling, squash_scaling, n_samples=n_samples)
+    def forward(self, x, std_scaling, n_samples=None):
+        weights, bias = self.get_parameter_samples(std_scaling, n_samples=n_samples)
         out = self.layer.forward(x, weights, bias)
         return out
     

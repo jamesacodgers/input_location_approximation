@@ -1,0 +1,3 @@
+- optimization.epochs=500_000
+- optimization.learning_rate=5e-3
+- dataset.n_train=100

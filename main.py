@@ -74,9 +74,8 @@ def get_approx_posterior_model(cfg, layer_priors, likelihood):
         return WeightedMFVIPosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation, weighting_function=weighting_function)
     elif cfg.posterior.type == "ensemble":
         return EnsemblePosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples)
-    #todo: main function to pass in values for SBVI
     elif cfg.posterior.type == "sbvi":
-        return SBVIPosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation)
+        return SBVIPosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, n_squash_vectors=cfg.posterior.num_squash_vectors, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation)
     else:
         raise NotImplementedError()
     

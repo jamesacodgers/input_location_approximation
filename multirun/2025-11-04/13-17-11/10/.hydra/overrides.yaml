@@ -1,0 +1,6 @@
+- posterior=wmfvi
+- optimization.epochs=80000
+- posterior.temperature=0.01
+- dataset.n_train=1000
+- dataset.frequency=1
+- optimization.learning_rate=0.01
