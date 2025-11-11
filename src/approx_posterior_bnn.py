@@ -235,7 +235,7 @@ class SBVIPosterior(BasePosterior):
         for layer in self.layers:
             n_params += torch.prod(torch.tensor(layer.mu_w.shape))
             n_params += torch.prod(torch.tensor(layer.mu_b.shape))
-        self.n_params = n_params
+        self.n_params = torch.tensor([n_params]).to(device)
         
         self.posterior_exponentiation = posterior_exponentiation
         self.temperature = temperature
@@ -248,7 +248,7 @@ class SBVIPosterior(BasePosterior):
         return x
 
     def get_squash_eigvals_norm(self):
-        squash_scaling = torch.zeros(self.n_squash_vectors, self.n_squash_vectors)
+        squash_scaling = torch.zeros(self.n_squash_vectors, self.n_squash_vectors).to(self.device)
         for layer in self.layers:
             squash_scaling += layer.get_squashed_scale()
         eigvals = torch.linalg.eigvals(squash_scaling).real
@@ -259,12 +259,12 @@ class SBVIPosterior(BasePosterior):
         """
         gets total prior contribution from all layers
         """
-        prior_var = self.layers[0].layer.weight_prior.variance[0,0]
+        prior_var = self.layers[0].layer.weight_prior.variance[0,0].to(self.device)
         squash_eigvals = self.get_squash_eigvals_norm()
         var_scaling = torch.exp(self._raw_std_scaling)**2
         squash_scaled_vars = (((1 - squash_eigvals)**2 ) * var_scaling)
 
-        squared_mean = torch.zeros(1)
+        squared_mean = torch.zeros(1).to(self.device)
         for layer in self.layers:
             squared_mean += layer.get_mean_squared()
 

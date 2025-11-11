@@ -1,0 +1,2 @@
+epoch,ood_ll_var_0.01,ood_ll_var_0.1,ood_ll_var_1.0,ood_ll_var_10.0,ood_ll_var_100.0,temperature,posterior_type,seed,n_train,frequency
+80000,0.8302222290039063,0.742111328125,0.7989844970703125,0.5454085083007812,-16.0273837890625,1,mfvi,1,1000,1

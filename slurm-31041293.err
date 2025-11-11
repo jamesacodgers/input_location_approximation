@@ -1,0 +1,305 @@
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: Currently logged in as: james-a-c-odgers (james-a-c-odgers-helmholtz-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: creating run
+wandb: Tracking run with wandb version 0.21.4
+wandb: Run data is saved locally in /ictstr01/home/haicu/james.odgers/input_location_approximation/multirun/2025-11-05/13-06-33/0/wandb/run-20251105_130641-u1s383rx
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run classic-dawn-564
+wandb: ⭐️ View project at https://wandb.ai/james-a-c-odgers-helmholtz-munich/bnn-research
+wandb: 🚀 View run at https://wandb.ai/james-a-c-odgers-helmholtz-munich/bnn-research/runs/u1s383rx
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/src/utils.py:168: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, ax = plt.subplots(1,1,figsize=(8,10))
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: Currently logged in as: james-a-c-odgers (james-a-c-odgers-helmholtz-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.21.4
+wandb: Run data is saved locally in /ictstr01/home/haicu/james.odgers/input_location_approximation/multirun/2025-11-05/22-52-52/0/wandb/run-20251105_225255-yd0kleuf
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run warm-night-565
+wandb: ⭐️ View project at https://wandb.ai/james-a-c-odgers-helmholtz-munich/bnn-research
+wandb: 🚀 View run at https://wandb.ai/james-a-c-odgers-helmholtz-munich/bnn-research/runs/yd0kleuf
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/src/utils.py:168: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, ax = plt.subplots(1,1,figsize=(8,10))
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
