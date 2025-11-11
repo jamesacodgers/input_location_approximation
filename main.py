@@ -10,7 +10,7 @@ import wandb
 import hydra
 from omegaconf import DictConfig, OmegaConf
 
-from src.approx_posterior_bnn import EnsemblePosterior, MAPPosterior, MFVIPosterior, WeightedMFVIPosterior
+from src.approx_posterior_bnn import EnsemblePosterior, MAPPosterior, MFVIPosterior, SBVIPosterior, WeightedMFVIPosterior
 from src.layer_priors import FourierLayer, LinearLayer
 import tqdm
 from src.utils import set_seeds, test_model
@@ -74,6 +74,9 @@ def get_approx_posterior_model(cfg, layer_priors, likelihood):
         return WeightedMFVIPosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation, weighting_function=weighting_function)
     elif cfg.posterior.type == "ensemble":
         return EnsemblePosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples)
+    #todo: main function to pass in values for SBVI
+    elif cfg.posterior.type == "sbvi":
+        return SBVIPosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation)
     else:
         raise NotImplementedError()
     
@@ -128,10 +131,10 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
             results_dict = {}
             results_dict["train_loss"] = train_loss
             
-        # if epoch % 20_000 == 0 : 
-        #     model.eval()
-        #     test_model(cfg, model, train_dataloader, val_dataloader, ood_dataloaders, epoch, label=epoch)
-        #     model.train()
+        if epoch % 10_000 == 0 : 
+            model.eval()
+            test_model(cfg, model, train_dataloader, val_dataloader, ood_dataloaders, epoch, label=epoch)
+            model.train()
         wandb.log(results_dict)
     return model
 

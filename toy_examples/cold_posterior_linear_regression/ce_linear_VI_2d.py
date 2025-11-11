@@ -159,7 +159,7 @@ def generate_synthetic_data(n_samples=100, n_features=3, noise_std=0.1, seed=42)
     
     # Generate correlated features using multivariate normal
     # Create covariance matrix with strong correlation between features
-    correlation = 0.8  # Strong positive correlation
+    correlation = 1  # Strong positive correlation
     cov_matrix = np.array([[1.0, correlation],
                           [correlation, 1.0]])
     
@@ -214,6 +214,8 @@ def compare_posteriors(X, y, w_true, alpha=1.0, beta=100.0):
     analytical = BayesianLinearRegression(alpha=alpha, beta=beta)
     mu_true, Sigma_true = analytical.analytical_posterior(X, y)
     
+    temperature = 0.01
+
     # Standard VI (no temperature scaling)
     vi_model_standard, losses_standard = fit_variational_regression(
         X, y, alpha=alpha, beta=beta, temperature=1.0, 
@@ -222,13 +224,13 @@ def compare_posteriors(X, y, w_true, alpha=1.0, beta=100.0):
     
     # Cold posterior VI (T=0.8: scales both likelihood and prior by 1/T)
     vi_model_cold, losses_cold = fit_variational_regression(
-        X, y, alpha=alpha, beta=beta, temperature=0.8, 
+        X, y, alpha=alpha, beta=beta, temperature=temperature, 
         posterior_type="cold", model_name="Cold VI (T=0.8)"
     )
     
     # Tempered posterior VI (λ=0.8: scales only likelihood by 1/λ)
     vi_model_tempered, losses_tempered = fit_variational_regression(
-        X, y, alpha=alpha, beta=beta, temperature=0.8, 
+        X, y, alpha=alpha, beta=beta, temperature=temperature, 
         posterior_type="tempered", model_name="Tempered VI (λ=0.8)"
     )
     
