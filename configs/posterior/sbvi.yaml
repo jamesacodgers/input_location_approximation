@@ -4,4 +4,4 @@ bias_variance_init: 1
 num_samples: 2
 temperature: 1
 posterior_exponentiation: tempered
-num_squash_vectors: 0
+num_squash_vectors: 10
