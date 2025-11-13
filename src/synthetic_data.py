@@ -61,19 +61,50 @@ def apply_gaussian_noise(f, noise_std: float = 0.1) -> torch.Tensor:
     noise = torch.randn_like(f) * noise_std
     return f + noise
 
-def generate_synthetic_data(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9, noise_std: float = 0.1, input_std: float = 1.0, frequency: float = 1.0):
+def generate_sin_data(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9, noise_std: float = 0.1, input_std: float = 1.0, frequency: float = 1.0):
     x = get_random_linear_input_data(n_samples, n_features, n_empty_features, input_std)
     f = synthetic_function(x, frequency)
     y = apply_gaussian_noise(f, noise_std)
     return x, y
 
-def generate_clean_synthetic_function(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9, min_x = -3, max_x = 3, frequency: float = 1.0):
+def generate_clean_sin_function(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9, min_x = -3, max_x = 3, frequency: float = 1.0):
     x = get_linspace_linear_input_data(n_samples, n_features, n_empty_features, min_x, max_x)
     f = synthetic_function(x, frequency)
     return x, f
 
 def generate_ood_synthetic_data(n_samples: int, n_features: int, n_empty_features: int, noise_std: float, input_std: float, frequency: float):
-    x,y = generate_synthetic_data(n_samples, n_features, n_empty_features, noise_std, input_std, frequency)
+    x,y = generate_sin_data(n_samples, n_features, n_empty_features, noise_std, input_std, frequency)
     return x, y
 
+def generate_spiked_linear_data(n_samples, rank , n_features, noise_std, beta_std):
+    if rank != 1:
+        raise NotImplementedError("need to do this ")
+    v = torch.ones(n_features,rank)
+    e = torch.randn(n_samples, rank)
 
+    # inverse cdf sampling
+    dist = torch.distributions.Normal(0, beta_std)
+    u = torch.linspace(1e-3,1-1e-3,n_features)
+    beta = dist.icdf(u).reshape(1,-1)
+
+    X = e @ v.T
+
+    y = X @ beta.T 
+    y = y + torch.randn_like(y)*noise_std
+    return X, y
+
+def generate_clean_spiked_linear_function(n_samples, min_x, max_x, rank , n_features, beta_std):
+    if rank != 1:
+        raise NotImplementedError("need to do this ")
+    v = torch.ones(n_features,rank)
+    e = torch.linspace(min_x, max_x, n_samples).reshape(n_samples,rank)
+
+    # inverse cdf sampling
+    dist = torch.distributions.Normal(0, beta_std)
+    u = torch.linspace(1e-3,1-1e-3,n_features)
+    beta = dist.icdf(u).reshape(1,-1)
+
+    X = e @ v.T
+
+    f = X @ beta.T 
+    return X, f

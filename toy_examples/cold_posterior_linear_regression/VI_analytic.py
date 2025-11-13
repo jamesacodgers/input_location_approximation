@@ -142,7 +142,7 @@ if __name__ == "__main__":
         print('='*60)
         
         # Generate data
-        X_train, y_train, true_weights = generate_data(n_samples=5, n_dims=N_DIMS, input_std=input_std, noise_std=NOISE_STD)
+        X_train, y_train, true_weights = generate_data(n_samples=100, n_dims=N_DIMS, input_std=input_std, noise_std=NOISE_STD)
         X_test, y_test = generate_test_data(true_weights, n_samples=2000, input_std=input_std, noise_std=NOISE_STD)
         
         print(f"True weights (first 5): {true_weights[:5].numpy()}")

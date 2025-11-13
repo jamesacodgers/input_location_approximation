@@ -8,19 +8,11 @@ import random
 
 import numpy as np
 
-from src.synthetic_data import generate_clean_synthetic_function
+from src.synthetic_data import generate_clean_sin_function, generate_clean_spiked_linear_function
 
-def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders, epoch, label="final"):
-    val_ll = torch.zeros(1)
+def test_model(cfg,model, train_dataloader, ood_dataloaders, epoch, label="final"):
     ood_ll = torch.zeros(1)
     results_dict = {"epoch":epoch}
-    # for x,y in val_dataloader:
-    #     x = x.to(model.device)
-    #     y = y.to(model.device)
-    #     preds = model.predict(x)
-    #     val_ll += (model.get_mean_log_likelihood_contribution(preds,y)*x.shape[0]).item()
-    # results_dict["val_ll"] = val_ll.item()/len(val_dataloader.dataset)
-    # print(f"Validation log likelihood: {val_ll.item()/len(val_dataloader.dataset)}")
     for ood_variance,ood_dataloader in zip(cfg.dataset.ood_input_variance, ood_dataloaders):
         ood_ll = torch.zeros(1)
         for x,y in ood_dataloader:
@@ -38,10 +30,10 @@ def test_model(cfg,model, train_dataloader, val_dataloader, ood_dataloaders, epo
     else: 
         title = f"{label}_{cfg.posterior.type}"
 
-    plot_predictions(cfg, model, train_dataloader, val_dataloader, title+"_iid")
-    plot_predictions(cfg, model, train_dataloader, ood_dataloader, title+"_ood")
-
-    plot_model_ft(cfg, model, x_min=-10, x_max=10, max_frequency=2**13, name=title+"_ft", n_samples=100)
+    plot_predictions(cfg, model, train_dataloader, title+"_iid", margin=1)
+    plot_predictions(cfg, model, train_dataloader, title+"_ood", margin=10)
+    if cfg.dataset.label=="sin":
+        plot_model_ft(cfg, model, x_min=-10, x_max=10, max_frequency=2**13, name=title+"_ft", n_samples=10)
 
 def set_seeds(seed):
     """Set seeds for reproducibility across all random number generators.
@@ -75,7 +67,10 @@ def save_results_to_csv(cfg, results_dict):
         results_dict["posterior_type"] = cfg.posterior.type  
     results_dict["seed"] = cfg.seed
     results_dict["n_train"] = cfg.dataset.n_train
-    results_dict["frequency"] = cfg.dataset.frequency
+    
+    # Only add frequency if it exists in config
+    if "frequency" in cfg.dataset:
+        results_dict["frequency"] = cfg.dataset.frequency
     
     # Check if file exists
     file_exists = os.path.exists('results.csv')
@@ -88,10 +83,15 @@ def save_results_to_csv(cfg, results_dict):
             writer.writeheader()
         writer.writerow(results_dict)
 
-def plot_predictions(cfg, model, train_dataloader, val_dataloader, name: str):
-    min_x = val_dataloader.dataset.tensors[0].min()
-    max_x = val_dataloader.dataset.tensors[0].max()
-    x_lin,f = generate_clean_synthetic_function(n_samples=200, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, min_x=min_x, max_x=max_x, frequency=cfg.dataset.frequency)
+def plot_predictions(cfg, model, train_dataloader, name: str, margin=1):
+    min_x = train_dataloader.dataset.tensors[0].min()-margin
+    max_x = train_dataloader.dataset.tensors[0].max()+margin
+    if cfg.dataset.label =="sin":
+        x_lin,f = generate_clean_sin_function(n_samples=200, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, min_x=min_x, max_x=max_x, frequency=cfg.dataset.frequency)
+    elif cfg.dataset.label=="spiked_linear":
+        x_lin, f = generate_clean_spiked_linear_function(n_samples=200, n_features=cfg.dataset.n_features, min_x=min_x, max_x=max_x, rank=cfg.dataset.rank, beta_std=cfg.model.prior_std)
+    else:
+        raise NotImplementedError("whoops")
     x_lin = x_lin.to(model.device)
 
     preds = model.predict(x_lin)
@@ -101,8 +101,6 @@ def plot_predictions(cfg, model, train_dataloader, val_dataloader, name: str):
         fig,ax = plt.subplots()
         for x,y in train_dataloader: 
             ax.scatter(x[:,0].cpu(),y.cpu(), c="orange", label="train_data")
-        for x,y in val_dataloader: 
-            ax.scatter(x[:,0].cpu(),y.squeeze().cpu(), c="blue", label="val_data")
         ax.plot(x_lin[:,0].cpu(),f.cpu(), c="green", label="true_function")
         ax.plot(x_lin[:,0].cpu(), preds[:,0].cpu(), c="red", label="predictions")
         ax.fill_between(x_lin[:,0].cpu(), lower[:,0].cpu(), upper[:,0].cpu(), color="red", alpha=0.3, label="95% CI")

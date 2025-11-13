@@ -259,7 +259,7 @@ class SBVIPosterior(BasePosterior):
         """
         gets total prior contribution from all layers
         """
-        prior_var = self.layers[0].layer.weight_prior.variance[0]
+        prior_var = self.layers[0].layer.weight_prior.variance[0,0]
         squash_eigvals = self.get_squash_eigvals_norm()
         var_scaling = torch.exp(self._raw_std_scaling)**2
         squash_scaled_vars = (((1 - squash_eigvals)**2 ) * var_scaling)

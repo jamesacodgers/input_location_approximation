@@ -1,0 +1,6 @@
+- optimization.epochs=100_000
+- optimization.learning_rate=1e-5
+- dataset.n_train=100
+- dataset.n_features=1000
+- posterior.temperature=1
+- posterior.num_squash_vectors=0

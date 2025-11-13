@@ -16,7 +16,7 @@ import tqdm
 from src.utils import set_seeds, test_model
 
 from torch.utils.data import DataLoader
-from src.synthetic_data import generate_ood_synthetic_data, generate_synthetic_data, generate_clean_synthetic_function
+from src.synthetic_data import generate_ood_synthetic_data, generate_sin_data, generate_clean_sin_function, generate_spiked_linear_data
 
 
 
@@ -51,8 +51,8 @@ def get_bnn_layer_priors(cfg, input_dim, output_dim, device):
         for i in range(len(layer_sizes) - 1):
             in_features = layer_sizes[i]
             out_features = layer_sizes[i + 1]
-            weight_prior = torch.distributions.Normal(torch.zeros(out_features, in_features).to(device), cfg.model.prior_variance*torch.ones(out_features, in_features).to(device))
-            bias_prior = torch.distributions.Normal(torch.zeros(out_features).to(device), cfg.model.prior_variance*torch.ones(out_features).to(device))
+            weight_prior = torch.distributions.Normal(torch.zeros(out_features, in_features).to(device), cfg.model.prior_std*torch.ones(out_features, in_features).to(device))
+            bias_prior = torch.distributions.Normal(torch.zeros(out_features).to(device), cfg.model.prior_std*torch.ones(out_features).to(device))
             if i < len(layer_sizes) - 2:
                 activation = torch.nn.ReLU()
             else:
@@ -79,45 +79,57 @@ def get_approx_posterior_model(cfg, layer_priors, likelihood):
     else:
         raise NotImplementedError()
     
-def get_optimizer(cfg, model, train_dataset, test_dataset):
+def get_optimizer(cfg, model, train_dataset):
     """Get optimizer and data loaders."""
     from torch.utils.data import DataLoader
 
     train_loader = DataLoader(train_dataset, batch_size=cfg.optimization.batch_size, shuffle=True)
-    test_loader = DataLoader(test_dataset, batch_size=cfg.optimization.batch_size, shuffle=False)
 
     optimizer = optim.Adam(model.parameters(), lr=cfg.optimization.learning_rate)
 
     lr_scheduler = None
 
-    return optimizer, lr_scheduler, train_loader, test_loader
+    return optimizer, lr_scheduler, train_loader
 
 def get_data(cfg):
     """Simple data loading - replace with your data loader later."""
-
-    x_train, y_train = generate_synthetic_data(n_samples=cfg.dataset.n_train, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, frequency=cfg.dataset.frequency)
-    x_test, y_test = generate_synthetic_data(n_samples=cfg.dataset.n_test, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, frequency=cfg.dataset.frequency)
+    if cfg.dataset.label == "sin":
+        x_train, y_train = generate_sin_data(n_samples=cfg.dataset.n_train, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, frequency=cfg.dataset.frequency)
+    if cfg.dataset.label == "spiked_linear":
+        x_train, y_train = generate_spiked_linear_data(n_samples=cfg.dataset.n_train, rank=cfg.dataset.rank, n_features=cfg.dataset.n_features, noise_std=cfg.dataset.noise_std, beta_std=cfg.model.prior_std)
 
     train_dataset = torch.utils.data.TensorDataset(x_train, y_train)
-    test_dataset = torch.utils.data.TensorDataset(x_test, y_test)
 
-    return train_dataset, test_dataset, x_train.shape[1], y_train.shape[1] 
+    return (
+            train_dataset, 
+            x_train.shape[1], 
+            y_train.shape[1] 
+    )
 
 def get_ood_data_loaders(cfg):
     dataloaders = []
-    for input_std in cfg.dataset.ood_input_variance:
-        ood_x, ood_y = generate_ood_synthetic_data(n_samples=1000, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, input_std=input_std, frequency=cfg.dataset.frequency)
+    if cfg.dataset.label == "sin":
+        for input_std in cfg.dataset.ood_input_variance:
+            ood_x, ood_y = generate_ood_synthetic_data(n_samples=1000, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, input_std=input_std, frequency=cfg.dataset.frequency)
 
-        ood_dataset = torch.utils.data.TensorDataset(ood_x, ood_y)
-        ood_loader = torch.utils.data.DataLoader(ood_dataset, batch_size=cfg.optimization.batch_size, shuffle=False)
-        dataloaders.append(ood_loader)
+            ood_dataset = torch.utils.data.TensorDataset(ood_x, ood_y)
+            ood_loader = torch.utils.data.DataLoader(ood_dataset, batch_size=cfg.optimization.batch_size, shuffle=False)
+            dataloaders.append(ood_loader)
+    if cfg.dataset.label == "spiked_linear":
+        assert len(cfg.dataset.ood_input_variance)==1 
+        for input_std in cfg.dataset.ood_input_variance:
+            ood_x, ood_y = generate_spiked_linear_data(n_samples=cfg.dataset.n_train, rank=cfg.dataset.rank, n_features=cfg.dataset.n_features, noise_std=cfg.dataset.noise_std, beta_std=cfg.model.prior_std)
+
+            ood_dataset = torch.utils.data.TensorDataset(ood_x, ood_y)
+            ood_loader = torch.utils.data.DataLoader(ood_dataset, batch_size=cfg.optimization.batch_size, shuffle=False)
+            dataloaders.append(ood_loader)
     return dataloaders
 
 
 
 
 
-def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimizer, train_dataloader: torch.utils.data.DataLoader, val_dataloader: torch.utils.data.DataLoader, ood_dataloaders: torch.utils.data.DataLoader, lr_scheduler: torch.optim.lr_scheduler.LRScheduler):
+def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimizer, train_dataloader: torch.utils.data.DataLoader, ood_dataloaders: torch.utils.data.DataLoader, lr_scheduler: torch.optim.lr_scheduler.LRScheduler):
     model.train()
 
     for epoch in range(cfg.optimization.epochs):
@@ -132,7 +144,7 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
             
         if epoch % 10_000 == 0 : 
             model.eval()
-            test_model(cfg, model, train_dataloader, val_dataloader, ood_dataloaders, epoch, label=epoch)
+            test_model(cfg, model, train_dataloader, ood_dataloaders, epoch, label=epoch)
             model.train()
         wandb.log(results_dict)
     return model
@@ -156,7 +168,7 @@ def main(cfg: OmegaConf):
     print(f"Using device: {device}")
     
     # Create model, data, optimizer
-    train_dataset, iid_val_dataset, input_dim, output_dim = get_data(cfg)
+    train_dataset, input_dim, output_dim = get_data(cfg)
     ood_dataloaders = get_ood_data_loaders(cfg)
     
 
@@ -166,11 +178,11 @@ def main(cfg: OmegaConf):
     model = get_approx_posterior_model(cfg, layer_priors, likelihood).to(device)
 
 
-    optimizer, lr_scheduler, train_dataloader, val_dataloader = get_optimizer(cfg, model, train_dataset, iid_val_dataset)
+    optimizer, lr_scheduler, train_dataloader = get_optimizer(cfg, model, train_dataset)
 
-    fit_approx_posterior(cfg, model, optimizer, train_dataloader, val_dataloader, ood_dataloaders, lr_scheduler)
+    fit_approx_posterior(cfg, model, optimizer, train_dataloader, ood_dataloaders, lr_scheduler)
 
-    test_model(cfg, model, train_dataloader, val_dataloader, ood_dataloaders, cfg.optimization.epochs)
+    test_model(cfg, model, train_dataloader, ood_dataloaders, cfg.optimization.epochs)
 
 if __name__ == "__main__":
     main()

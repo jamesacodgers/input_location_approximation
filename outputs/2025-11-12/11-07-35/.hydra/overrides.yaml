@@ -1,0 +1,4 @@
+- optimization.epochs=500_000
+- optimization.learning_rate=5e-4
+- dataset.n_train=100
+- posterior.num_squash_vectors=1

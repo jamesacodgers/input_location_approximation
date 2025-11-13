@@ -1,0 +1,8 @@
+type: regression
+label: spiked_linear
+n_train: 1000
+n_test: 200
+rank: 1
+n_features: 10
+noise_std: 1
+ood_input_variance: [1.0]
