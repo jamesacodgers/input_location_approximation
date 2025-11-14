@@ -1,0 +1,28 @@
+posterior:
+  type: mfvi
+  weight_variance_init: 1
+  bias_variance_init: 1
+  num_samples: 2
+  temperature: 1.0e-05
+  posterior_exponentiation: tempered
+dataset:
+  type: regression
+  label: spiked_linear
+  n_train: 100
+  n_test: 200
+  rank: 1
+  n_features: 1000
+  noise_std: 1
+  ood_input_variance:
+  - 1.0
+seed: 0
+optimization:
+  learning_rate: 1.0e-05
+  batch_size: 2056
+  epochs: 500000
+model:
+  type: mlp
+  hidden_layers: []
+  prior_std: 0.01
+  ff: None
+  ff_amplitudes: false

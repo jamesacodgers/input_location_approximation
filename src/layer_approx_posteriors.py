@@ -65,15 +65,43 @@ class EnsembleLayer(BaseInferenceLayer):
 class MFVILayer(BaseInferenceLayer):
     def __init__(self, layer: BaseLayer, num_samples=1):
         super(MFVILayer,self).__init__(layer)
-        self.mu_w = torch.nn.Parameter(torch.randn(layer.weight_shape))
-        self._raw_sigma_w = torch.nn.Parameter(-10*torch.ones(layer.weight_shape))
+        # self.mu_w = torch.nn.Parameter(torch.randn(layer.weight_shape))
+        # self._raw_sigma_w = torch.nn.Parameter(-10*torch.ones(layer.weight_shape))
+        self.eta_1_w = torch.nn.Parameter(torch.randn(layer.weight_shape))
+        self._raw_eta_2_w = torch.nn.Parameter(torch.full(layer.weight_shape, -0.693))
         if layer.bias_prior is None:
-            self.mu_b = None
-            self._raw_sigma_b = None
+            self.eta_1_b = None
+            self._raw_eta_2_b = None
         else: 
-            self.mu_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
-            self._raw_sigma_b = torch.nn.Parameter(-10*torch.ones(layer.bias_shape))
+            # self.mu_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
+            # self._raw_sigma_b = torch.nn.Parameter(-10*torch.ones(layer.bias_shape))
+            self.eta_1_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
+            self._raw_eta_2_b = torch.nn.Parameter(torch.full(layer.bias_shape, -0.693))
         self.num_samples = num_samples
+
+    @property 
+    def mu_b(self): 
+        if self.layer.bias_prior is None:
+            return None
+        else: 
+            return self.Sigma_b*self.eta_1_b
+    
+    @property 
+    def mu_w(self): 
+        return  self.Sigma_w*self.eta_1_w
+    
+    @property 
+    def Sigma_b(self): 
+        if self.layer.bias_prior is None:
+            return None
+        else: 
+            # return torch.exp(self._raw_sigma_b)
+            return 1/(2*torch.exp(self._raw_eta_2_b))
+
+    @property 
+    def Sigma_w(self): 
+        # return  torch.exp(self._raw_sigma_w)
+        return  1/(2*torch.exp(self._raw_eta_2_w))
 
     def get_parameter_samples(self, n_samples=None):
         if n_samples is None:
@@ -100,11 +128,11 @@ class MFVILayer(BaseInferenceLayer):
         return - (kl_weight + kl_bias)
 
     def get_approx_posteriors(self):
-        weight_approx_posterior = torch.distributions.Normal(self.mu_w, torch.nn.functional.softplus(self._raw_sigma_w))
+        weight_approx_posterior = torch.distributions.Normal(self.mu_w, torch.sqrt(self.Sigma_w))
         if self.mu_b is None:
             bias_approx_posterior = None
         else: 
-            bias_approx_posterior = torch.distributions.Normal(self.mu_b, torch.nn.functional.softplus(self._raw_sigma_b))
+            bias_approx_posterior = torch.distributions.Normal(self.mu_b, torch.sqrt(self.Sigma_b))
         return weight_approx_posterior, bias_approx_posterior
 
     def forward(self, x, n_samples=None):
@@ -159,4 +187,87 @@ class SBVILayer(BaseInferenceLayer):
     
     def get_mean_squared(self):
         return torch.sum(self.mu_b**2) + torch.sum(self.mu_w**2)
+
+
+# AI Natural Parameter    
+# class SBVILayer(BaseInferenceLayer):
+#     def __init__(self, layer: BaseLayer, n_squash_vectors, num_samples=1):
+#         super(SBVILayer,self).__init__(layer)
         
+#         # Natural parameters for mean
+#         self.eta_1_w = torch.nn.Parameter(torch.randn(layer.weight_shape))
+#         self.eta_1_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
+        
+#         # Natural parameter for precision (diagonal component)
+#         # Initialize to match unit variance: η₂ = -0.5
+#         self._raw_eta_2_w = torch.nn.Parameter(-0.1 * torch.ones(layer.weight_shape))
+#         self._raw_eta_2_b = torch.nn.Parameter(-0.1 * torch.ones(layer.bias_shape))
+        
+#         # Squashing vectors (low-rank structure)
+#         self.w_squash = torch.nn.Parameter(1e-3*torch.randn(n_squash_vectors, *layer.weight_shape))
+#         self.b_squash = torch.nn.Parameter(1e-3*torch.randn(n_squash_vectors, *layer.bias_shape))
+        
+#         self.num_samples = num_samples
+
+#     @property
+#     def Sigma_w(self):
+#         """Diagonal variance from natural parameters"""
+#         return 1 / (2 * torch.abs(self._raw_eta_2_w))
+    
+#     @property
+#     def Sigma_b(self):
+#         """Diagonal variance from natural parameters"""
+#         return 1 / (2 * torch.abs(self._raw_eta_2_b))
+    
+#     @property
+#     def mu_w(self):
+#         """Mean from natural parameters"""
+#         return self.Sigma_w * self.eta_1_w
+    
+#     @property
+#     def mu_b(self):
+#         """Mean from natural parameters"""
+#         return self.Sigma_b * self.eta_1_b
+
+#     def get_parameter_samples(self, std_scaling, n_samples=None):
+#         if n_samples is None:
+#             n_samples = self.num_samples
+
+#         # Sample weights
+#         w_e = torch.randn([n_samples, *self.layer.weight_shape]).to(self.w_squash.device)
+        
+#         # Project out squashing directions
+#         temp_w = torch.sum(w_e[:, None,:,:]*self.w_squash[None,:,:,:], dim=[-1,-2])  # [s,r]
+#         temp_w = torch.sum(temp_w[:,:,None,None]*self.w_squash[None,:,:,:], dim=1)  # [s, p,q]
+#         w_e = w_e - temp_w
+        
+#         # Scale by sqrt(diagonal variance) and add mean
+#         weight_sample = self.mu_w + std_scaling * torch.sqrt(self.Sigma_w) * w_e
+
+#         # Sample biases
+#         b_e = torch.randn([n_samples, *self.layer.bias_shape]).to(self.b_squash.device)
+        
+#         # Project out squashing directions
+#         temp_b = torch.sum(b_e[:, None,:]*self.b_squash[None,:,:], dim=-1)  # [s, r]
+#         temp_b = torch.sum(temp_b[:,:,None]*self.b_squash[None,:,:], dim=1)  # [s, p]
+#         b_e = b_e - temp_b
+        
+#         # Scale by sqrt(diagonal variance) and add mean
+#         bias_sample = self.mu_b + std_scaling * torch.sqrt(self.Sigma_b) * b_e
+        
+#         return weight_sample, bias_sample
+    
+#     def get_squashed_scale(self):
+#         return torch.sum(self.b_squash[None,:,:]* self.b_squash[:,None,:], dim=-1) + \
+#                torch.sum(self.w_squash[None,:,:,:]* self.w_squash[:,None,:,:], dim=[-1,-2])
+
+#     def get_prior_contribution(self):
+#         raise AssertionError("The prior contribution needs to be handled by the approx posterior parent class for SBVI")
+
+#     def forward(self, x, std_scaling, n_samples=None):
+#         weights, bias = self.get_parameter_samples(std_scaling, n_samples=n_samples)
+#         out = self.layer.forward(x, weights, bias)
+#         return out
+    
+#     def get_mean_squared(self):
+#         return torch.sum(self.mu_b**2) + torch.sum(self.mu_w**2)

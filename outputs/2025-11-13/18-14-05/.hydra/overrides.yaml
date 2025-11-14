@@ -1,0 +1,5 @@
+- optimization.epochs=500_000
+- optimization.learning_rate=1e-3
+- dataset.n_train=100
+- dataset.n_features=1000
+- posterior.type=mfvi

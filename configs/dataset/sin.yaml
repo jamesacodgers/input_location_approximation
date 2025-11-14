@@ -6,4 +6,4 @@ n_features: 1
 n_empty_features: 0
 noise_std: 0.1
 ood_input_variance: [1.0]
-frequency: 1.0
+frequency: 0.5

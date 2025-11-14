@@ -1,0 +1,7 @@
+- optimization.epochs=500_000
+- optimization.learning_rate=1e-2
+- dataset.n_train=1000
+- dataset.n_features=1
+- posterior.type=mfvi
+- posterior.temperature=1
+- dataset.label=sin

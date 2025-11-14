@@ -37,9 +37,9 @@ def get_bnn_layer_priors(cfg, input_dim, output_dim, device):
     """Simple model - replace with your BNN later."""
     prior = []
     if cfg.model.ff != "None":
-        weight_prior = torch.distributions.Normal(torch.zeros(input_dim, cfg.model.ff).to(device), cfg.model.prior_variance*torch.ones(input_dim, cfg.model.ff).to(device))
+        weight_prior = torch.distributions.Normal(torch.zeros(input_dim, cfg.model.ff).to(device), cfg.model.prior_std*torch.ones(input_dim, cfg.model.ff).to(device))
         if cfg.model.ff_amplitudes: # biases are the amplitudes for the ff layer, if we don't learn them set this bias to none
-            bias_prior = torch.distributions.Normal(torch.zeros(cfg.model.ff).to(device), cfg.model.prior_variance*torch.ones(cfg.model.ff).to(device))
+            bias_prior = torch.distributions.Normal(torch.zeros(cfg.model.ff).to(device), cfg.model.prior_std*torch.ones(cfg.model.ff).to(device))
         else:
             bias_prior = None
         fourier_layer = FourierLayer(weight_prior=weight_prior, bias_prior=bias_prior, in_features=input_dim, out_features=cfg.model.ff)
