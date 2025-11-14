@@ -229,7 +229,7 @@ class SBVIPosterior(BasePosterior):
     def __init__(self, layer_priors: list[MFVILayer], likelihood: torch.distributions.Distribution,  device: str, num_samples: int, temperature: float, n_squash_vectors:int, posterior_exponentiation: str):
         super(SBVIPosterior,self).__init__(likelihood=likelihood, device=device)
         self.layers = torch.nn.ModuleList([SBVILayer(layer,n_squash_vectors=n_squash_vectors,  num_samples=num_samples) for layer in layer_priors])
-        self._raw_std_scaling = torch.nn.Parameter(-10*torch.ones(1))
+        self._raw_std_scaling = torch.nn.Parameter(torch.full([1],0.01))
         self.n_squash_vectors = n_squash_vectors
         n_params = torch.zeros(1)
         for layer in self.layers:
@@ -240,10 +240,14 @@ class SBVIPosterior(BasePosterior):
         self.posterior_exponentiation = posterior_exponentiation
         self.temperature = temperature
 
+    @property 
+    def std_scaling(self): 
+        return self._raw_std_scaling**2
+
     def forward(self, x, n_samples=None):
         x = x.unsqueeze(0)  # add sample dimension
         for layer in self.layers:
-            x = layer(x, std_scaling=torch.exp(self._raw_std_scaling),
+            x = layer(x, std_scaling=self.std_scaling,
                                                  n_samples=n_samples)
         return x
 
@@ -261,7 +265,7 @@ class SBVIPosterior(BasePosterior):
         """
         prior_var = self.layers[0].layer.weight_prior.variance[0,0].to(self.device)
         squash_eigvals = self.get_squash_eigvals_norm()
-        var_scaling = torch.exp(self._raw_std_scaling)**2
+        var_scaling = self.std_scaling**2
         squash_scaled_vars = (((1 - squash_eigvals)**2 ) * var_scaling)
 
         squared_mean = torch.zeros(1).to(self.device)

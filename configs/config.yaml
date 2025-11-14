@@ -9,13 +9,13 @@ optimization:
 model:
   type: mlp
   hidden_layers: [64,64]
-  prior_std: 0.01
+  prior_std: 0.33
   ff: None
   ff_amplitudes: False
 
 defaults:
   - posterior: sbvi
-  - dataset: spiked_linear
+  - dataset: sin
   - _self_
 
   

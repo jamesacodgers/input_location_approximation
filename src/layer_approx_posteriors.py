@@ -65,43 +65,45 @@ class EnsembleLayer(BaseInferenceLayer):
 class MFVILayer(BaseInferenceLayer):
     def __init__(self, layer: BaseLayer, num_samples=1):
         super(MFVILayer,self).__init__(layer)
-        # self.mu_w = torch.nn.Parameter(torch.randn(layer.weight_shape))
-        # self._raw_sigma_w = torch.nn.Parameter(-10*torch.ones(layer.weight_shape))
-        self.eta_1_w = torch.nn.Parameter(torch.randn(layer.weight_shape))
-        self._raw_eta_2_w = torch.nn.Parameter(torch.full(layer.weight_shape, -0.693))
+        self.mu_w = torch.nn.Parameter(torch.randn(layer.weight_shape))
+        self._raw_sigma_w = torch.nn.Parameter(-10*torch.ones(layer.weight_shape))
+        # self.eta_1_w = torch.nn.Parameter(torch.randn(layer.weight_shape))
+        # self._raw_eta_2_w = torch.nn.Parameter(torch.full(layer.weight_shape, -0.693))
         if layer.bias_prior is None:
-            self.eta_1_b = None
-            self._raw_eta_2_b = None
+            # self.eta_1_b = None
+            # self._raw_eta_2_b = None
+            self.mu_b = None
+            self._raw_sigma_b = None
         else: 
-            # self.mu_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
-            # self._raw_sigma_b = torch.nn.Parameter(-10*torch.ones(layer.bias_shape))
-            self.eta_1_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
-            self._raw_eta_2_b = torch.nn.Parameter(torch.full(layer.bias_shape, -0.693))
+            self.mu_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
+            self._raw_sigma_b = torch.nn.Parameter(-10*torch.ones(layer.bias_shape))
+            # self.eta_1_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
+            # self._raw_eta_2_b = torch.nn.Parameter(torch.full(layer.bias_shape, -0.693))
         self.num_samples = num_samples
 
-    @property 
-    def mu_b(self): 
-        if self.layer.bias_prior is None:
-            return None
-        else: 
-            return self.Sigma_b*self.eta_1_b
+    # @property 
+    # def mu_b(self): 
+    #     if self.layer.bias_prior is None:
+    #         return None
+    #     else: 
+    #         return self.Sigma_b*self.eta_1_b
     
-    @property 
-    def mu_w(self): 
-        return  self.Sigma_w*self.eta_1_w
+    # @property 
+    # def mu_w(self): 
+    #     return  self.Sigma_w*self.eta_1_w
     
     @property 
     def Sigma_b(self): 
         if self.layer.bias_prior is None:
             return None
         else: 
-            # return torch.exp(self._raw_sigma_b)
-            return 1/(2*torch.exp(self._raw_eta_2_b))
+            return torch.exp(self._raw_sigma_b)
+            # return 1/(2*torch.exp(self._raw_eta_2_b))
 
     @property 
     def Sigma_w(self): 
-        # return  torch.exp(self._raw_sigma_w)
-        return  1/(2*torch.exp(self._raw_eta_2_w))
+        return  torch.exp(self._raw_sigma_w)
+        # return  1/(2*torch.exp(self._raw_eta_2_w))
 
     def get_parameter_samples(self, n_samples=None):
         if n_samples is None:
@@ -157,20 +159,20 @@ class SBVILayer(BaseInferenceLayer):
         if n_samples is None:
             n_samples = self.num_samples
 
-        w_e = torch.randn([n_samples, *self.layer.weight_shape]).to(self.w_squash.device)
+        w_e = torch.randn([n_samples, *self.layer.weight_shape]).to(self.w_squash.device) # [s, p, q]
 
         temp_w = torch.sum(w_e[:, None,:,:]*self.w_squash[None,:,:,:], dim=[-1,-2]) # [s,r]
         temp_w = torch.sum(temp_w[:,:,None,None]*self.w_squash[None,:,:,:], dim=1) # [s, p,q] 
 
         w_e = w_e - temp_w
-        weight_sample = self.mu_w + std_scaling*w_e
+        weight_sample = self.mu_w[None,:,:] + std_scaling*w_e
 
 
         b_e = torch.randn([n_samples, *self.layer.bias_shape]).to(self.b_squash.device) # [s, p]
         temp_b = torch.sum(b_e[:, None,:]*self.b_squash[None,:,:], dim=-1) # finding projection # [s, r]
         temp_b = torch.sum(temp_b[:,:,None]*self.b_squash[None,:,:], dim=1) # [s, p] 
         b_e = b_e - temp_b
-        bias_sample = self.mu_b + std_scaling*b_e
+        bias_sample = self.mu_b[None,:] + std_scaling*b_e
         
         return weight_sample, bias_sample
     
