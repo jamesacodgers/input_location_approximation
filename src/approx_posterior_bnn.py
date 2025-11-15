@@ -193,6 +193,7 @@ class MFVIPosterior(BasePosterior):
         predictions = self.forward(inputs)
         prior_contribution = self.get_prior_contribution()
         mean_log_likelihood_contribution = self.get_mean_log_likelihood(predictions, targets)
+        print(prior_contribution, mean_log_likelihood_contribution)
         if self.posterior_exponentiation == "tempered":
             return - (prior_contribution/targets.shape[0] + 1/self.temperature*mean_log_likelihood_contribution)
         elif self.posterior_exponentiation == "cold":
@@ -251,22 +252,29 @@ class SBVIPosterior(BasePosterior):
                                                  n_samples=n_samples)
         return x
 
-    def get_squash_eigvals_norm(self):
+    def get_squash_matrix(self):
         squash_scaling = torch.zeros(self.n_squash_vectors, self.n_squash_vectors).to(self.device)
         for layer in self.layers:
             squash_scaling += layer.get_squashed_scale()
-        eigvals = torch.linalg.eigvals(squash_scaling).real
-        return eigvals
+        
+        return squash_scaling
 
 
     def get_prior_contribution(self):
         """
         gets total prior contribution from all layers
         """
+        squash_scaling_matrix = self.get_squash_matrix()
+        squash_eigvals = torch.linalg.eigvals(squash_scaling_matrix).real
+
+
+        # orthogonal_penalty = torch.sum(squash_scaling_matrix**2) - torch.sum(torch.diag(squash_scaling_matrix)**2)
+
         prior_var = self.layers[0].layer.weight_prior.variance[0,0].to(self.device)
-        squash_eigvals = self.get_squash_eigvals_norm()
         var_scaling = self.std_scaling**2
         squash_scaled_vars = (((1 - squash_eigvals)**2 ) * var_scaling)
+
+        
 
         squared_mean = torch.zeros(1).to(self.device)
         for layer in self.layers:
@@ -279,8 +287,8 @@ class SBVIPosterior(BasePosterior):
         squared_mean_term = squared_mean/prior_var
 
         kl = 0.5*(det_ratio - self.n_params + trace_term + squared_mean_term)
-
-        return - kl
+        
+        return - kl 
 
     def get_mean_log_likelihood(self, predictions, targets):
         return self.likelihood.log_prob(predictions - targets).mean()
@@ -290,7 +298,7 @@ class SBVIPosterior(BasePosterior):
             preds = self.forward(x, n_samples=n_samples)
         return preds.mean(dim=0)
     
-    def sample_functions(self, x, n_samples=5):
+    def sample_functions(self, x, n_samples=16):
         with torch.no_grad():
             preds = self.forward(x, n_samples=n_samples)
         return preds
@@ -309,6 +317,7 @@ class SBVIPosterior(BasePosterior):
         predictions = self.forward(inputs)
         prior_contribution = self.get_prior_contribution()
         mean_log_likelihood_contribution = self.get_mean_log_likelihood(predictions, targets)
+        # print(prior_contribution, mean_log_likelihood_contribution)
         if self.posterior_exponentiation == "tempered":
             return - (prior_contribution/targets.shape[0] + 1/self.temperature*mean_log_likelihood_contribution)
         elif self.posterior_exponentiation == "cold":
