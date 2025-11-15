@@ -1,0 +1,8 @@
+- optimization.epochs=5_000_000_000
+- optimization.learning_rate=5e-3
+- dataset.n_train=100
+- dataset=sin
+- posterior.num_samples=32
+- posterior=sbvi
+- dataset.n_train=4
+- posterior.num_squash_vectors=4

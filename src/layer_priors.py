@@ -37,8 +37,8 @@ class LinearLayer(BaseLayer):
         assert weights.shape[0] == bias.shape[0]
         assert weights.shape[-2:] == self.weight_shape
         assert bias.shape[-1:] == self.bias_shape
-        x = x@weights.transpose(-2,-1) + bias.unsqueeze(-2)
-        return self.activation(x)
+        lin_out = x@weights.transpose(-2,-1) + bias.unsqueeze(-2)
+        return self.activation(lin_out + x)
 
     def get_prior_dist(self):
         return self.weight_prior, self.bias_prior
