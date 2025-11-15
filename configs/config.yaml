@@ -8,7 +8,7 @@ optimization:
 
 model:
   type: mlp
-  hidden_layers: [64,64]
+  hidden_layers: [64,64,32,32]
   prior_std: 0.33
   ff: None
   ff_amplitudes: False

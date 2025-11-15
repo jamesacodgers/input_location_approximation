@@ -32,8 +32,8 @@ def test_model(cfg,model, train_dataloader, ood_dataloaders, epoch, label="final
 
     plot_predictions(cfg, model, train_dataloader, title+"_iid", margin=1)
     plot_predictions(cfg, model, train_dataloader, title+"_ood", margin=10)
-    if cfg.dataset.label=="sin":
-        plot_model_ft(cfg, model, x_min=-10, x_max=10, max_frequency=2**13, name=title+"_ft", n_samples=10)
+    # if cfg.dataset.label=="sin":
+    #     plot_model_ft(cfg, model, x_min=-10, x_max=10, max_frequency=2**13, name=title+"_ft", n_samples=10)
 
 def set_seeds(seed):
     """Set seeds for reproducibility across all random number generators.
@@ -112,6 +112,7 @@ def plot_predictions(cfg, model, train_dataloader, name: str, margin=1):
         ax.set_title("Predictions vs Data")
         plt.savefig(name+".pdf")
         wandb.log({name: wandb.Image(fig)})
+        plt.close()
         # plt.show()
 
 # def plot_model_ft(cfg, model, x_min, x_max, max_frequency = 64, name="model_fourier_transform"):

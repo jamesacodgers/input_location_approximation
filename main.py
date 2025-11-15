@@ -94,7 +94,7 @@ def get_optimizer(cfg, model, train_dataset):
 def get_data(cfg):
     """Simple data loading - replace with your data loader later."""
     if cfg.dataset.label == "sin":
-        x_train, y_train = generate_sin_data(n_samples=cfg.dataset.n_train, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, frequency=cfg.dataset.frequency)
+        x_train, y_train = generate_sin_data(n_samples=cfg.dataset.n_train, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, noise_std=cfg.dataset.noise_std, frequency=cfg.dataset.frequency, input_std=cfg.dataset.input_std)
     if cfg.dataset.label == "spiked_linear":
         x_train, y_train = generate_spiked_linear_data(n_samples=cfg.dataset.n_train, rank=cfg.dataset.rank, n_features=cfg.dataset.n_features, noise_std=cfg.dataset.noise_std, beta_std=cfg.model.prior_std)
 
@@ -142,7 +142,8 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
             results_dict = {}
             results_dict["train_loss"] = train_loss
             
-        if epoch % 10_000 == 0 : 
+        # if epoch % 10_000 == 0 : 
+        if epoch % 500 == 0 : 
             model.eval()
             test_model(cfg, model, train_dataloader, ood_dataloaders, epoch, label=epoch)
             model.train()

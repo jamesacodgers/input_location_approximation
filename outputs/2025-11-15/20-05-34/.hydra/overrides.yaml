@@ -1,0 +1,4 @@
+- dataset.n_train=4
+- optimization.epochs=5_000_000_000
+- optimization.learning_rate=3e-4
+- posterior.num_samples=4

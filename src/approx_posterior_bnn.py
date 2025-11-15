@@ -256,7 +256,7 @@ class SBVIPosterior(BasePosterior):
         squash_scaling = torch.zeros(self.n_squash_vectors, self.n_squash_vectors).to(self.device)
         for layer in self.layers:
             squash_scaling += layer.get_squashed_scale()
-        
+
         return squash_scaling
 
 
@@ -268,7 +268,7 @@ class SBVIPosterior(BasePosterior):
         squash_eigvals = torch.linalg.eigvals(squash_scaling_matrix).real
 
 
-        # orthogonal_penalty = torch.sum(squash_scaling_matrix**2) - torch.sum(torch.diag(squash_scaling_matrix)**2)
+        orthogonal_penalty = torch.sum(squash_scaling_matrix**2) - torch.sum(torch.diag(squash_scaling_matrix)**2)
 
         prior_var = self.layers[0].layer.weight_prior.variance[0,0].to(self.device)
         var_scaling = self.std_scaling**2
@@ -288,7 +288,7 @@ class SBVIPosterior(BasePosterior):
 
         kl = 0.5*(det_ratio - self.n_params + trace_term + squared_mean_term)
         
-        return - kl 
+        return - kl - orthogonal_penalty
 
     def get_mean_log_likelihood(self, predictions, targets):
         return self.likelihood.log_prob(predictions - targets).mean()

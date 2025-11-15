@@ -1,9 +1,10 @@
 type: regression
 label: sin
-n_train: 1000
+n_train: 4
 n_test: 200
 n_features: 1
+input_std: 0.3
 n_empty_features: 0
 noise_std: 0.1
-ood_input_variance: [1.0]
-frequency: 0.5
+ood_input_variance: [0.3]
+frequency: 4

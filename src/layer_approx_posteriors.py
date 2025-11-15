@@ -148,12 +148,24 @@ class MFVILayer(BaseInferenceLayer):
 class SBVILayer(BaseInferenceLayer):
     def __init__(self, layer: BaseLayer, n_squash_vectors, num_samples=1):
         super(SBVILayer,self).__init__(layer)
-        self.mu_w = torch.nn.Parameter(torch.randn(layer.weight_shape))
-        self.w_squash = torch.nn.Parameter(1e-3*torch.randn(n_squash_vectors,*layer.weight_shape))
+        self.mu_w = torch.nn.Parameter(torch.randn(layer.weight_shape)*0.33)
+        # self.mu_w = torch.nn.Parameter(torch.zeros(layer.weight_shape))
+        self._w_squash = torch.nn.Parameter(1e-3*torch.randn(n_squash_vectors,*layer.weight_shape))
 
-        self.mu_b = torch.nn.Parameter(torch.randn(layer.bias_shape))
-        self.b_squash = torch.nn.Parameter(1e-3*torch.randn(n_squash_vectors, *layer.bias_shape))
+        self.mu_b = torch.nn.Parameter(torch.randn(layer.bias_shape)*0.33)
+        # self.mu_b = torch.nn.Parameter(torch.zeros(layer.bias_shape))
+        self._b_squash = torch.nn.Parameter(1e-3*torch.randn(n_squash_vectors, *layer.bias_shape))
         self.num_samples = num_samples
+
+    @property 
+    def w_squash(self): 
+        norm = torch.sqrt((self._w_squash**2).sum())
+        return (torch.tanh(norm/2))* self._w_squash/torch.max(norm, torch.ones(1)*1e-8)
+    
+    @property 
+    def b_squash(self): 
+        norm = (self._b_squash**2).sum()
+        return (torch.tanh(norm/2))* self._b_squash/torch.max(norm, torch.ones(1)*1e-8)
 
     def get_parameter_samples(self, std_scaling, n_samples=None):
         if n_samples is None:
@@ -177,7 +189,10 @@ class SBVILayer(BaseInferenceLayer):
         return weight_sample, bias_sample
     
     def get_squashed_scale(self):
-        return torch.sum(self.b_squash[None,:,:]* self.b_squash[:,None,:], dim=-1) + torch.sum(self.w_squash[None,:,:,:]* self.w_squash[:,None,:,:],dim=[-1,-2])
+        ss =  torch.sum(self.b_squash[None,:,:]* self.b_squash[:,None,:], dim=-1) + torch.sum(self.w_squash[None,:,:,:]* self.w_squash[:,None,:,:],dim=[-1,-2])
+        if torch.any(torch.isnan(ss)):
+            print("oops")
+        return ss
 
     def get_prior_contribution(self):
         raise AssertionError("The prior contribution needs to be handled by the approx posterior parent class for SBVI")
