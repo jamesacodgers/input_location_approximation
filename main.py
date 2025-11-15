@@ -147,6 +147,7 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
             model.eval()
             test_model(cfg, model, train_dataloader, ood_dataloaders, epoch, label=epoch)
             model.train()
+            # model.temperature = model.temperature*2
         wandb.log(results_dict)
     return model
 
