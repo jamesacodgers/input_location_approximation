@@ -1,3 +1,4 @@
+# %%
 import torch
 
 torch.set_default_dtype(torch.float64)
@@ -31,8 +32,8 @@ def get_prior_contribution(post_mean, squash_scaling_matrix, prior_var, std_scal
 
         return - kl 
 
-p=30
-k=5
+p=2000
+k=64
 prior_var = torch.ones(1)*0.1
 
 mu = torch.randn(p)
@@ -58,7 +59,7 @@ print(neg_kl + kl)
 # %% 
 import matplotlib.pyplot as plt
 
-n_samples = 10000
+n_samples = 500
 correct_samples = post.sample((n_samples,))
 
 def get_parameter_samples(mu_w, std_scaling, w_squash, n_params,  n_samples=n_samples):

@@ -1,3 +1,11 @@
+## Effect of n squash vectors 
+With 10^-2 temp and tempered posterior:
+- the number of squash vectors (including 0) doesn't seem to have a strong effect. 
+- The number of samples was significant (32 samples performed better than 1 sample)
+
+With temp 10^-1
+
+
 # Cold Posterior as matching predictive distribution
 
 ## Todos

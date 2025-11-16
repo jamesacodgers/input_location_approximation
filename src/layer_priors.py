@@ -21,7 +21,6 @@ class LinearLayer(BaseLayer):
                  out_features: int, 
                  weight_prior: torch.distributions.Distribution,
                  bias_prior: torch.distributions.Distribution,
-                 activation: torch.nn.Module,
                  ):
         """
         
@@ -32,17 +31,14 @@ class LinearLayer(BaseLayer):
         self.bias_shape = torch.Size([out_features])
         self.in_features = in_features
         self.out_features = out_features
-        self.activation = activation
 
 
     def forward(self, x, weights, bias):
         assert weights.shape[0] == bias.shape[0]
         assert weights.shape[-2:] == self.weight_shape
         assert bias.shape[-1:] == self.bias_shape
-        lin_out = x@weights.transpose(-2,-1) + bias.unsqueeze(-2)
-        if self.in_features == self.out_features:
-            return self.activation(lin_out + x )
-        return self.activation(lin_out)
+        lin_out = x@weights.transpose(-2,-1)  + bias.unsqueeze(-2)
+        return lin_out
 
     def get_prior_dist(self):
         return self.weight_prior, self.bias_prior

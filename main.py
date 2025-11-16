@@ -53,11 +53,7 @@ def get_bnn_layer_priors(cfg, input_dim, output_dim, device):
             out_features = layer_sizes[i + 1]
             weight_prior = torch.distributions.Normal(torch.zeros(out_features, in_features).to(device), cfg.model.prior_std*torch.ones(out_features, in_features).to(device))
             bias_prior = torch.distributions.Normal(torch.zeros(out_features).to(device), cfg.model.prior_std*torch.ones(out_features).to(device))
-            if i < len(layer_sizes) - 2:
-                activation = torch.nn.ReLU()
-            else:
-                activation = nn.Identity()
-            layer = LinearLayer(in_features, out_features, weight_prior, bias_prior, activation)
+            layer = LinearLayer(in_features, out_features, weight_prior, bias_prior)
             prior.append(layer)
     else:
         raise NotImplementedError("Only MLP model is implemented in this example.")
@@ -84,9 +80,12 @@ def get_optimizer(cfg, model, train_dataset):
     from torch.utils.data import DataLoader
 
     train_loader = DataLoader(train_dataset, batch_size=cfg.optimization.batch_size, shuffle=True)
-
-    optimizer = optim.Adam(model.parameters(), lr=cfg.optimization.learning_rate)
-
+    if cfg.optimization.optimizer == "adam":
+        optimizer = optim.Adam(model.parameters(), lr=cfg.optimization.learning_rate)
+    elif cfg.optimization.optimizer == "sgd":
+        optimizer = optim.SGD(model.parameters(), lr=cfg.optimization.learning_rate)
+    else:
+        raise NotImplementedError("only SGD and Adam available")
     lr_scheduler = None
 
     return optimizer, lr_scheduler, train_loader
@@ -155,6 +154,7 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
 
 @hydra.main(version_base="1.1", config_path="configs", config_name="config")
 def main(cfg: OmegaConf):
+    torch.set_default_dtype(torch.float64)
     set_seeds(cfg.seed)
 
     print("Config:")

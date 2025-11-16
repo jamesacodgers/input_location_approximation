@@ -149,11 +149,19 @@ class MFVIPosterior(BasePosterior):
         
         self.posterior_exponentiation = posterior_exponentiation
         self.temperature = temperature
+        self.activation = torch.nn.GELU()
+
+
 
     def forward(self, x, n_samples=None):
         x = x.unsqueeze(0)  # add sample dimension
-        for layer in self.layers:
-            x = layer(x, n_samples=n_samples)
+        for layer in self.layers[:-1]:
+            lin_update = layer(x, n_samples=n_samples)
+            if layer.layer.in_features == layer.layer.out_features:
+                x = self.activation(lin_update + x)
+            else:
+                x = self.activation(lin_update)
+        x = self.layers[-1](x, n_samples=n_samples)
         return x
 
     def get_prior_contribution(self):
@@ -193,7 +201,7 @@ class MFVIPosterior(BasePosterior):
         predictions = self.forward(inputs)
         prior_contribution = self.get_prior_contribution()
         mean_log_likelihood_contribution = self.get_mean_log_likelihood(predictions, targets)
-        print(prior_contribution, mean_log_likelihood_contribution)
+        # print(prior_contribution, mean_log_likelihood_contribution)
         if self.posterior_exponentiation == "tempered":
             return - (prior_contribution/targets.shape[0] + 1/self.temperature*mean_log_likelihood_contribution)
         elif self.posterior_exponentiation == "cold":
@@ -227,29 +235,33 @@ class WeightedMFVIPosterior(MFVIPosterior):
         
 
 class SBVIPosterior(BasePosterior):
-    def __init__(self, layer_priors: list[MFVILayer], likelihood: torch.distributions.Distribution,  device: str, num_samples: int, temperature: float, n_squash_vectors:int, posterior_exponentiation: str):
+    def __init__(self, layer_priors: list[SBVILayer], likelihood: torch.distributions.Distribution,  device: str, num_samples: int, temperature: float, n_squash_vectors:int, posterior_exponentiation: str):
         super(SBVIPosterior,self).__init__(likelihood=likelihood, device=device)
         self.layers = torch.nn.ModuleList([SBVILayer(layer,n_squash_vectors=n_squash_vectors,  num_samples=num_samples) for layer in layer_priors])
-        self._raw_std_scaling = torch.nn.Parameter(torch.full([1],0.01))
+        self.activation = torch.nn.GELU()
+        self._raw_std_scaling = torch.nn.Parameter(torch.ones(1)*1e-6)
         self.n_squash_vectors = n_squash_vectors
         n_params = torch.zeros(1)
         for layer in self.layers:
             n_params += torch.prod(torch.tensor(layer.mu_w.shape))
             n_params += torch.prod(torch.tensor(layer.mu_b.shape))
         self.n_params = torch.tensor([n_params]).to(device)
-        
         self.posterior_exponentiation = posterior_exponentiation
         self.temperature = temperature
 
     @property 
     def std_scaling(self): 
-        return self._raw_std_scaling**2
+        return torch.abs(self._raw_std_scaling)
 
     def forward(self, x, n_samples=None):
         x = x.unsqueeze(0)  # add sample dimension
-        for layer in self.layers:
-            x = layer(x, std_scaling=self.std_scaling,
-                                                 n_samples=n_samples)
+        for layer in self.layers[:-1]:
+            lin_update = layer(x, std_scaling= self.std_scaling, n_samples=n_samples)
+            if layer.layer.in_features == layer.layer.out_features:
+                x = self.activation(lin_update + x)
+            else:
+                x = self.activation(lin_update)
+        x = self.layers[-1](x, std_scaling= self.std_scaling,n_samples=n_samples)
         return x
 
     def get_squash_matrix(self):
@@ -288,7 +300,7 @@ class SBVIPosterior(BasePosterior):
 
         kl = 0.5*(det_ratio - self.n_params + trace_term + squared_mean_term)
         
-        return - kl - orthogonal_penalty
+        return - kl  - orthogonal_penalty
 
     def get_mean_log_likelihood(self, predictions, targets):
         return self.likelihood.log_prob(predictions - targets).mean()
@@ -322,3 +334,15 @@ class SBVIPosterior(BasePosterior):
             return - (prior_contribution/targets.shape[0] + 1/self.temperature*mean_log_likelihood_contribution)
         elif self.posterior_exponentiation == "cold":
             return - 1/self.temperature*(prior_contribution/targets.shape[0] + mean_log_likelihood_contribution)
+        
+    def train_step(self, inputs, targets, optimizer):
+        optimizer.zero_grad()
+        loss = self.loss(inputs, targets)
+        loss.backward()
+        self._raw_std_scaling.grad.div_(self.n_params)
+        # if self.n_squash_vectors > 0:
+        #     for layer in self.layers:
+        #         for param in layer.parameters():
+        #             param.grad.div_(self.n_squash_vectors)
+        optimizer.step()
+        return loss.item()

@@ -1,0 +1,7 @@
+- dataset.n_train=4
+- optimization.epochs=5_000_000_000
+- optimization.learning_rate=3e-6
+- posterior.num_samples=50
+- posterior.temperature=1
+- posterior=sbvi
+- dataset.n_features=5000
