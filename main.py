@@ -141,8 +141,8 @@ def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimi
             results_dict = {}
             results_dict["train_loss"] = train_loss
             
-        # if epoch % 10_000 == 0 : 
-        if epoch % 500 == 0 : 
+        if epoch % 10_000 == 0 : 
+        # if epoch % 500 == 0 : 
             model.eval()
             test_model(cfg, model, train_dataloader, ood_dataloaders, epoch, label=epoch)
             model.train()
