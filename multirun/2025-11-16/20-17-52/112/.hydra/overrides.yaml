@@ -1,0 +1,10 @@
+- posterior=mfvi
+- posterior.num_samples=16
+- optimization.epochs=30000
+- posterior.temperature=1
+- seed=0
+- optimization.learning_rate=0.0003
+- dataset=spiked_linear
+- dataset.n_train=64
+- dataset.n_features=500
+- model.hidden_layers=[]
