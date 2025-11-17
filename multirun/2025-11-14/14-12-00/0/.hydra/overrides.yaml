@@ -1,0 +1,5 @@
+- optimization.epochs=100000
+- posterior.temperature=1
+- seed=0
+- posterior.num_samples=128
+- model.prior_std=0.33

@@ -1,0 +1,5 @@
+epoch,ood_ll_var_1.0,temperature,posterior_type,seed,n_train
+0,-544170944.0,1,mfvi,0,64
+10000,-16852.71875,1,mfvi,0,64
+20000,-8753.4111328125,1,mfvi,0,64
+30000,-794.8164672851562,1,mfvi,0,64

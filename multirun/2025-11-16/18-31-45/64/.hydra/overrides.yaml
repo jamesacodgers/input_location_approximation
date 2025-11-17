@@ -1,0 +1,8 @@
+- posterior=sbvi
+- posterior.num_samples=4
+- optimization.epochs=30000
+- posterior.temperature=1
+- posterior.num_squash_vectors=4
+- seed=0
+- optimization.learning_rate=0.0001
+- dataset.n_train=64

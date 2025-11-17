@@ -1,0 +1,804 @@
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: Currently logged in as: james-a-c-odgers (james-a-c-odgers-helmholtz-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: creating run
+wandb: Tracking run with wandb version 0.21.4
+wandb: Run data is saved locally in /ictstr01/home/haicu/james.odgers/input_location_approximation/multirun/2025-11-16/18-36-57/0/wandb/run-20251116_183733-cc6ixu8r
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run leafy-blaze-1115
+wandb: ⭐️ View project at https://wandb.ai/james-a-c-odgers-helmholtz-munich/bnn-research
+wandb: 🚀 View run at https://wandb.ai/james-a-c-odgers-helmholtz-munich/bnn-research/runs/cc6ixu8r
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/src/utils.py:101: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig,ax = plt.subplots()
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/hydra/_internal/core_plugins/basic_launcher.py:74: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+wandb: wandb.init() called while a run is active and reinit is set to 'default', so returning the previous run.
+Error executing job with overrides: ['posterior=sbvi', 'posterior.num_samples=1', 'optimization.epochs=30000', 'posterior.temperature=1', 'seed=0', 'optimization.learning_rate=0.0003', 'dataset=spiked_linear', 'dataset.n_train=4', 'dataset.n_features=10000', 'posterior.num_squash_vectors=16']
+Traceback (most recent call last):
+  File "/ictstr01/home/haicu/james.odgers/input_location_approximation/main.py", line 183, in main
+    fit_approx_posterior(cfg, model, optimizer, train_dataloader, ood_dataloaders, lr_scheduler)
+  File "/ictstr01/home/haicu/james.odgers/input_location_approximation/main.py", line 147, in fit_approx_posterior
+    test_model(cfg, model, train_dataloader, ood_dataloaders, epoch, label=epoch)
+  File "/ictstr01/home/haicu/james.odgers/input_location_approximation/src/utils.py", line 21, in test_model
+    preds = model.predict(x)
+            ^^^^^^^^^^^^^^^^
+  File "/ictstr01/home/haicu/james.odgers/input_location_approximation/src/approx_posterior_bnn.py", line 290, in predict
+    preds = self.forward(x, n_samples=n_samples)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/ictstr01/home/haicu/james.odgers/input_location_approximation/src/approx_posterior_bnn.py", line 250, in forward
+    x = layer(x, std_scaling=self.std_scaling,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/ictstr01/home/haicu/james.odgers/input_location_approximation/.venv/lib64/python3.12/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/ictstr01/home/haicu/james.odgers/input_location_approximation/src/layer_approx_posteriors.py", line 186, in forward
+    weights, bias = self.get_parameter_samples(std_scaling, n_samples=n_samples)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/ictstr01/home/haicu/james.odgers/input_location_approximation/src/layer_approx_posteriors.py", line 164, in get_parameter_samples
+    temp_w = torch.sum(w_e[:, None,:,:]*self.w_squash[None,:,:,:], dim=[-1,-2]) # [s,r]
+                       ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 39.06 GiB. GPU 0 has a total capacity of 31.73 GiB of which 28.63 GiB is free. Including non-PyTorch memory, this process has 3.10 GiB memory in use. Of the allocated memory 2.63 GiB is allocated by PyTorch, and 63.39 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
