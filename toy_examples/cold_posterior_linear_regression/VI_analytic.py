@@ -212,6 +212,7 @@ if __name__ == "__main__":
         ax2.set_aspect('equal')
     
     plt.tight_layout()
+    plt.savefig("toy_examples/cold_posterior_linear_regression/analytic_CPE.pdf", bbox_inches="tight")
     plt.show()
     
     # Summary table

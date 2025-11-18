@@ -71,7 +71,7 @@ def get_approx_posterior_model(cfg, layer_priors, likelihood):
     elif cfg.posterior.type == "ensemble":
         return EnsemblePosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples)
     elif cfg.posterior.type == "sbvi":
-        return SBVIPosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, n_squash_vectors=cfg.posterior.num_squash_vectors, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation)
+        return SBVIPosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, n_squash_vectors=cfg.posterior.num_squash_vectors, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation, n_data=cfg.dataset.n_train)
     else:
         raise NotImplementedError()
     
@@ -130,23 +130,25 @@ def get_ood_data_loaders(cfg):
 
 def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimizer, train_dataloader: torch.utils.data.DataLoader, ood_dataloaders: torch.utils.data.DataLoader, lr_scheduler: torch.optim.lr_scheduler.LRScheduler):
     model.train()
-
+    monitor=1
+    lr_scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer=optimizer, gamma=0.95)
     for epoch in range(cfg.optimization.epochs):
         if epoch % 100 == 0:
             print(epoch)
         for x,y in train_dataloader:
             x = x.to(model.device)
-            y = y.to(model.device)
+            y = x.to(model.device)
             train_loss = model.train_step(x,y, optimizer)
             results_dict = {}
             results_dict["train_loss"] = train_loss
             
-        if epoch % 10_000 == 0 : 
-        # if epoch % 500 == 0 : 
+        # if epoch % 10_000 == 0 : 
+        if epoch % monitor == monitor-1: 
             model.eval()
             test_model(cfg, model, train_dataloader, ood_dataloaders, epoch, label=epoch)
             model.train()
             # model.temperature = model.temperature*2
+            # lr_scheduler.step()
         wandb.log(results_dict)
     return model
 

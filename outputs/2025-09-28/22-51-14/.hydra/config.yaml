@@ -16,7 +16,7 @@ dataset:
   frequency: 1.0
 optimization:
   learning_rate: 0.01
-  batch_size: 2056
+  batch_size: 128
   epochs: 1000
 model:
   type: mlp
