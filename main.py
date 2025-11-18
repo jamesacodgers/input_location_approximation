@@ -130,7 +130,7 @@ def get_ood_data_loaders(cfg):
 
 def fit_approx_posterior(cfg, model: MAPPosterior, optimizer: torch.optim.Optimizer, train_dataloader: torch.utils.data.DataLoader, ood_dataloaders: torch.utils.data.DataLoader, lr_scheduler: torch.optim.lr_scheduler.LRScheduler):
     model.train()
-    monitor=1
+    monitor=1000
     lr_scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer=optimizer, gamma=0.95)
     for epoch in range(cfg.optimization.epochs):
         if epoch % 100 == 0:

@@ -1,6 +1,6 @@
 type: regression
 label: sin
-n_train: 4
+n_train: 64
 n_test: 200
 n_features: 1
 input_std: 0.3

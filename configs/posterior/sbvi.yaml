@@ -1,7 +1,7 @@
 type: sbvi
 weight_variance_init: 1
 bias_variance_init: 1
-num_samples: 256
+num_samples: 1
 temperature: 1
 posterior_exponentiation: tempered
 num_squash_vectors: 1

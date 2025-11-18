@@ -149,7 +149,7 @@ class MFVIPosterior(BasePosterior):
         
         self.posterior_exponentiation = posterior_exponentiation
         self.temperature = temperature
-        self.activation = torch.nn.GELU()
+        self.activation = torch.nn.ReLU()
         self.n_data = n_data
 
 
@@ -239,7 +239,7 @@ class SBVIPosterior(BasePosterior):
     def __init__(self, layer_priors: list[SBVILayer], likelihood: torch.distributions.Distribution,  device: str, num_samples: int, temperature: float, n_squash_vectors:int, posterior_exponentiation: str, n_data: int):
         super(SBVIPosterior,self).__init__(likelihood=likelihood, device=device)
         self.layers = torch.nn.ModuleList([SBVILayer(layer,n_squash_vectors=n_squash_vectors,  num_samples=num_samples) for layer in layer_priors])
-        self.activation = torch.nn.GELU()
+        self.activation = torch.nn.ReLU()
         self._raw_std_scaling = torch.nn.Parameter(torch.ones(1)*1e-6)
         self.n_squash_vectors = n_squash_vectors
         n_params = torch.zeros(1)
@@ -307,7 +307,7 @@ class SBVIPosterior(BasePosterior):
     def get_mean_log_likelihood(self, predictions, targets):
         return self.likelihood.log_prob(predictions - targets).mean()
     
-    def predict(self, x, n_samples=1024):
+    def predict(self, x, n_samples=32):
         with torch.no_grad():
             preds = self.forward(x, n_samples=n_samples)
         return preds.mean(dim=0)
@@ -317,7 +317,7 @@ class SBVIPosterior(BasePosterior):
             preds = self.forward(x, n_samples=n_samples)
         return preds
     
-    def get_CI(self, x, ci=0.95, n_samples=1024):
+    def get_CI(self, x, ci=0.95, n_samples=32):
         with torch.no_grad():
             preds = self.forward(x, n_samples=n_samples)
             preds, idx = preds.sort(dim=0)
