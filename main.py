@@ -64,7 +64,7 @@ def get_approx_posterior_model(cfg, layer_priors, likelihood):
     if cfg.posterior.type == "map":
         return MAPPosterior(layer_priors=layer_priors, likelihood=likelihood,device="cuda" if torch.cuda.is_available() else "cpu")
     elif cfg.posterior.type == "mfvi":
-        return MFVIPosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation)
+        return MFVIPosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation, n_data=cfg.dataset.n_train)
     elif cfg.posterior.type == "wmfvi":
         weighting_function = lambda x: torch.exp(torch.distributions.Normal(0,1).log_prob(x))
         return WeightedMFVIPosterior(layer_priors=layer_priors, likelihood=likelihood, device="cuda" if torch.cuda.is_available() else "cpu", num_samples=cfg.posterior.num_samples, temperature=cfg.posterior.temperature, posterior_exponentiation=cfg.posterior.posterior_exponentiation, weighting_function=weighting_function)

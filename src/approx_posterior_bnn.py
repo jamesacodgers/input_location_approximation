@@ -254,6 +254,7 @@ class SBVIPosterior(BasePosterior):
     @property 
     def std_scaling(self): 
         return torch.abs(self._raw_std_scaling)
+        # return torch.abs(self._raw_std_scaling)
 
     def forward(self, x, n_samples=None):
         x = x.unsqueeze(0)  # add sample dimension
