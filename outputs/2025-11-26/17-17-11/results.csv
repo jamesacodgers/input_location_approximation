@@ -1,0 +1,2 @@
+epoch,ood_ll_iid_with_gap,ood_ll_ood_no_gap,temperature,posterior_type,seed,n_train,frequency
+9999,-152935.70817352325,-1093958.3164036346,1,sbvi,0,64,1

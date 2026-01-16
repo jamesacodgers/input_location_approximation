@@ -56,6 +56,8 @@ class FourierLayer(BaseLayer):
         """
         self.weight_prior = weight_prior
         self.bias_prior = bias_prior
+        self.in_features = in_features
+        self.out_features = out_features
         self.weight_shape = torch.Size([out_features, in_features])
         self.bias_shape = torch.Size([out_features])
 

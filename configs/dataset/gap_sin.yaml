@@ -1,0 +1,11 @@
+type: regression
+label: gap_sin
+n_train: 64
+n_test: 200
+n_features: 1
+gap_min: 1.0
+gap_max: 3.5
+n_empty_features: 0
+noise_std: 0.1
+ood_input_variance: [1]
+frequency: 1

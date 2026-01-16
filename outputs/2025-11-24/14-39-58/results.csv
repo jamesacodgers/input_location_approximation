@@ -1,0 +1,2 @@
+epoch,temperature,posterior_type,seed,n_train,frequency
+999,1,sbvi,0,64,1

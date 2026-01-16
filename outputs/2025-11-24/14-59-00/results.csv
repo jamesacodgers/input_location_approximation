@@ -1,0 +1,9 @@
+epoch,temperature,posterior_type,seed,n_train,frequency
+999,1,sbvi,0,64,1
+1999,1,sbvi,0,64,1
+2999,1,sbvi,0,64,1
+3999,1,sbvi,0,64,1
+4999,1,sbvi,0,64,1
+5999,1,sbvi,0,64,1
+6999,1,sbvi,0,64,1
+7999,1,sbvi,0,64,1

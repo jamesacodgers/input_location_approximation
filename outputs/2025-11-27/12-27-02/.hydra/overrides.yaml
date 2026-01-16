@@ -1,0 +1,4 @@
+- optimization.learning_rate=1e-4
+- posterior=sbvi
+- posterior.temperature=1
+- posterior.num_squash_vectors=1

@@ -1,0 +1,34 @@
+posterior:
+  type: mfvi
+  weight_variance_init: 1
+  bias_variance_init: 1
+  num_samples: 32
+  temperature: 1
+  posterior_exponentiation: tempered
+dataset:
+  type: regression
+  label: gap_sin
+  n_train: 64
+  n_test: 200
+  n_features: 1
+  gap_min: 1.0
+  gap_max: 3.5
+  n_empty_features: 0
+  noise_std: 0.1
+  ood_input_variance:
+  - 1
+  frequency: 1
+seed: 0
+optimization:
+  optimizer: adam
+  learning_rate: 0.001
+  batch_size: 2056
+  epochs: 5000000000
+model:
+  type: mlp
+  hidden_layers:
+  - 128
+  - 64
+  prior_std: 1.0
+  ff: 64
+  ff_amplitudes: true

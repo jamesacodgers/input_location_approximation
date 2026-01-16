@@ -1,0 +1,2 @@
+- dataset.n_train=50
+- optimization.epochs=10000

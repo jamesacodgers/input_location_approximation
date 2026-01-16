@@ -1,3 +1,4 @@
+from src.layer_priors import FourierLayer
 import abc
 import torch 
 
@@ -97,13 +98,20 @@ class EnsemblePosterior(BasePosterior):
         return self.forward(x)
         
 class MAPPosterior(BasePosterior):
-    def __init__(self, layer_priors, likelihood, device):
+    def __init__(self, layer_priors, likelihood, device, n_data):
         super(MAPPosterior,self).__init__(likelihood=likelihood, device=device)
         self.layers = torch.nn.ModuleList([MAPLayer(layer) for layer in layer_priors])
+        self.activation = torch.nn.ReLU()
+        self.n_data = n_data
 
     def forward(self, x):
-        for layer in self.layers:
-            x = layer(x)
+        for layer in self.layers[:-1]:
+            lin_update = layer(x)
+            if isinstance(layer.layer, FourierLayer):
+                x = lin_update
+            else:
+                x = self.activation(lin_update)
+        x = self.layers[-1](x)
         return x
     
     def predict(self, x):
@@ -135,9 +143,9 @@ class MAPPosterior(BasePosterior):
         predictions = self.forward(inputs)
         prior_contribution = self.get_prior_contribution()
         mean_log_likelihood_contribution = self.get_mean_log_likelihood(predictions, targets)
-        return - (prior_contribution/targets.shape[0] + mean_log_likelihood_contribution)
+        return - (prior_contribution/self.n_data + mean_log_likelihood_contribution)
     
-    def sample_functions(self, x, n_samples):
+    def sample_functions(self, x, n_samples=1):
         preds = self.forward(x)
         return preds.unsqueeze(0).expand((n_samples,preds.shape[0], preds.shape[1]))
         
@@ -149,7 +157,8 @@ class MFVIPosterior(BasePosterior):
         
         self.posterior_exponentiation = posterior_exponentiation
         self.temperature = temperature
-        self.activation = torch.nn.ReLU()
+        # self.activation = torch.nn.ReLU()
+        self.activation = torch.nn.Tanh()
         self.n_data = n_data
 
 
@@ -158,10 +167,14 @@ class MFVIPosterior(BasePosterior):
         x = x.unsqueeze(0)  # add sample dimension
         for layer in self.layers[:-1]:
             lin_update = layer(x, n_samples=n_samples)
-            if layer.layer.in_features == layer.layer.out_features:
-                x = self.activation(lin_update + x)
+            if isinstance(layer.layer, FourierLayer):
+                x = lin_update
             else:
                 x = self.activation(lin_update)
+            # if layer.layer.in_features == layer.layer.out_features:
+            #     x = self.activation(lin_update + x)
+            # else:
+            #     x = self.activation(lin_update)
         x = self.layers[-1](x, n_samples=n_samples)
         return x
 
@@ -342,7 +355,7 @@ class SBVIPosterior(BasePosterior):
         optimizer.zero_grad()
         loss = self.loss(inputs, targets)
         loss.backward()
-        self._raw_std_scaling.grad.div_(self.n_params)
+        # self._raw_std_scaling.grad.div_(self.n_params)
         # if self.n_squash_vectors > 0:
         #     for layer in self.layers:
         #         for param in layer.parameters():

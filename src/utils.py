@@ -8,20 +8,35 @@ import random
 
 import numpy as np
 
-from src.synthetic_data import generate_clean_sin_function, generate_clean_spiked_linear_function
+from src.synthetic_data import generate_clean_sin_function, generate_clean_spiked_linear_function, generate_clean_gap_sin_function
 
 def test_model(cfg,model, train_dataloader, ood_dataloaders, epoch, label="final"):
     ood_ll = torch.zeros(1)
     results_dict = {"epoch":epoch}
-    for ood_variance,ood_dataloader in zip(cfg.dataset.ood_input_variance, ood_dataloaders):
-        ood_ll = torch.zeros(1)
-        for x,y in ood_dataloader:
-            x = x.to(model.device)
-            y = y.to(model.device)
-            preds = model.sample_functions(x)
-            ood_ll += (model.get_mean_log_likelihood(preds,y)*x.shape[0]).item()
-        results_dict[f"ood_ll_var_{ood_variance}"] = ood_ll.item()/len(ood_dataloader.dataset)
-        print(f"OOD log likelihood with variance {ood_variance}: {ood_ll.item()/len(ood_dataloader.dataset)}")
+    
+    if cfg.dataset.label == "gap_sin":
+        # For gap_sin, we have two specific OOD loaders: IID (with gap) and OOD (no gap)
+        ood_labels = ["iid_with_gap", "ood_no_gap"]
+        for ood_label, ood_dataloader in zip(ood_labels, ood_dataloaders):
+            ood_ll = torch.zeros(1)
+            for x,y in ood_dataloader:
+                x = x.to(model.device)
+                y = y.to(model.device)
+                preds = model.sample_functions(x)
+                ood_ll += (model.get_mean_log_likelihood(preds,y)*x.shape[0]).item()
+            results_dict[f"ood_ll_{ood_label}"] = ood_ll.item()/len(ood_dataloader.dataset)
+            print(f"OOD log likelihood {ood_label}: {ood_ll.item()/len(ood_dataloader.dataset)}")
+    else:
+        # For other datasets, use ood_input_variance
+        for ood_variance,ood_dataloader in zip(cfg.dataset.ood_input_variance, ood_dataloaders):
+            ood_ll = torch.zeros(1)
+            for x,y in ood_dataloader:
+                x = x.to(model.device)
+                y = y.to(model.device)
+                preds = model.sample_functions(x)
+                ood_ll += (model.get_mean_log_likelihood(preds,y)*x.shape[0]).item()
+            results_dict[f"ood_ll_var_{ood_variance}"] = ood_ll.item()/len(ood_dataloader.dataset)
+            print(f"OOD log likelihood with variance {ood_variance}: {ood_ll.item()/len(ood_dataloader.dataset)}")
     wandb.log(results_dict)
     save_results_to_csv(cfg, results_dict)
     
@@ -32,8 +47,7 @@ def test_model(cfg,model, train_dataloader, ood_dataloaders, epoch, label="final
 
     plot_predictions(cfg, model, train_dataloader, title+"_iid", margin=1)
     plot_predictions(cfg, model, train_dataloader, title+"_ood", margin=10)
-    # if cfg.dataset.label=="sin":
-    #     plot_model_ft(cfg, model, x_min=-10, x_max=10, max_frequency=2**13, name=title+"_ft", n_samples=10)
+
 
 def set_seeds(seed):
     """Set seeds for reproducibility across all random number generators.
@@ -87,6 +101,8 @@ def plot_predictions(cfg, model, train_dataloader, name: str, margin=1):
     min_x = train_dataloader.dataset.tensors[0].min()-margin
     max_x = train_dataloader.dataset.tensors[0].max()+margin
     if cfg.dataset.label =="sin":
+        x_lin,f = generate_clean_sin_function(n_samples=200, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, min_x=min_x, max_x=max_x, frequency=cfg.dataset.frequency)
+    elif cfg.dataset.label=="gap_sin":
         x_lin,f = generate_clean_sin_function(n_samples=200, n_features=cfg.dataset.n_features, n_empty_features=cfg.dataset.n_empty_features, min_x=min_x, max_x=max_x, frequency=cfg.dataset.frequency)
     elif cfg.dataset.label=="spiked_linear":
         x_lin, f = generate_clean_spiked_linear_function(n_samples=200, n_features=cfg.dataset.n_features, min_x=min_x, max_x=max_x, rank=cfg.dataset.rank, beta_std=cfg.model.prior_std)

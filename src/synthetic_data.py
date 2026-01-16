@@ -34,6 +34,32 @@ def get_linspace_linear_input_data(n_samples: int, n_features: int, n_empty_feat
     return torch.cat([x_full, x_empty], dim=1)
 
 
+def get_gap_uniform_linear_input_data(n_samples: int, n_features: int, n_empty_features: int, min_val: float, max_val: float):
+    """
+    Generate inputs which lie on a lower dimensional linear subspace within a higher-dimensional space.
+    The inputs are uniformly distributed in [-max_val, -min_val] U [min_val, max_val].
+
+    Args:
+        n_samples: Number of samples to generate.
+        n_features: Number of informative features.
+        n_empty_features: Number of non-informative (zero) features.
+        min_val: The start of the gap (positive).
+        max_val: The end of the range (positive).
+    Returns:
+        Tensor of shape (n_samples, n_features + n_empty_features)
+    """
+    # Generate random signs (-1 or 1)
+    signs = torch.randint(0, 2, (n_samples, n_features)).float() * 2 - 1
+    
+    # Generate uniform values in [min_val, max_val]
+    magnitudes = torch.rand(n_samples, n_features) * (max_val - min_val) + min_val
+    
+    x_full = signs * magnitudes
+    x_empty = torch.zeros(n_samples, n_empty_features)
+
+    return torch.cat([x_full, x_empty], dim=1)
+
+
 def synthetic_function(x: torch.Tensor, frequency: float) -> torch.Tensor:
     """
     A synthetic function that takes a 2D input and produces a scalar output.
@@ -67,8 +93,19 @@ def generate_sin_data(n_samples: int = 100, n_features: int = 1, n_empty_feature
     y = apply_gaussian_noise(f, noise_std)
     return x, y
 
+def generate_gap_sin_data(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9, noise_std: float = 0.1, gap_min: float = 1.0, gap_max: float = 3.5, frequency: float = 1.0):
+    x = get_gap_uniform_linear_input_data(n_samples, n_features, n_empty_features, gap_min, gap_max)
+    f = synthetic_function(x, frequency)
+    y = apply_gaussian_noise(f, noise_std)
+    return x, y
+
 def generate_clean_sin_function(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9, min_x = -3, max_x = 3, frequency: float = 1.0):
     x = get_linspace_linear_input_data(n_samples, n_features, n_empty_features, min_x, max_x)
+    f = synthetic_function(x, frequency)
+    return x, f
+
+def generate_clean_gap_sin_function(n_samples: int = 100, n_features: int = 1, n_empty_features: int = 9, gap_min: float = 1.0, gap_max: float = 3.5, frequency: float = 1.0):
+    x = get_gap_uniform_linear_input_data(n_samples, n_features, n_empty_features, gap_min, gap_max)
     f = synthetic_function(x, frequency)
     return x, f
 
